@@ -1,0 +1,7 @@
+*.sw?
+.gdbinit
+gdb.py
+mpk
+run.gdb
+debug.cfg
+
