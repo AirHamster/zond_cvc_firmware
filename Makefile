@@ -1,8 +1,8 @@
 ### Project name (also used for output file name)
-PROJECT	= fftest
+PROJECT	= zond_cvc
 
 ### Source files and search directories
-CSRC	= main.c interrupt.c uart23xx.c xprintf.c
+CSRC	= main.c interrupt.c uart23xx.c xprintf.c init_cpu.c
 ASRC	=
 CSRCARM	= 
 ASRCARM	= asmfunc.S

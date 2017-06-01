@@ -13,6 +13,9 @@
 
 #include "uart23xx.h"
 #include "interrupt.h"
+#include "string.h"
+#include "stdio.h"
+#include "xprintf.h"
 
 /* F_PCLK    8/16M  9/18M 10/20M 12/24M 12.5/25M 15/30M */
 /* DIVADD       1     5      1      1      1       5    */
@@ -42,6 +45,30 @@
 #endif
 
 
+void processCommand(char *cmd)
+{
+#ifdef DEBUG1
+	xputs(cmd);
+#endif
+	if(strncmp(cmd, "start", 5) == 0)
+	{
+	}    
+
+	/* Turn off amplifier */
+	if(strncmp(cmd, "stop", 4) == 0)
+	{
+	}
+	/* Voltage setup  */
+	if(strncmp(cmd, "set", 8) == 0)
+	{
+	}
+
+	/* Manual  */
+	if(strncmp(cmd, "help", 4) == 0)
+		xputs("Plazma probe controller:\n \tUsage:\n \t\tstart - start measurements\n  \t\tstop - finish measurements\n  \t\tset <voltage> - probe voltage setup\n");
+
+}
+
 
 #if USE_UART0
 
@@ -58,48 +85,31 @@ static volatile struct {
 void Isr_UART0 (void)
 {
 	uint8_t iir, d;
-	int i, cnt;
+	int i;
 
-
-	for (;;) {
-		iir = U0IIR;			/* Get interrupt ID */
-		if (iir & 1) break;		/* Exit if there is no interrupt */
-		switch (iir & 7) {
+	iir = U0IIR;			/* Get interrupt ID */
+	/* if (iir & 1) break;		[> Exit if there is no interrupt <] */
+	switch (iir & 7) {
 		case 4:			/* Rx FIFO is half filled or timeout occured */
 			i = RxBuff0.wi;
-			cnt = RxBuff0.ct;
-			while (U0LSR & 0x01) {	/* Get all data in the Rx FIFO */
-				d = U0RBR;
-				if (cnt < UART0_RXB) {	/* Store data if Rx buffer is not full */
-					RxBuff0.buff[i++] = d;
-					i %= UART0_RXB;
-					cnt++;
-				}
+			d = U0RBR;
+			if (d == '\n'){
+				RxBuff0.buff[i++] = 0; //make null-terminated string 
+				processCommand(RxBuff0.buff);
+				RxBuff0.wi = 0;
+			}else{
+				RxBuff0.buff[i++] = d;
+				RxBuff0.wi = i;
 			}
-			RxBuff0.wi = i;
-			RxBuff0.ct = cnt;
 			break;
 
 		case 2:			/* Tx FIFO empty */
-			cnt = TxBuff0.ct;
-			if (cnt) {		/* There is one or more byte to send */
-				i = TxBuff0.ri;
-				for (d = 16; d && cnt; d--, cnt--) {	/* Fill Tx FIFO */
-					U0THR = TxBuff0.buff[i++];
-					i %= UART0_TXB;
-				}
-				TxBuff0.ri = i;
-				TxBuff0.ct = cnt;
-			} else {
-				TxBuff0.act = 0; /* When no data to send, next putc must trigger Tx sequense */
-			}
 			break;
 
 		default:		/* Data error or break detected */
 			U0LSR;
 			U0RBR;
 			break;
-		}
 	}
 }
 
@@ -163,7 +173,7 @@ void uart0_init (void)
 	U0DLL = DLVAL0 % 256;
 	U0FDR = (MULVAL << 4) | DIVADD;
 	U0LCR = 0x03;			/* Set serial format N81 and deselect divisor latch */
-	U0FCR = 0x87;			/* Enable FIFO */
+	U0FCR = 0x27;			/* Enable FIFO with 1 byte interrupt */
 	U0TER = 0x80;			/* Enable Tansmission */
 
 	/* Clear Tx/Rx buffers */

@@ -8,22 +8,23 @@
 #define UART0_TXB	128		/* Size of Tx buffer */
 #define UART0_RXB	128		/* Size of Rx buffer */
 
-#define USE_UART1	0		/* Enable UART1 function */
+// #define USE_UART1	0		[> Enable UART1 function <]
 #define UART1_BPS 	38400
 #define UART1_TXB	128
 #define UART1_RXB	128
 
-#define USE_UART2	0		/* Enable UART2 function */
+// #define USE_UART2	0		[> Enable UART2 function <]
 #define UART2_BPS 	38400
 #define UART2_TXB	128
 #define UART2_RXB	128
 
-#define USE_UART3	0		/* Enable UART3 function */
+// #define USE_UART3	0		[> Enable UART3 function <]
 #define UART3_BPS 	38400
 #define UART3_TXB	128
 #define UART3_RXB	128
 
 
+void processCommand(char *cmd);
 #if USE_UART0
 void uart0_init (void);
 int uart0_test (void);
