@@ -12,22 +12,22 @@ void process_command(char *cmd)
 	char answer[20]="";
 	if(strncmp(cmd, "start", 5) == 0)
 	{
-		//op_amp enable
-	led_set(LED2);
+		gpio_set(OP_AMP_PORT, OP_AMP_PIN);
+		led_set(LED2);
 		timer0_start();
 	}    
 
 	/* Turn off amplifier */
 	if(strncmp(cmd, "stop", 4) == 0)
 	{
-		//op_amp off
-	led_set(LED1);
+		gpio_clear(OP_AMP_PORT, OP_AMP_PIN);
+		led_set(LED1);
 		timer0_stop();
 	}
 	/* Voltage setup  */
 	if(strncmp(cmd, "set", 3) == 0)
 	{
-		set_voltage(cmd+4);
+		dac_set_voltage(cmd+4);
 	}
 
 	/* Manual  */

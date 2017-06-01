@@ -8,6 +8,7 @@
 #include "xprintf.h"
 #include "interrupt.h"
 #include "spi.h"
+
 void GPIOInit (void)
 {
 	SCS |= 1;
@@ -28,6 +29,40 @@ void led_set(uint8_t led)
 void led_clear(uint8_t led)
 {
 	FIO2CLR |= (1 << led);
+}
+void gpio_set(uint8_t port, uint8_t pin)
+{
+	switch (port)
+	{
+	case 0:
+		FIO0SET |= (1 << pin);
+		break;
+	case 1:
+	       	FIO1SET |= (1 << pin);
+		break;
+	case 2:
+		FIO2SET |= (1 << pin);
+		break;
+	default:
+	break;	
+	}
+}
+void gpio_clear(uint8_t port, uint8_t pin)
+{
+	switch (port)
+	{
+	case 0:
+		FIO0CLR |= (1 << pin);
+		break;
+	case 1:
+	       	FIO1CLR |= (1 << pin);
+		break;
+	case 2:
+		FIO2CLR |= (1 << pin);
+		break;
+	default:
+	break;	
+	}
 }
 void IoInit(void)
 {
@@ -89,7 +124,7 @@ int main (void)
 	{
 		/* S0SPDR = 0x55; */
 		/* SPI0_send_1_byte(0xF0, ADC); */
-		d = SPI0_read_2_byte(ADC);
+		/* d = SPI0_read_2_byte(ADC); */
 		/* UART0_send(d, 1); */
 	}
 	return 0;

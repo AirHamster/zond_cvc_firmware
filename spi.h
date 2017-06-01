@@ -1,7 +1,4 @@
 #include <stdint.h>
-#define ADC 18		//like a cs pins
-#define DAC 29
-#define ADC_MODE 0x05 //select only conversion freq
 #define ADC_1CH 0x1010
 #define ADC_2CH 0x1011
 

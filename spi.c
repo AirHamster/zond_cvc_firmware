@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "spi.h"
 #include "LPC2300.h"
+#include "defines.h"
 
 
 
