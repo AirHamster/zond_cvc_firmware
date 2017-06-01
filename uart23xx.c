@@ -16,6 +16,7 @@
 #include "string.h"
 #include "stdio.h"
 #include "xprintf.h"
+#include "LPC2300.h"
 
 /* F_PCLK    8/16M  9/18M 10/20M 12/24M 12.5/25M 15/30M */
 /* DIVADD       1     5      1      1      1       5    */
@@ -45,29 +46,7 @@
 #endif
 
 
-void processCommand(char *cmd)
-{
-#ifdef DEBUG1
-	xputs(cmd);
-#endif
-	if(strncmp(cmd, "start", 5) == 0)
-	{
-	}    
 
-	/* Turn off amplifier */
-	if(strncmp(cmd, "stop", 4) == 0)
-	{
-	}
-	/* Voltage setup  */
-	if(strncmp(cmd, "set", 8) == 0)
-	{
-	}
-
-	/* Manual  */
-	if(strncmp(cmd, "help", 4) == 0)
-		xputs("Plazma probe controller:\n \tUsage:\n \t\tstart - start measurements\n  \t\tstop - finish measurements\n  \t\tset <voltage> - probe voltage setup\n");
-
-}
 
 
 #if USE_UART0
@@ -84,33 +63,44 @@ static volatile struct {
 
 void Isr_UART0 (void)
 {
+
 	uint8_t iir, d;
 	int i;
 
-	iir = U0IIR;			/* Get interrupt ID */
-	/* if (iir & 1) break;		[> Exit if there is no interrupt <] */
-	switch (iir & 7) {
-		case 4:			/* Rx FIFO is half filled or timeout occured */
-			i = RxBuff0.wi;
-			d = U0RBR;
-			if (d == '\n'){
-				RxBuff0.buff[i++] = 0; //make null-terminated string 
-				processCommand(RxBuff0.buff);
-				RxBuff0.wi = 0;
-			}else{
-				RxBuff0.buff[i++] = d;
-				RxBuff0.wi = i;
-			}
-			break;
-
-		case 2:			/* Tx FIFO empty */
-			break;
-
-		default:		/* Data error or break detected */
-			U0LSR;
-			U0RBR;
-			break;
+	iir = U0LSR;		/* 	[> [> Get interrupt ID <] <] */
+	if(iir & 1 != 0)
+	{	
+		d = U0RBR;
+		/* UART0_send("resieved", 8); */
+		U0THR = d; 
+	}else{
+		d = U0RBR;
 	}
+		
+			VICVectAddr = 0;
+	/* [> if (iir & 1) break;		[> Exit if there is no interrupt <] <] */
+	/* switch (iir & 7) { */
+	/*         case 4:			[> Rx FIFO is half filled or timeout occured <] */
+	/*                 i = RxBuff0.wi; */
+	/*                 d = U0RBR; */
+	/*                 if (d == '\n'){ */
+	/*                         RxBuff0.buff[i++] = 0; //make null-terminated string  */
+	/*                         processCommand(RxBuff0.buff); */
+	/*                         RxBuff0.wi = 0; */
+	/*                 }else{ */
+	/*                         RxBuff0.buff[i++] = d; */
+	/*                         RxBuff0.wi = i; */
+	/*                 } */
+	/*                 break; */
+
+	/*         case 2:			[> Tx FIFO empty <] */
+	/*                 break; */
+
+	/*         default:		[> Data error or break detected <] */
+	/*                 U0LSR; */
+	/*                 U0RBR; */
+	/*                 break; */
+	/* } */
 }
 
 
@@ -162,32 +152,59 @@ void uart0_putc (uint8_t d)
 
 void uart0_init (void)
 {
-	/* Enable UART0 module */
-	__set_PCONP(PCUART0);
-	__set_PCLKSEL(PCLK_UART0, PCLKDIV);
-
-	/* Initialize UART */
-	U0IER = 0x00;			/* Disable interrupt */
-	U0LCR = 0x83;			/* Select baud rate divisor latch */
-	U0DLM = DLVAL0 / 256;	/* Set BRG dividers */
-	U0DLL = DLVAL0 % 256;
-	U0FDR = (MULVAL << 4) | DIVADD;
-	U0LCR = 0x03;			/* Set serial format N81 and deselect divisor latch */
-	U0FCR = 0x27;			/* Enable FIFO with 1 byte interrupt */
-	U0TER = 0x80;			/* Enable Tansmission */
-
-	/* Clear Tx/Rx buffers */
-	TxBuff0.ri = 0; TxBuff0.wi = 0; TxBuff0.ct = 0; TxBuff0.act = 0;
-	RxBuff0.ri = 0; RxBuff0.wi = 0; RxBuff0.ct = 0;
-
-	/* Attach UART0 to I/O pad */
-	__set_PINSEL(0, 3, 1);	/* P0.3 - RXD0 */
-	__set_PINSEL(0, 2, 1);	/* P0.2 - TXD0 */
-
-	/* Enable Tx/Rx/Error interrupts */
-	RegisterIrq(UART0_IRQn, Isr_UART0, PRI_LOWEST);
-	U0IER = 0x07;
+  //UART0
+  PCONP |= 1 << PCUART0; // Питание на UART0
+  //PCLKSEL0 |= 1 << PINSEL_UART0_0;      // PCLK = CCLK
+  
+  //8 bit lenght word,1 stop bit,disable parity generation,disable breake transmission, enable access to Divisor Latches
+  U0LCR |= (1 << word_len_0)|(1 << word_len_1)|(1 << DLAB);
+  //f = 18 mGz,Baud = 115200.
+  U0FDR = 0xC1;
+  U0DLL = 0x09;
+  U0DLM = 0x00;
+  U0LCR &= ~(1 << DLAB);//DLAB = 0
+  
+  //UART FIFO Нужно ли оно?
+  U0FCR |= ((1 << FIFO_Enable )|(1 << RX_FIFO_Reset)|(1 << TX_FIFO_Reset));//Enable and reset TX and RX FIFO
+  
+  //Настройка ножек мк: P0(2) - TxD,P0(3) - RxD.
+  //P0.02,P0.03 - pull-up mode
+  PINSEL0 |= (1 << 4)|(1 << 6);
+  
+  //Interrupts
+  /* InstallIRQ( UART0_INT, (void *)UART0_INT_Handler, 0x0E); */
+  /* U0IER |= ((1 << RBR_Enable )|(1 << THRE_Enable)|(1 << RLS_Enable));[> Enable UART0 interrupt <] */
+  U0IER |= (1 << RBR_Enable );/* Enable UART0 interrupt */
+	/* [> Enable Tx/Rx/Error interrupts <] */
+	RegisterIrq(UART0_IRQn, (void *)Isr_UART0, PRI_LOWEST);
+  
 }
+       /*  [> Enable UART0 module <] */
+/*         __set_PCONP(PCUART0); */
+/*         __set_PCLKSEL(PCLK_UART0, PCLKDIV); */
+
+/*         [> Initialize UART <] */
+/*         U0IER = 0x00;			[> Disable interrupt <] */
+/*         U0LCR = 0x83;			[> Select baud rate divisor latch <] */
+/*         U0DLM = DLVAL0 / 256;	[> Set BRG dividers <] */
+/*         U0DLL = DLVAL0 % 256; */
+/*         U0FDR = (MULVAL << 4) | DIVADD; */
+/*         U0LCR = 0x03;			[> Set serial format N81 and deselect divisor latch <] */
+/*         U0FCR = 0x27;			[> Enable FIFO with 1 byte interrupt <] */
+/*         U0TER = 0x80;			[> Enable Tansmission <] */
+
+/*         [> Clear Tx/Rx buffers <] */
+/*         TxBuff0.ri = 0; TxBuff0.wi = 0; TxBuff0.ct = 0; TxBuff0.act = 0; */
+/*         RxBuff0.ri = 0; RxBuff0.wi = 0; RxBuff0.ct = 0; */
+
+/*         [> Attach UART0 to I/O pad <] */
+/*         __set_PINSEL(0, 3, 1);	[> P0.3 - RXD0 <] */
+/*         __set_PINSEL(0, 2, 1);	[> P0.2 - TXD0 <] */
+
+/*         [> Enable Tx/Rx/Error interrupts <] */
+/*         RegisterIrq(UART0_IRQn, Isr_UART0, PRI_LOWEST); */
+/*         U0IER = 0x07; */
+/* } */
 
 #endif	/* USE_UART0 */
 

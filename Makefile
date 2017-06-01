@@ -2,7 +2,7 @@
 PROJECT	= zond_cvc
 
 ### Source files and search directories
-CSRC	= main.c interrupt.c uart23xx.c xprintf.c init_cpu.c
+CSRC	= main.c interrupt.c uart23xx.c xprintf.c init_cpu.c usart_console.c
 ASRC	=
 CSRCARM	= 
 ASRCARM	= asmfunc.S

@@ -1,7 +1,7 @@
 Archive member included to satisfy reference by file (symbol)
 
 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
-                              obj/uart23xx.o (strncmp)
+                              obj/usart_console.o (strncmp)
 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
                               obj/xprintf.o (__aeabi_uidiv)
 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
@@ -10,70 +10,29 @@ Archive member included to satisfy reference by file (symbol)
 Allocating common symbols
 Common symbol       size              file
 
-UART0Str            0x8               obj/main.o
-Index               0x1               obj/main.o
-RxMessage_CRC       0x2               obj/main.o
+UART0Str            0x8               obj/usart_console.o
+Index               0x1               obj/usart_console.o
+RxMessage_CRC       0x2               obj/usart_console.o
 xfunc_in            0x4               obj/xprintf.o
-RxMessage_Dev_ID    0x1               obj/main.o
+RxMessage_Dev_ID    0x1               obj/usart_console.o
 xfunc_out           0x4               obj/xprintf.o
-UART0Buffer         0x10              obj/main.o
-RxCount             0x1               obj/main.o
-RxMessage_Data      0x2               obj/main.o
-UART_TxStr          0x8               obj/main.o
-RxMessage_Command   0x1               obj/main.o
-RxMessage_Addr      0x2               obj/main.o
+UART0Buffer         0x10              obj/usart_console.o
+RxCount             0x1               obj/usart_console.o
+RxMessage_Data      0x2               obj/usart_console.o
+UART_TxStr          0x8               obj/usart_console.o
+RxMessage_Command   0x1               obj/usart_console.o
+RxMessage_Addr      0x2               obj/usart_console.o
 
 Discarded input sections
 
  .data          0x0000000000000000        0x0 obj/asmfunc.o
  .bss           0x0000000000000000        0x0 obj/asmfunc.o
- COMMON         0x0000000000000000       0x2c obj/main.o
- .text          0x0000000000000000       0x1c obj/interrupt.o
+ .data          0x0000000000000000        0x0 obj/main.o
+ .bss           0x0000000000000000        0x0 obj/main.o
  .data          0x0000000000000000        0x0 obj/interrupt.o
  .bss           0x0000000000000000        0x0 obj/interrupt.o
- .debug_info    0x0000000000000000      0x133 obj/interrupt.o
- .debug_abbrev  0x0000000000000000       0xa2 obj/interrupt.o
- .debug_aranges
-                0x0000000000000000       0x20 obj/interrupt.o
- .debug_line    0x0000000000000000       0x4f obj/interrupt.o
- .debug_str     0x0000000000000000       0xf6 obj/interrupt.o
- .comment       0x0000000000000000       0x39 obj/interrupt.o
- .debug_frame   0x0000000000000000       0x80 obj/interrupt.o
- .ARM.attributes
-                0x0000000000000000       0x32 obj/interrupt.o
- .text          0x0000000000000000      0x1bc obj/uart23xx.o
  .data          0x0000000000000000        0x0 obj/uart23xx.o
- .bss           0x0000000000000000      0x10e obj/uart23xx.o
- .rodata.str1.1
-                0x0000000000000000       0x8d obj/uart23xx.o
- .debug_info    0x0000000000000000      0x399 obj/uart23xx.o
- .debug_abbrev  0x0000000000000000      0x1cd obj/uart23xx.o
- .debug_loc     0x0000000000000000      0x1aa obj/uart23xx.o
- .debug_aranges
-                0x0000000000000000       0x20 obj/uart23xx.o
- .debug_line    0x0000000000000000      0x162 obj/uart23xx.o
- .debug_str     0x0000000000000000      0x1de obj/uart23xx.o
- .comment       0x0000000000000000       0x39 obj/uart23xx.o
- .debug_frame   0x0000000000000000       0x98 obj/uart23xx.o
- .ARM.attributes
-                0x0000000000000000       0x32 obj/uart23xx.o
- .text          0x0000000000000000      0x484 obj/xprintf.o
  .data          0x0000000000000000        0x0 obj/xprintf.o
- .bss           0x0000000000000000        0x4 obj/xprintf.o
- .rodata.str1.1
-                0x0000000000000000       0x1a obj/xprintf.o
- .debug_info    0x0000000000000000      0x720 obj/xprintf.o
- .debug_abbrev  0x0000000000000000      0x25b obj/xprintf.o
- .debug_loc     0x0000000000000000      0xac9 obj/xprintf.o
- .debug_aranges
-                0x0000000000000000       0x20 obj/xprintf.o
- .debug_line    0x0000000000000000      0x235 obj/xprintf.o
- .debug_str     0x0000000000000000      0x194 obj/xprintf.o
- .comment       0x0000000000000000       0x39 obj/xprintf.o
- .debug_frame   0x0000000000000000      0x154 obj/xprintf.o
- .ARM.attributes
-                0x0000000000000000       0x32 obj/xprintf.o
- COMMON         0x0000000000000000        0x8 obj/xprintf.o
  .text          0x0000000000000000       0xcc obj/init_cpu.o
  .data          0x0000000000000000        0x0 obj/init_cpu.o
  .bss           0x0000000000000000        0x0 obj/init_cpu.o
@@ -88,43 +47,14 @@ Discarded input sections
  .debug_frame   0x0000000000000000       0x8c obj/init_cpu.o
  .ARM.attributes
                 0x0000000000000000       0x32 obj/init_cpu.o
+ COMMON         0x0000000000000000       0x2c obj/usart_console.o
  .text          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
  .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
  .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .text.strncmp  0x0000000000000000       0x98 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .debug_info    0x0000000000000000       0xf5 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .debug_abbrev  0x0000000000000000       0x81 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .debug_loc     0x0000000000000000       0xbd /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .debug_aranges
-                0x0000000000000000       0x20 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .debug_ranges  0x0000000000000000       0x10 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .debug_line    0x0000000000000000      0x124 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .debug_str     0x0000000000000000      0x19d /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .comment       0x0000000000000000       0x39 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .debug_frame   0x0000000000000000       0x2c /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .ARM.attributes
-                0x0000000000000000       0x30 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .text          0x0000000000000000      0x11c /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
  .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
  .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
- .debug_frame   0x0000000000000000       0x20 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
- .debug_line    0x0000000000000000       0x7b /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
- .debug_info    0x0000000000000000       0xb7 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
- .debug_abbrev  0x0000000000000000       0x14 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
- .debug_aranges
-                0x0000000000000000       0x20 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
- .ARM.attributes
-                0x0000000000000000       0x18 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
- .text          0x0000000000000000        0x4 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
  .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
  .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
- .debug_line    0x0000000000000000       0x5e /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
- .debug_info    0x0000000000000000       0xb7 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
- .debug_abbrev  0x0000000000000000       0x14 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
- .debug_aranges
-                0x0000000000000000       0x20 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
- .ARM.attributes
-                0x0000000000000000       0x16 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
 
 Memory Configuration
 
@@ -144,6 +74,7 @@ LOAD obj/interrupt.o
 LOAD obj/uart23xx.o
 LOAD obj/xprintf.o
 LOAD obj/init_cpu.o
+LOAD obj/usart_console.o
 LOAD /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a
 LOAD /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a
 LOAD /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libm.a
@@ -153,7 +84,7 @@ LOAD /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libg.a
 LOAD /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a
 END GROUP
 
-.text           0x0000000000000000      0x7d5
+.text           0x0000000000000000      0xff0
  *(.VECTOR)
  .VECTOR        0x0000000000000000       0x34 obj/asmfunc.o
                 0x00000000000002fc                . = 0x2fc
@@ -165,50 +96,90 @@ END GROUP
  .text          0x0000000000000300      0x31c obj/asmfunc.o
                 0x0000000000000500                Copy_un2al
                 0x0000000000000570                Copy_al2un
- .text          0x000000000000061c      0x18c obj/main.o
+ .text          0x000000000000061c       0xd8 obj/main.o
                 0x000000000000061c                Isr_TIMER0
                 0x0000000000000628                GPIOInit
-                0x0000000000000650                UARTSend
-                0x00000000000006a4                InitUART0
-                0x0000000000000710                IoInit1
- .text.startup  0x00000000000007a8       0x1c obj/main.o
-                0x00000000000007a8                main
+                0x0000000000000650                IoInit1
+ .text.startup  0x00000000000006f4       0x1c obj/main.o
+                0x00000000000006f4                main
+ .text          0x0000000000000710       0x1c obj/interrupt.o
+                0x0000000000000710                IrqDisable
+                0x0000000000000714                IrqEnable
+                0x0000000000000718                ClearVector
+                0x000000000000071c                RegisterIrq
+                0x0000000000000720                SelectFiq
+                0x0000000000000724                LoadFiqRegs
+                0x0000000000000728                StoreFiqRegs
+ .text          0x000000000000072c      0x138 obj/uart23xx.o
+                0x000000000000072c                Isr_UART0
+                0x0000000000000758                uart0_test
+                0x0000000000000764                uart0_getc
+                0x0000000000000798                uart0_putc
+                0x00000000000007e8                uart0_init
+ .text          0x0000000000000864      0x484 obj/xprintf.o
+                0x0000000000000864                xputc
+                0x00000000000008a0                xputs
+                0x0000000000000a96                xfputs
+                0x0000000000000abc                xprintf
+                0x0000000000000ad2                xsprintf
+                0x0000000000000afc                xfprintf
+                0x0000000000000b20                put_dump
+                0x0000000000000bb4                xgets
+                0x0000000000000c18                xfgets
+                0x0000000000000c34                xatoi
+ .text          0x0000000000000ce8       0x78 obj/usart_console.o
+                0x0000000000000ce8                processCommand
+                0x0000000000000d0c                UART0_send
+ .text.strncmp  0x0000000000000d60       0x98 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+                0x0000000000000d60                strncmp
+ .text          0x0000000000000df8      0x11c /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
+                0x0000000000000df8                __udivsi3
+                0x0000000000000df8                __aeabi_uidiv
+                0x0000000000000ef4                __aeabi_uidivmod
+ .text          0x0000000000000f14        0x4 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
+                0x0000000000000f14                __aeabi_ldiv0
+                0x0000000000000f14                __aeabi_idiv0
+ .text.__stub   0x0000000000000f18       0x1c linker stubs
  *(.gnu.linkonce.t.*)
  *(.glue_7)
- .glue_7        0x00000000000007c4        0x0 linker stubs
+ .glue_7        0x0000000000000f38        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x00000000000007c4        0x0 linker stubs
+ .glue_7t       0x0000000000000f38        0x0 linker stubs
  *(.gcc_except_table)
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x00000000000007c4       0x11 obj/main.o
+                0x0000000000000f38       0x11 obj/main.o
+ .rodata.str1.1
+                0x0000000000000f49       0x1a obj/xprintf.o
+ .rodata.str1.1
+                0x0000000000000f63       0x8d obj/usart_console.o
  *(.gnu.linkonce.r.*)
 
-.vfp11_veneer   0x00000000000007d8        0x0
- .vfp11_veneer  0x00000000000007d8        0x0 linker stubs
+.vfp11_veneer   0x0000000000000ff0        0x0
+ .vfp11_veneer  0x0000000000000ff0        0x0 linker stubs
 
-.v4_bx          0x00000000000007d8        0x0
- .v4_bx         0x00000000000007d8        0x0 linker stubs
+.v4_bx          0x0000000000000ff0        0x0
+ .v4_bx         0x0000000000000ff0        0x0 linker stubs
 
-.iplt           0x00000000000007d8        0x0
- .iplt          0x00000000000007d8        0x0 obj/asmfunc.o
+.iplt           0x0000000000000ff0        0x0
+ .iplt          0x0000000000000ff0        0x0 obj/asmfunc.o
 
-.rel.dyn        0x00000000000007d8        0x0
- .rel.iplt      0x00000000000007d8        0x0 obj/asmfunc.o
+.rel.dyn        0x0000000000000ff0        0x0
+ .rel.iplt      0x0000000000000ff0        0x0 obj/asmfunc.o
 
 .ARM.excep
  *(.ARM.exidx*)
  *(.ARM.extab*)
-                0x00000000000007d8                . = ALIGN (0x4)
-                0x00000000000007d8                _etext = .
-                0x00000000000007d8                _sidata = .
+                0x0000000000000ff0                . = ALIGN (0x4)
+                0x0000000000000ff0                _etext = .
+                0x0000000000000ff0                _sidata = .
 
-.data           0x0000000040000000        0xc load address 0x00000000000007d8
+.data           0x0000000040000000        0xc load address 0x0000000000000ff0
                 0x0000000040000000                . = ALIGN (0x4)
                 0x0000000040000000                _sdata = .
  *(.data)
- .data          0x0000000040000000        0xa obj/main.o
+ .data          0x0000000040000000        0xa obj/usart_console.o
                 0x0000000040000000                UART0TxEmpty
                 0x0000000040000002                TxMessage_CRC
                 0x0000000040000004                TxMessage_Data
@@ -221,29 +192,36 @@ END GROUP
  *fill*         0x000000004000000a        0x2 
                 0x000000004000000c                _edata = .
 
-.igot.plt       0x000000004000000c        0x0 load address 0x00000000000007e4
+.igot.plt       0x000000004000000c        0x0 load address 0x0000000000000ffc
  .igot.plt      0x000000004000000c        0x0 obj/asmfunc.o
 
-.bss            0x000000004000000c        0x4 load address 0x00000000000007e4
+.bss            0x000000004000000c      0x120 load address 0x0000000000000ffc
                 0x000000004000000c                . = ALIGN (0x4)
                 0x000000004000000c                _sbss = .
  *(.bss)
- .bss           0x000000004000000c        0x1 obj/main.o
-                0x000000004000000c                UART0Count
+ .bss           0x000000004000000c      0x10e obj/uart23xx.o
+ *fill*         0x000000004000011a        0x2 
+ .bss           0x000000004000011c        0x4 obj/xprintf.o
+ .bss           0x0000000040000120        0x1 obj/usart_console.o
+                0x0000000040000120                UART0Count
  *(.bss.*)
  *(.gnu.linkonce.b*)
  *(COMMON)
-                0x0000000040000010                . = ALIGN (0x4)
- *fill*         0x000000004000000d        0x3 
-                0x0000000040000010                _ebss = .
+ *fill*         0x0000000040000121        0x3 
+ COMMON         0x0000000040000124        0x8 obj/xprintf.o
+                0x0000000040000124                xfunc_in
+                0x0000000040000128                xfunc_out
+                0x000000004000012c                . = ALIGN (0x4)
+                0x000000004000012c                _ebss = .
 
-.stack          0x0000000040000010      0xa10
-                0x0000000040000010                . = ALIGN (0x8)
+.stack          0x000000004000012c      0xa14 load address 0x000000000000111c
+                0x0000000040000130                . = ALIGN (0x8)
+ *fill*         0x000000004000012c        0x4 
  *(.stack)
  *(.STACK)
- .STACK         0x0000000040000010      0xa10 obj/asmfunc.o
-                0x0000000040000a20                _estack = .
-                0x0000000040000a20                . = ALIGN (0x4)
+ .STACK         0x0000000040000130      0xa10 obj/asmfunc.o
+                0x0000000040000b40                _estack = .
+                0x0000000040000b40                . = ALIGN (0x4)
 
 .usbram         0x000000007fd00000        0x0
  *(.usbram)
@@ -275,9 +253,15 @@ END GROUP
 .stab.indexstr
  *(.stab.indexstr)
 
-.comment        0x0000000000000000       0x38
+.comment        0x0000000000000000       0x70
  *(.comment)
  .comment       0x0000000000000000       0x38 obj/main.o
+                                         0x39 (size before relaxing)
+ .comment       0x0000000000000038       0x39 obj/interrupt.o
+ .comment       0x0000000000000038       0x39 obj/uart23xx.o
+ .comment       0x0000000000000038       0x39 obj/xprintf.o
+ .comment       0x0000000000000038       0x39 obj/usart_console.o
+ .comment       0x0000000000000038       0x38 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
                                          0x39 (size before relaxing)
 
 .HEAP           0x0000000000000000        0x0
@@ -289,6 +273,20 @@ END GROUP
                 0x0000000000000000       0x22 obj/asmfunc.o
  .ARM.attributes
                 0x0000000000000022       0x32 obj/main.o
+ .ARM.attributes
+                0x0000000000000054       0x32 obj/interrupt.o
+ .ARM.attributes
+                0x0000000000000086       0x32 obj/uart23xx.o
+ .ARM.attributes
+                0x00000000000000b8       0x32 obj/xprintf.o
+ .ARM.attributes
+                0x00000000000000ea       0x32 obj/usart_console.o
+ .ARM.attributes
+                0x000000000000011c       0x30 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+ .ARM.attributes
+                0x000000000000014c       0x18 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
+ .ARM.attributes
+                0x0000000000000164       0x16 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
 
 .debug
  *(.debug)
@@ -302,43 +300,98 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x0000000000000000       0x50
+.debug_aranges  0x0000000000000000      0x130
  *(.debug_aranges)
  .debug_aranges
                 0x0000000000000000       0x28 obj/asmfunc.o
  .debug_aranges
                 0x0000000000000028       0x28 obj/main.o
+ .debug_aranges
+                0x0000000000000050       0x20 obj/interrupt.o
+ .debug_aranges
+                0x0000000000000070       0x20 obj/uart23xx.o
+ .debug_aranges
+                0x0000000000000090       0x20 obj/xprintf.o
+ .debug_aranges
+                0x00000000000000b0       0x20 obj/usart_console.o
+ .debug_aranges
+                0x00000000000000d0       0x20 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+ .debug_aranges
+                0x00000000000000f0       0x20 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
+ .debug_aranges
+                0x0000000000000110       0x20 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000      0x336
+.debug_info     0x0000000000000000     0x122d
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x0000000000000000       0x52 obj/asmfunc.o
- .debug_info    0x0000000000000052      0x2e4 obj/main.o
+ .debug_info    0x0000000000000052      0x19c obj/main.o
+ .debug_info    0x00000000000001ee      0x133 obj/interrupt.o
+ .debug_info    0x0000000000000321      0x29f obj/uart23xx.o
+ .debug_info    0x00000000000005c0      0x720 obj/xprintf.o
+ .debug_info    0x0000000000000ce0      0x2ea obj/usart_console.o
+ .debug_info    0x0000000000000fca       0xf5 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+ .debug_info    0x00000000000010bf       0xb7 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
+ .debug_info    0x0000000000001176       0xb7 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
 
-.debug_abbrev   0x0000000000000000      0x10e
+.debug_abbrev   0x0000000000000000      0x708
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000       0x12 obj/asmfunc.o
- .debug_abbrev  0x0000000000000012       0xfc obj/main.o
+ .debug_abbrev  0x0000000000000012       0xe3 obj/main.o
+ .debug_abbrev  0x00000000000000f5       0xa2 obj/interrupt.o
+ .debug_abbrev  0x0000000000000197      0x16d obj/uart23xx.o
+ .debug_abbrev  0x0000000000000304      0x25b obj/xprintf.o
+ .debug_abbrev  0x000000000000055f      0x100 obj/usart_console.o
+ .debug_abbrev  0x000000000000065f       0x81 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+ .debug_abbrev  0x00000000000006e0       0x14 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
+ .debug_abbrev  0x00000000000006f4       0x14 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
 
-.debug_line     0x0000000000000000      0x24b
+.debug_line     0x0000000000000000      0x8bd
  *(.debug_line)
  .debug_line    0x0000000000000000      0x12b obj/asmfunc.o
- .debug_line    0x000000000000012b      0x120 obj/main.o
+ .debug_line    0x000000000000012b       0xfa obj/main.o
+ .debug_line    0x0000000000000225       0x4f obj/interrupt.o
+ .debug_line    0x0000000000000274       0xe9 obj/uart23xx.o
+ .debug_line    0x000000000000035d      0x235 obj/xprintf.o
+ .debug_line    0x0000000000000592      0x12e obj/usart_console.o
+ .debug_line    0x00000000000006c0      0x124 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+ .debug_line    0x00000000000007e4       0x7b /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
+ .debug_line    0x000000000000085f       0x5e /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
 
-.debug_frame    0x0000000000000000       0x94
+.debug_frame    0x0000000000000000      0x334
  *(.debug_frame)
- .debug_frame   0x0000000000000000       0x94 obj/main.o
+ .debug_frame   0x0000000000000000       0x64 obj/main.o
+ .debug_frame   0x0000000000000064       0x80 obj/interrupt.o
+ .debug_frame   0x00000000000000e4       0x70 obj/uart23xx.o
+ .debug_frame   0x0000000000000154      0x154 obj/xprintf.o
+ .debug_frame   0x00000000000002a8       0x40 obj/usart_console.o
+ .debug_frame   0x00000000000002e8       0x2c /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+ .debug_frame   0x0000000000000314       0x20 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
 
-.debug_str      0x0000000000000000      0x22a
+.debug_str      0x0000000000000000      0x4b9
  *(.debug_str)
- .debug_str     0x0000000000000000      0x22a obj/main.o
-                                        0x274 (size before relaxing)
+ .debug_str     0x0000000000000000      0x14e obj/main.o
+                                        0x198 (size before relaxing)
+ .debug_str     0x000000000000014e       0x4b obj/interrupt.o
+                                         0xf6 (size before relaxing)
+ .debug_str     0x0000000000000199       0x56 obj/uart23xx.o
+                                        0x1ba (size before relaxing)
+ .debug_str     0x00000000000001ef       0xa4 obj/xprintf.o
+                                        0x194 (size before relaxing)
+ .debug_str     0x0000000000000293      0x12a obj/usart_console.o
+                                        0x26d (size before relaxing)
+ .debug_str     0x00000000000003bd       0xfc /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+                                        0x19d (size before relaxing)
 
-.debug_loc      0x0000000000000000       0xbc
+.debug_loc      0x0000000000000000      0xd4f
  *(.debug_loc)
- .debug_loc     0x0000000000000000       0xbc obj/main.o
+ .debug_loc     0x0000000000000000       0x40 obj/main.o
+ .debug_loc     0x0000000000000040       0xec obj/uart23xx.o
+ .debug_loc     0x000000000000012c      0xac9 obj/xprintf.o
+ .debug_loc     0x0000000000000bf5       0x9d obj/usart_console.o
+ .debug_loc     0x0000000000000c92       0xbd /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -356,20 +409,21 @@ END GROUP
  *(.debug_varnames)
 OUTPUT(obj/zond_cvc.elf elf32-littlearm)
 
-.debug_ranges   0x0000000000000000       0x38
+.debug_ranges   0x0000000000000000       0x48
  .debug_ranges  0x0000000000000000       0x20 obj/asmfunc.o
  .debug_ranges  0x0000000000000020       0x18 obj/main.o
+ .debug_ranges  0x0000000000000038       0x10 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
 
 Cross Reference Table
 
 Symbol                                            File
 ClearVector                                       obj/interrupt.o
+                                                  obj/main.o
 Copy_al2un                                        obj/asmfunc.o
 Copy_un2al                                        obj/asmfunc.o
 Exit_Main                                         obj/init_cpu.o
 GPIOInit                                          obj/main.o
-Index                                             obj/main.o
-InitUART0                                         obj/main.o
+Index                                             obj/usart_console.o
 Init_CPU                                          obj/init_cpu.o
 Init_Clocks                                       obj/init_cpu.o
 Init_MAM                                          obj/init_cpu.o
@@ -379,30 +433,32 @@ Init_Wait                                         obj/init_cpu.o
 IoInit1                                           obj/main.o
 IrqDisable                                        obj/interrupt.o
 IrqEnable                                         obj/interrupt.o
+                                                  obj/main.o
 Isr_TIMER0                                        obj/main.o
 Isr_UART0                                         obj/uart23xx.o
 LoadFiqRegs                                       obj/interrupt.o
 RegisterIrq                                       obj/interrupt.o
                                                   obj/uart23xx.o
-RxCount                                           obj/main.o
-RxMessage_Addr                                    obj/main.o
-RxMessage_CRC                                     obj/main.o
-RxMessage_Command                                 obj/main.o
-RxMessage_Data                                    obj/main.o
-RxMessage_Dev_ID                                  obj/main.o
+RxCount                                           obj/usart_console.o
+RxMessage_Addr                                    obj/usart_console.o
+RxMessage_CRC                                     obj/usart_console.o
+RxMessage_Command                                 obj/usart_console.o
+RxMessage_Data                                    obj/usart_console.o
+RxMessage_Dev_ID                                  obj/usart_console.o
 SelectFiq                                         obj/interrupt.o
 StoreFiqRegs                                      obj/interrupt.o
-TxMessage_Addr                                    obj/main.o
-TxMessage_CRC                                     obj/main.o
-TxMessage_Command                                 obj/main.o
-TxMessage_Data                                    obj/main.o
-TxMessage_Dev_ID                                  obj/main.o
-UART0Buffer                                       obj/main.o
-UART0Count                                        obj/main.o
-UART0Str                                          obj/main.o
-UART0TxEmpty                                      obj/main.o
-UARTSend                                          obj/main.o
-UART_TxStr                                        obj/main.o
+TxMessage_Addr                                    obj/usart_console.o
+TxMessage_CRC                                     obj/usart_console.o
+TxMessage_Command                                 obj/usart_console.o
+TxMessage_Data                                    obj/usart_console.o
+TxMessage_Dev_ID                                  obj/usart_console.o
+UART0Buffer                                       obj/usart_console.o
+UART0Count                                        obj/usart_console.o
+UART0Str                                          obj/usart_console.o
+UART0TxEmpty                                      obj/usart_console.o
+UART0_send                                        obj/usart_console.o
+                                                  obj/main.o
+UART_TxStr                                        obj/usart_console.o
 __aeabi_idiv0                                     /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
                                                   /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
 __aeabi_ldiv0                                     /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
@@ -418,12 +474,13 @@ _sdata                                            obj/asmfunc.o
 _sidata                                           obj/asmfunc.o
 main                                              obj/main.o
                                                   obj/asmfunc.o
-processCommand                                    obj/uart23xx.o
+processCommand                                    obj/usart_console.o
 put_dump                                          obj/xprintf.o
 strncmp                                           /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
-                                                  obj/uart23xx.o
+                                                  obj/usart_console.o
 uart0_getc                                        obj/uart23xx.o
 uart0_init                                        obj/uart23xx.o
+                                                  obj/main.o
 uart0_putc                                        obj/uart23xx.o
 uart0_test                                        obj/uart23xx.o
 xatoi                                             obj/xprintf.o
@@ -436,5 +493,5 @@ xgets                                             obj/xprintf.o
 xprintf                                           obj/xprintf.o
 xputc                                             obj/xprintf.o
 xputs                                             obj/xprintf.o
-                                                  obj/uart23xx.o
+                                                  obj/usart_console.o
 xsprintf                                          obj/xprintf.o

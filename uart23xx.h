@@ -23,8 +23,62 @@
 #define UART3_TXB	128
 #define UART3_RXB	128
 
+// UART interrupt
+// U0IIR register
+#define IIR_RLS         0x03
+#define IIR_RDA         0x02
+#define IIR_CTI         0x06
+#define IIR_THRE        0x01
 
-void processCommand(char *cmd);
+// U0LSR register
+#define LSR_RDR         0x01
+#define LSR_OE          0x02
+#define LSR_PE          0x04
+#define LSR_FE          0x08
+#define LSR_BI          0x10
+#define LSR_THRE        0x20
+#define LSR_TEMT        0x40
+#define LSR_RXFE        0x80
+
+#define BUFSIZE         16
+#define MESSAGE_LENGTH  8
+
+//UART
+// bit PCONP register
+#define PCUART0         3
+
+// bit PCLKSEL0 register
+#define PINSEL_UART0_0  6         
+#define PINSEL_UART0_1  7 
+
+// bit U0LCR register
+#define word_len_0      0
+#define word_len_1      1
+#define DLAB            7
+
+//bit U0FCR register
+#define FIFO_Enable     0
+#define RX_FIFO_Reset   1
+#define TX_FIFO_Reset   2
+
+//bit U0IER register
+#define RBR_Enable      0
+#define THRE_Enable     1
+#define RLS_Enable      2
+
+//UART message
+#define DeviceID        0xAA
+
+#define STATUS_OK       1
+#define STATUS_DATA     2
+#define STATUS_RTR      3
+
+#define STATUS_ERROR    -1
+#define STATUS_FULL     -2
+#define STATUS_EMPTY    -3                                                             
+#define STATUS_BUSY     -4
+
+// void processCommand(char *cmd);
 #if USE_UART0
 void uart0_init (void);
 int uart0_test (void);
