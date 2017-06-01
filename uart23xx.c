@@ -11,12 +11,14 @@
 /
 /-------------------------------------------------------------------------*/
 
+#include "defines.h"
 #include "uart23xx.h"
 #include "interrupt.h"
 #include "string.h"
 #include "stdio.h"
 #include "xprintf.h"
 #include "LPC2300.h"
+#include "usart_console.h" 
 
 /* F_PCLK    8/16M  9/18M 10/20M 12/24M 12.5/25M 15/30M */
 /* DIVADD       1     5      1      1      1       5    */
@@ -48,6 +50,7 @@
 
 
 
+char resiever[50], rec_len = 0;
 
 #if USE_UART0
 
@@ -71,36 +74,26 @@ void Isr_UART0 (void)
 	if(iir & 1 != 0)
 	{	
 		d = U0RBR;
-		/* UART0_send("resieved", 8); */
-		U0THR = d; 
+		if (d == '\n')
+		{
+			process_command(resiever);
+			rec_len = 0;
+		}else{
+			resiever[rec_len++] = d;
+		}
 	}else{
 		d = U0RBR;
 	}
-		
-			VICVectAddr = 0;
-	/* [> if (iir & 1) break;		[> Exit if there is no interrupt <] <] */
-	/* switch (iir & 7) { */
-	/*         case 4:			[> Rx FIFO is half filled or timeout occured <] */
-	/*                 i = RxBuff0.wi; */
-	/*                 d = U0RBR; */
-	/*                 if (d == '\n'){ */
-	/*                         RxBuff0.buff[i++] = 0; //make null-terminated string  */
-	/*                         processCommand(RxBuff0.buff); */
-	/*                         RxBuff0.wi = 0; */
-	/*                 }else{ */
-	/*                         RxBuff0.buff[i++] = d; */
-	/*                         RxBuff0.wi = i; */
-	/*                 } */
-	/*                 break; */
+	if (d == 'L')
+	{
+		FIO2SET = (1 << LED1) | (1 << LED2);
+	}else if (d == 'O')
+	{
+		FIO2CLR = (1 << LED1) | (1 << LED2);
 
-	/*         case 2:			[> Tx FIFO empty <] */
-	/*                 break; */
+	}
+	VICVectAddr = 0;
 
-	/*         default:		[> Data error or break detected <] */
-	/*                 U0LSR; */
-	/*                 U0RBR; */
-	/*                 break; */
-	/* } */
 }
 
 
@@ -179,32 +172,6 @@ void uart0_init (void)
 	RegisterIrq(UART0_IRQn, (void *)Isr_UART0, PRI_LOWEST);
   
 }
-       /*  [> Enable UART0 module <] */
-/*         __set_PCONP(PCUART0); */
-/*         __set_PCLKSEL(PCLK_UART0, PCLKDIV); */
-
-/*         [> Initialize UART <] */
-/*         U0IER = 0x00;			[> Disable interrupt <] */
-/*         U0LCR = 0x83;			[> Select baud rate divisor latch <] */
-/*         U0DLM = DLVAL0 / 256;	[> Set BRG dividers <] */
-/*         U0DLL = DLVAL0 % 256; */
-/*         U0FDR = (MULVAL << 4) | DIVADD; */
-/*         U0LCR = 0x03;			[> Set serial format N81 and deselect divisor latch <] */
-/*         U0FCR = 0x27;			[> Enable FIFO with 1 byte interrupt <] */
-/*         U0TER = 0x80;			[> Enable Tansmission <] */
-
-/*         [> Clear Tx/Rx buffers <] */
-/*         TxBuff0.ri = 0; TxBuff0.wi = 0; TxBuff0.ct = 0; TxBuff0.act = 0; */
-/*         RxBuff0.ri = 0; RxBuff0.wi = 0; RxBuff0.ct = 0; */
-
-/*         [> Attach UART0 to I/O pad <] */
-/*         __set_PINSEL(0, 3, 1);	[> P0.3 - RXD0 <] */
-/*         __set_PINSEL(0, 2, 1);	[> P0.2 - TXD0 <] */
-
-/*         [> Enable Tx/Rx/Error interrupts <] */
-/*         RegisterIrq(UART0_IRQn, Isr_UART0, PRI_LOWEST); */
-/*         U0IER = 0x07; */
-/* } */
 
 #endif	/* USE_UART0 */
 

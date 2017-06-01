@@ -78,7 +78,6 @@
 #define STATUS_EMPTY    -3                                                             
 #define STATUS_BUSY     -4
 
-// void processCommand(char *cmd);
 #if USE_UART0
 void uart0_init (void);
 int uart0_test (void);
