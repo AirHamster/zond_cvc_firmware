@@ -8,6 +8,7 @@
 #include "xprintf.h"
 #include "interrupt.h"
 #include "spi.h"
+#include "timers.h"
 
 void GPIOInit (void)
 {
@@ -104,7 +105,7 @@ void IoInit(void)
 	PLLFEED = 0x55;
 
 	ClearVector();			/* Initialie VIC */
-	GPIOInit();
+	/* GPIOInit(); */
 	IrqEnable();			/* Enable Irq */
 
 }
@@ -117,8 +118,9 @@ int main (void)
 	IoInit();			/* 	[> Initialize PLL, VIC and timer <] */
 	uart0_init();		/* 	[> Initialize UART and join it to the console <] <] */
 	SPI0_init();
+	timer0_init();
+	timer0_start();
 	UART0_send("LPC initialized\n", 16);
-	led_set(LED1);
 	/* led_clear(LED2); */
 	while(1)
 	{
