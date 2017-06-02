@@ -10,18 +10,15 @@
 #include "spi.h"
 #include "timers.h"
 
-void GPIOInit (void)
-{
-	SCS |= 1;
+void gpio_init (void)
+{	SCS |= 1;
 	FIO2MASK = 0;
 	/* Leds to output */
 	FIO2DIR |= (1 << LED1) | (1 << LED2);
-	/* Switch on leds */
-	/* FIO2SET = (1 << LED1) | (1 << LED2); */
-	/* ADC and DAC chip select pins setup */
+
 	FIO1MASK = 0;
-	FIO1DIR |= (1 << ADC) | (1 << DAC);	/* Slave select pins */
-	FIO1SET |= (1 << ADC) | (1 << DAC);	/* Set hight level */
+	FIO1DIR |=  (1 << DAC) | (1 << ADC) | (1 << ADC_DIN);	/* Slave select pins */
+	FIO1SET |= (1 << ADC) | (1 << DAC);	 /*  Set hight level  */
 }
 void led_set(uint8_t led)
 {
@@ -113,21 +110,23 @@ void IoInit(void)
 
 int main (void)
 {
+	uint16_t i;
 	uint16_t d;
-	GPIOInit();
-	IoInit();			/* 	[> Initialize PLL, VIC and timer <] */
-	uart0_init();		/* 	[> Initialize UART and join it to the console <] <] */
-	SPI0_init();
+	IoInit();
+	uart0_init();	
+	/* SPI0_init(); */
+	adc_init();
 	timer0_init();
-	timer0_start();
 	UART0_send("LPC initialized\n", 16);
-	/* led_clear(LED2); */
+	gpio_init();
+
 	while(1)
 	{
-		/* S0SPDR = 0x55; */
-		/* SPI0_send_1_byte(0xF0, ADC); */
-		/* d = SPI0_read_2_byte(ADC); */
-		/* UART0_send(d, 1); */
+		/* led_set(LED2); */
+		/* for (i = 0; i < 200; i++); */
+		/* led_clear(LED2); */
+		/* for (i = 0; i < 200; i++); */
+		/* dac_set_voltage(0x0BE1); */
 	}
 	return 0;
 }

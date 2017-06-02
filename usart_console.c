@@ -12,6 +12,7 @@ void process_command(char *cmd)
 	char answer[20]="";
 	if(strncmp(cmd, "start", 5) == 0)
 	{
+		UART0_send("\nStarted\n", 9);
 		gpio_set(OP_AMP_PORT, OP_AMP_PIN);
 		led_set(LED2);
 		timer0_start();
@@ -20,8 +21,9 @@ void process_command(char *cmd)
 	/* Turn off amplifier */
 	if(strncmp(cmd, "stop", 4) == 0)
 	{
+		UART0_send("\nStopped\n", 9);
 		gpio_clear(OP_AMP_PORT, OP_AMP_PIN);
-		led_set(LED1);
+		led_clear(LED2);
 		timer0_stop();
 	}
 	/* Voltage setup  */
@@ -32,8 +34,23 @@ void process_command(char *cmd)
 
 	/* Manual  */
 	if(strncmp(cmd, "help", 4) == 0)
+	{
 		UART0_send(help_msg, sizeof(help_msg));
+		/* UART0_send(S0SPCR, 1);
+		 * UART0_send("\n", 1);
+		 * UART0_send(S0PSR, 1);
+		 * UART0_send("\n", 1);
+		 * UART0_send(S0SPCCR, 1);
+		 * UART0_send("\n", 1); */
+	}
+}
+void UART0_send_byte(uint8_t byte)
+{
 
+  U0IER &= ~(1 << RBR_Enable );     // Disable RBR
+    while ((U0LSR & (1 << 5)) == 0);//ждём пока освободиться регистр THR
+    U0THR = byte;
+  U0IER |= (1 << RBR_Enable );      // Re-enable RBR 
 }
 void UART0_send(unsigned char *BufferPtr, unsigned short Length )
 {

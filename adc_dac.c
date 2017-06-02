@@ -12,12 +12,14 @@ void adc_init(void)
 
 	SPI0_send_1_byte(WRITE_OFFSET_REG, ADC);
 	SPI0_send_2_byte(OFFSET_REG_VAL, ADC);
+	led_set(LED1);
 
 }
 
 void dac_set_voltage(uint16_t voltage)
 {
-	SPI0_send_2_byte((voltage | DAC_LOAD_CMD), DAC);
+	/* SPI0_send_2_byte((voltage | DAC_LOAD_CMD), DAC); */
+	SPI0_send_2_byte((voltage), DAC);
 }
 
 uint16_t adc_read_current(void)
