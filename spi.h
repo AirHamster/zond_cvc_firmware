@@ -11,6 +11,7 @@ void SPI0_init(void);
 uint8_t SPI0_read_1_byte(uint8_t slave);
 uint16_t SPI0_read_2_byte(uint8_t slave);
 void Delay(int value);
+uint8_t spi_readStatus (void); 
 unsigned char SPI_ADC_data_transfers_16bit (unsigned short data);
 
 unsigned char SPI_ADC_data_transfers_8bit (unsigned char data);

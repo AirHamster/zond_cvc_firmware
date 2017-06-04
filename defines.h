@@ -9,6 +9,7 @@
 #define WRITE_MODE_REG 0x08
 #define READ_DATA_REG 0x58
 #define WRITE_OFFSET_REG 0x38
+#define READ_ID_REG 0x60
 
 #define CONF_REG_VAL 0x1010 //with buffer
 #define MODE_REG_VAL 0x0005

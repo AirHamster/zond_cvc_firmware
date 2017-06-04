@@ -9,15 +9,18 @@
 #include "interrupt.h"
 #include "spi.h"
 #include "timers.h"
+#include "adc_dac.h"
 
 void gpio_init (void)
-{	SCS |= 1;
+{	
+	SCS |= 1;
 	FIO2MASK = 0;
 	/* Leds to output */
 	FIO2DIR |= (1 << LED1) | (1 << LED2);
 
 	FIO1MASK = 0;
-	FIO1DIR |=  (1 << DAC) | (1 << ADC) | (1 << ADC_DIN);	/* Slave select pins */
+	/* FIO1DIR |=  (1 << DAC) | (1 << ADC) | (1 << ADC_DIN);	[> Slave select pins <] */
+	FIO1DIR |=  (1 << DAC) | (1 << ADC);	/* Slave select pins */
 	FIO1SET |= (1 << ADC) | (1 << DAC);	 /*  Set hight level  */
 }
 void led_set(uint8_t led)
@@ -114,12 +117,21 @@ int main (void)
 	uint16_t d;
 	IoInit();
 	uart0_init();	
-	/* SPI0_init(); */
-	adc_init();
+	SPI0_init();
 	timer0_init();
-	UART0_send("LPC initialized\n", 16);
 	gpio_init();
+	adc_init();
+	UART0_send("\nLPC initialized\n", 17);
 
+
+#ifdef DEBUG_SPI
+	UART0_send("\nS0SPCR: ", 9);
+	UART0_send_byte(S0SPCR);
+	UART0_send("\nS0SPSR: ", 9);
+	UART0_send_byte(S0SPSR);
+	UART0_send("\nS0SPCCR: ",10 );
+	UART0_send_byte(S0SPCCR);
+#endif
 	while(1)
 	{
 		/* led_set(LED2); */

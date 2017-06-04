@@ -2,29 +2,30 @@
 #include "spi.h"
 #include "LPC2300.h"
 #include "defines.h"
+#include "usart_console.h"
+#define WAIT_ON_SPIF         while (spi_readStatus() == 0) {} 
+/* #define DEBUG_SPI */
 
-
-void Delay(int value) //Задержка на value микросекунд
-{
-	int i, j;
-	for(j = 0; j < value; j++)
-		for(i = 0; i < 10; i++)
-			i = i;
-}
 
 void SPI0_send_1_byte(uint8_t data, uint8_t slave)
 {
 	if(slave == DAC)
 	{
 		FIO1CLR |= 1 << DAC;
-		SPI_ADC_data_transfers_8bit(data);
+		S0SPDR = data;
+		WAIT_ON_SPIF
+		data = S0SPDR;		//Flush DR
+		/* SPI_ADC_data_transfers_8bit(data); */
 		FIO1SET |= 1 << DAC;
 
 	}else if (slave == ADC){
 
-		FIO1CLR |= 1 << ADC;
-		SPI_ADC_data_transfers_8bit(data);
-		FIO1SET |= 1 << ADC;
+		/* FIO1CLR |= 1 << ADC; */
+		S0SPDR = data;
+		WAIT_ON_SPIF        
+		data = S0SPDR;		//Flush DR
+		/* SPI_ADC_data_transfers_8bit(data); */
+		/* FIO1SET |= 1 << ADC; */
 	}
 
 }
@@ -35,15 +36,17 @@ void SPI0_send_2_byte(uint16_t data, uint8_t slave)
 	{
 		//cs
 		FIO1CLR |= 1 << DAC;
-		/* while((S0SPSR & 1<<7) != 1<<7); */
-		/* S0SPDR = data >> 8; */
-		SPI_ADC_data_transfers_16bit(data); 
-		/* while((S0SPSR & 1<<7) != 1<<7); */
-		/* S0SPDR = data & 0xFF; */
+		S0SPDR = (data >> 8) & 0xFF;
+		WAIT_ON_SPIF
+		S0SPDR = data & 0xFF;
+		WAIT_ON_SPIF
 		FIO1SET |= 1 << DAC;
 	}else if (slave == ADC){
 		FIO1CLR |= 1 << ADC;
-		SPI_ADC_data_transfers_16bit(data); 
+		S0SPDR = (data >> 8) & 0xFF;
+		WAIT_ON_SPIF
+		S0SPDR = data & 0xFF;
+		WAIT_ON_SPIF
 		FIO1SET |= 1 << ADC;
 	}
 
@@ -52,10 +55,9 @@ void SPI0_send_2_byte(uint16_t data, uint8_t slave)
 void SPI0_init(void)
 {
 	PCLKSEL0 |= (1<<17) | (1<<16);//=72Mhz/8 
-	PCON |= (1 << 8);
-	S0SPCR |= (1 << 3) | (1 << 5);	/*   Master mode & CPHA */
-	S0SPCCR = 0xFF; 	/* SPI0 perif clock divided by 256 */
-	/* PINSEL3 |= (3 << 14) | (3 < 16);	[>MISO & MOSI pins <] */
+	PCONP |= (1 << 8);
+	S0SPCR |= (1 << 4) | (1 << 5);	/*   Master mode*/
+	S0SPCCR = 0x12; 	/* SPI0 perif clock divided by 18 to reach 500kHz */
 	PINSEL3 |= ((1 << 9) | (1 << 8) | (1 << 14) | (1 << 15) | (1 << 16) | (1 << 17));	/*MISO & MOSI pins */
 	/* PINMODE3 |= (1 << 15) | (1 << 7); */
 }
@@ -66,12 +68,18 @@ uint8_t SPI0_read_1_byte(uint8_t slave)
 	if(slave == DAC)
 	{
 		FIO1CLR |= 1 << DAC;
-		data = SPI_ADC_data_transfers_8bit(0);
+		S0SPDR = 0xFF;
+		WAIT_ON_SPIF
+		data = S0SPDR;
+		/* data = SPI_ADC_data_transfers_8bit(0xFF); */
 		FIO1SET |= 1 << DAC;
 	}else if (slave == ADC){
-		FIO1CLR |= 1 << ADC;
-		data = SPI_ADC_data_transfers_8bit(0);
-		FIO1SET |= 1 << ADC;
+		/* FIO1CLR |= 1 << ADC; */
+		S0SPDR = 0xFF;
+		WAIT_ON_SPIF
+		data = S0SPDR;
+		/* data = SPI_ADC_data_transfers_8bit(0xFF); */
+		/* FIO1SET |= 1 << ADC; */
 	}
 
 	return data;
@@ -82,11 +90,21 @@ uint16_t SPI0_read_2_byte(uint8_t slave)
 	if(slave == DAC)
 	{
 		FIO1CLR |= 1 << DAC;
-		data = SPI_ADC_data_transfers_16bit(0);
+		S0SPDR = 0;
+		WAIT_ON_SPIF
+		data = S0SPDR << 8;
+		S0SPDR = 0;
+		WAIT_ON_SPIF
+		data |= S0SPDR;
 		FIO1SET |= 1 << DAC;
 	}else if (slave == ADC){
 		FIO1CLR |= 1 << ADC;
-		data = SPI_ADC_data_transfers_16bit(0);
+		S0SPDR = 0;
+		WAIT_ON_SPIF
+		data = S0SPDR << 8;
+		S0SPDR = 0;
+		WAIT_ON_SPIF
+		data |= S0SPDR;
 		FIO1SET |= 1 << ADC;
 	}
 
@@ -145,4 +163,44 @@ unsigned char SPI_ADC_data_transfers_8bit (unsigned char data)
 
 	}  
 	return dat;
+}
+uint8_t spi_readStatus (void) {
+
+	uint8_t SPIStatus;
+
+	uint8_t abrt, modf, rovr, wcol, spif;
+
+	SPIStatus = S0SPSR;
+	UART0_send("\nS0SPSR: ", 9);
+	UART0_send_byte(SPIStatus);
+	abrt = (SPIStatus & 0x8 ) >> 3;
+	modf = (SPIStatus & 0x10) >> 4;
+	rovr = (SPIStatus & 0x20) >> 5;
+	wcol = (SPIStatus & 0x40) >> 6;
+	spif = (SPIStatus & 0x80) >> 7;
+#ifdef DEBUG_SPI
+
+	if(abrt==1) { 
+		UART0_send("Slave Abort occurred\n", sizeof("Slave Abort occurred\n"));
+	}
+
+	if(modf==1) { 
+		UART0_send("Mode Fault occurred\n", sizeof("Mode Fault occurred\n"));
+	}
+
+	if(rovr==1) { 
+		UART0_send("Read Overrun occurred\n", sizeof("Read Overrun occurred\n"));
+	}
+
+	if(wcol==1) { 
+		UART0_send("Write Collision occurred\n", sizeof("Write Collision occurred\n"));
+	}
+
+	if(spif==1) { 
+		UART0_send("\nSPIF is 1 - clearing\n", sizeof("\nSPIF is 1 - clearing\n")-1);
+	}
+#endif
+
+	S0SPCR = S0SPCR; // write cr register to clear status bit
+	return(spif);
 }

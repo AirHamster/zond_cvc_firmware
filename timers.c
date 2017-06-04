@@ -5,6 +5,7 @@
 #include "defines.h"
 #include "uart23xx.h"
 #include "adc_dac.h"
+#include "usart_console.h"
 extern void gpio_set(uint8_t port, uint8_t pin);
 extern void gpio_clear(uint8_t port, uint8_t pin);
 void Isr_TIM0(void)

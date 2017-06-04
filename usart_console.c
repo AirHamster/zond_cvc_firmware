@@ -1,12 +1,29 @@
 #include "defines.h"
 #include "string.h"
 #include "stdio.h"
+#include <string.h>
 #include "xprintf.h"
 #include "usart_console.h" 
 #include "LPC2300.h"
 #include "uart23xx.h"
+#include "timers.h"
 unsigned char RxCount,Index;
 const char help_msg[] = "Plazma probe controller\n Usage:\n    start - start measurements\n    stop - finish measurements\n    set <voltage> - probe voltage setup\n";
+
+
+uint16_t hex_to_int(uint8_t c){
+        uint16_t first = c / 16 - 3;
+        uint16_t second = c % 16;
+        uint16_t result = first*10 + second;
+        if(result > 9) result--;
+        return result;
+}
+
+uint16_t hex_to_ascii(uint16_t c){
+        uint16_t high = hex_to_int(c >> 8) * 16;
+        uint16_t low = hex_to_int(c & 0xFF);
+        return high+low;
+}
 void process_command(char *cmd)
 {
 	char answer[20]="";
