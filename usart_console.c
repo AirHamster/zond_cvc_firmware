@@ -12,17 +12,17 @@ const char help_msg[] = "Plazma probe controller\n Usage:\n    start - start mea
 
 
 uint16_t hex_to_int(uint8_t c){
-        uint16_t first = c / 16 - 3;
-        uint16_t second = c % 16;
-        uint16_t result = first*10 + second;
-        if(result > 9) result--;
-        return result;
+	uint16_t first = c / 16 - 3;
+	uint16_t second = c % 16;
+	uint16_t result = first*10 + second;
+	if(result > 9) result--;
+	return result;
 }
 
 uint16_t hex_to_ascii(uint16_t c){
-        uint16_t high = hex_to_int(c >> 8) * 16;
-        uint16_t low = hex_to_int(c & 0xFF);
-        return high+low;
+	uint16_t high = hex_to_int(c >> 8) * 16;
+	uint16_t low = hex_to_int(c & 0xFF);
+	return high+low;
 }
 void process_command(char *cmd)
 {
@@ -64,26 +64,26 @@ void process_command(char *cmd)
 void UART0_send_byte(uint8_t byte)
 {
 
-  U0IER &= ~(1 << RBR_Enable );     // Disable RBR
-    while ((U0LSR & (1 << 5)) == 0);//ждём пока освободиться регистр THR
-    U0THR = byte;
-  U0IER |= (1 << RBR_Enable );      // Re-enable RBR 
+	U0IER &= ~(1 << RBR_Enable );     // Disable RBR
+	while ((U0LSR & (1 << 5)) == 0);//ждём пока освободиться регистр THR
+	U0THR = byte;
+	U0IER |= (1 << RBR_Enable );      // Re-enable RBR 
 }
 void UART0_send(unsigned char *BufferPtr, unsigned short Length )
 {
-  U0IER &= ~(1 << RBR_Enable );     // Disable RBR
-  
-  while ( Length != 0 )
-  {
-    // THRE status, contain valid data 
-    while ((U0LSR & (1 << 5)) == 0);//ждём пока освободиться регистр THR
-    U0THR = *BufferPtr;// в сдвиговый регистр положить данные
-    BufferPtr++;
-    Length--;
-  }
-  U0IER |= (1 << RBR_Enable );      // Re-enable RBR 
-  
-  return;
+	U0IER &= ~(1 << RBR_Enable );     // Disable RBR
+
+	while ( Length != 0 )
+	{
+		// THRE status, contain valid data 
+		while ((U0LSR & (1 << 5)) == 0);//ждём пока освободиться регистр THR
+		U0THR = *BufferPtr;// в сдвиговый регистр положить данные
+		BufferPtr++;
+		Length--;
+	}
+	U0IER |= (1 << RBR_Enable );      // Re-enable RBR 
+
+	return;
 }
 
 

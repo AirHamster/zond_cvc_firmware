@@ -1,114 +1,36 @@
-#include <stdint.h>
 #include "spi.h"
-#include "LPC2300.h"
-#include "defines.h"
-#include "usart_console.h"
-#define WAIT_ON_SPIF         while (spi_readStatus() == 0) {} 
 /* #define DEBUG_SPI */
 
 
-void SPI0_send_1_byte(uint8_t data, uint8_t slave)
+uint8_t SPI0_send_1_byte(uint8_t data)
 {
-	if(slave == DAC)
-	{
-		FIO1CLR |= 1 << DAC;
-		S0SPDR = data;
-		WAIT_ON_SPIF
-		data = S0SPDR;		//Flush DR
-		/* SPI_ADC_data_transfers_8bit(data); */
-		FIO1SET |= 1 << DAC;
-
-	}else if (slave == ADC){
-
-		/* FIO1CLR |= 1 << ADC; */
-		S0SPDR = data;
-		WAIT_ON_SPIF        
-		data = S0SPDR;		//Flush DR
-		/* SPI_ADC_data_transfers_8bit(data); */
-		/* FIO1SET |= 1 << ADC; */
-	}
-
+	S0SPDR = data;
+	while (spi_readStatus() == 0); 
+	/* data = SPI_ADC_data_transfers_8bit(data); */
+	data = S0SPDR;
+	return data;
 }
 
-void SPI0_send_2_byte(uint16_t data, uint8_t slave)
+uint16_t SPI0_send_2_byte(uint16_t data)
 {
-	if(slave == DAC)
-	{
-		//cs
-		FIO1CLR |= 1 << DAC;
-		S0SPDR = (data >> 8) & 0xFF;
-		WAIT_ON_SPIF
-		S0SPDR = data & 0xFF;
-		WAIT_ON_SPIF
-		FIO1SET |= 1 << DAC;
-	}else if (slave == ADC){
-		FIO1CLR |= 1 << ADC;
-		S0SPDR = (data >> 8) & 0xFF;
-		WAIT_ON_SPIF
-		S0SPDR = data & 0xFF;
-		WAIT_ON_SPIF
-		FIO1SET |= 1 << ADC;
-	}
-
+	uint16_t dat;
+	S0SPDR = (data >> 8) & 0xFF;
+	while (spi_readStatus() == 0); 
+	dat = S0SPDR << 8;
+	S0SPDR = data & 0xFF;
+	while (spi_readStatus() == 0); 
+	dat |= S0SPDR;
+	return dat;
 }
 
 void SPI0_init(void)
 {
-	PCLKSEL0 |= (1<<17) | (1<<16);//=72Mhz/8 
 	PCONP |= (1 << 8);
-	S0SPCR |= (1 << 4) | (1 << 5);	/*   Master mode*/
+	PCLKSEL0 |= (1<<17) | (1<<16);//=72Mhz/8 
+	S0SPCR |= (1 << 5);	/*   Master mode*/
 	S0SPCCR = 0x12; 	/* SPI0 perif clock divided by 18 to reach 500kHz */
-	PINSEL3 |= ((1 << 9) | (1 << 8) | (1 << 14) | (1 << 15) | (1 << 16) | (1 << 17));	/*MISO & MOSI pins */
+	PINSEL3 |= ((1 << 9) | (1 << 8) | (1 << 14) | (1 << 15) | (1 << 16) | (1 << 17));/* 	[>MISO0, MOSI0, CLK0 as SPI pins<] */
 	/* PINMODE3 |= (1 << 15) | (1 << 7); */
-}
-
-uint8_t SPI0_read_1_byte(uint8_t slave)
-{
-	uint8_t data;
-	if(slave == DAC)
-	{
-		FIO1CLR |= 1 << DAC;
-		S0SPDR = 0xFF;
-		WAIT_ON_SPIF
-		data = S0SPDR;
-		/* data = SPI_ADC_data_transfers_8bit(0xFF); */
-		FIO1SET |= 1 << DAC;
-	}else if (slave == ADC){
-		/* FIO1CLR |= 1 << ADC; */
-		S0SPDR = 0xFF;
-		WAIT_ON_SPIF
-		data = S0SPDR;
-		/* data = SPI_ADC_data_transfers_8bit(0xFF); */
-		/* FIO1SET |= 1 << ADC; */
-	}
-
-	return data;
-}
-uint16_t SPI0_read_2_byte(uint8_t slave)
-{
-	uint16_t data;
-	if(slave == DAC)
-	{
-		FIO1CLR |= 1 << DAC;
-		S0SPDR = 0;
-		WAIT_ON_SPIF
-		data = S0SPDR << 8;
-		S0SPDR = 0;
-		WAIT_ON_SPIF
-		data |= S0SPDR;
-		FIO1SET |= 1 << DAC;
-	}else if (slave == ADC){
-		FIO1CLR |= 1 << ADC;
-		S0SPDR = 0;
-		WAIT_ON_SPIF
-		data = S0SPDR << 8;
-		S0SPDR = 0;
-		WAIT_ON_SPIF
-		data |= S0SPDR;
-		FIO1SET |= 1 << ADC;
-	}
-
-	return data;
 }
 
 unsigned char SPI_ADC_data_transfers_16bit (unsigned short data)
@@ -167,18 +89,17 @@ unsigned char SPI_ADC_data_transfers_8bit (unsigned char data)
 uint8_t spi_readStatus (void) {
 
 	uint8_t SPIStatus;
-
 	uint8_t abrt, modf, rovr, wcol, spif;
 
 	SPIStatus = S0SPSR;
-	UART0_send("\nS0SPSR: ", 9);
-	UART0_send_byte(SPIStatus);
 	abrt = (SPIStatus & 0x8 ) >> 3;
 	modf = (SPIStatus & 0x10) >> 4;
 	rovr = (SPIStatus & 0x20) >> 5;
 	wcol = (SPIStatus & 0x40) >> 6;
 	spif = (SPIStatus & 0x80) >> 7;
 #ifdef DEBUG_SPI
+	UART0_send("\nS0SPSR: ", 9);
+	UART0_send(&SPIStatus, 1);
 
 	if(abrt==1) { 
 		UART0_send("Slave Abort occurred\n", sizeof("Slave Abort occurred\n"));

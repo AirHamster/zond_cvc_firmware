@@ -1,15 +1,15 @@
 /*------------------------------------------------------------------------/
-/  LPC23xx UART control module
-/-------------------------------------------------------------------------/
-/
-/  Copyright (C) 2013, ChaN, all right reserved.
-/
-/ * This software is a free software and there is NO WARRANTY.
-/ * No restriction on use. You can use, modify and redistribute it for
-/   personal, non-profit or commercial products UNDER YOUR RESPONSIBILITY.
-/ * Redistributions of source code must retain the above copyright notice.
-/
-/-------------------------------------------------------------------------*/
+  /  LPC23xx UART control module
+  /-------------------------------------------------------------------------/
+  /
+  /  Copyright (C) 2013, ChaN, all right reserved.
+  /
+  / * This software is a free software and there is NO WARRANTY.
+  / * No restriction on use. You can use, modify and redistribute it for
+  /   personal, non-profit or commercial products UNDER YOUR RESPONSIBILITY.
+  / * Redistributions of source code must retain the above copyright notice.
+  /
+  /-------------------------------------------------------------------------*/
 
 #include "defines.h"
 #include "uart23xx.h"
@@ -145,32 +145,32 @@ void uart0_putc (uint8_t d)
 
 void uart0_init (void)
 {
-  //UART0
-  PCONP |= 1 << PCUART0; // Питание на UART0
-  //PCLKSEL0 |= 1 << PINSEL_UART0_0;      // PCLK = CCLK
-  
-  //8 bit lenght word,1 stop bit,disable parity generation,disable breake transmission, enable access to Divisor Latches
-  U0LCR |= (1 << word_len_0)|(1 << word_len_1)|(1 << DLAB);
-  //f = 18 mGz,Baud = 115200.
-  U0FDR = 0xC1;
-  U0DLL = 0x09;
-  U0DLM = 0x00;
-  U0LCR &= ~(1 << DLAB);//DLAB = 0
-  
-  //UART FIFO Нужно ли оно?
-  U0FCR |= ((1 << FIFO_Enable )|(1 << RX_FIFO_Reset)|(1 << TX_FIFO_Reset));//Enable and reset TX and RX FIFO
-  
-  //Настройка ножек мк: P0(2) - TxD,P0(3) - RxD.
-  //P0.02,P0.03 - pull-up mode
-  PINSEL0 |= (1 << 4)|(1 << 6);
-  
-  //Interrupts
-  /* InstallIRQ( UART0_INT, (void *)UART0_INT_Handler, 0x0E); */
-  /* U0IER |= ((1 << RBR_Enable )|(1 << THRE_Enable)|(1 << RLS_Enable));[> Enable UART0 interrupt <] */
-  U0IER |= (1 << RBR_Enable );/* Enable UART0 interrupt */
+	//UART0
+	PCONP |= 1 << PCUART0; // Питание на UART0
+	//PCLKSEL0 |= 1 << PINSEL_UART0_0;      // PCLK = CCLK
+
+	//8 bit lenght word,1 stop bit,disable parity generation,disable breake transmission, enable access to Divisor Latches
+	U0LCR |= (1 << word_len_0)|(1 << word_len_1)|(1 << DLAB);
+	//f = 18 mGz,Baud = 115200.
+	U0FDR = 0xC1;
+	U0DLL = 0x09;
+	U0DLM = 0x00;
+	U0LCR &= ~(1 << DLAB);//DLAB = 0
+
+	//UART FIFO Нужно ли оно?
+	U0FCR |= ((1 << FIFO_Enable )|(1 << RX_FIFO_Reset)|(1 << TX_FIFO_Reset));//Enable and reset TX and RX FIFO
+
+	//Настройка ножек мк: P0(2) - TxD,P0(3) - RxD.
+	//P0.02,P0.03 - pull-up mode
+	PINSEL0 |= (1 << 4)|(1 << 6);
+
+	//Interrupts
+	/* InstallIRQ( UART0_INT, (void *)UART0_INT_Handler, 0x0E); */
+	/* U0IER |= ((1 << RBR_Enable )|(1 << THRE_Enable)|(1 << RLS_Enable));[> Enable UART0 interrupt <] */
+	U0IER |= (1 << RBR_Enable );/* Enable UART0 interrupt */
 	/* [> Enable Tx/Rx/Error interrupts <] */
 	RegisterIrq(UART0_IRQn, (void *)Isr_UART0, PRI_LOWEST);
-  
+
 }
 
 #endif	/* USE_UART0 */

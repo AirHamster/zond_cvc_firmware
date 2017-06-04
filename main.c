@@ -19,8 +19,9 @@ void gpio_init (void)
 	FIO2DIR |= (1 << LED1) | (1 << LED2);
 
 	FIO1MASK = 0;
-	/* FIO1DIR |=  (1 << DAC) | (1 << ADC) | (1 << ADC_DIN);	[> Slave select pins <] */
-	FIO1DIR |=  (1 << DAC) | (1 << ADC);	/* Slave select pins */
+	/* FIO1DIR |=  (1 << DAC) | (1 << ADC) | (1 << ADC_DIN);	[>  Slave select pins  <] */
+	/* FIO1DIR &= ~(1 << ADC_DOUT); */
+	FIO1DIR |=  (1 << DAC) | (1 << ADC);/* 	Slave select pins  */
 	FIO1SET |= (1 << ADC) | (1 << DAC);	 /*  Set hight level  */
 }
 void led_set(uint8_t led)
@@ -35,42 +36,42 @@ void gpio_set(uint8_t port, uint8_t pin)
 {
 	switch (port)
 	{
-	case 0:
-		FIO0SET |= (1 << pin);
-		break;
-	case 1:
-	       	FIO1SET |= (1 << pin);
-		break;
-	case 2:
-		FIO2SET |= (1 << pin);
-		break;
-	default:
-	break;	
+		case 0:
+			FIO0SET |= (1 << pin);
+			break;
+		case 1:
+			FIO1SET |= (1 << pin);
+			break;
+		case 2:
+			FIO2SET |= (1 << pin);
+			break;
+		default:
+			break;	
 	}
 }
 void gpio_clear(uint8_t port, uint8_t pin)
 {
 	switch (port)
 	{
-	case 0:
-		FIO0CLR |= (1 << pin);
-		break;
-	case 1:
-	       	FIO1CLR |= (1 << pin);
-		break;
-	case 2:
-		FIO2CLR |= (1 << pin);
-		break;
-	default:
-	break;	
+		case 0:
+			FIO0CLR |= (1 << pin);
+			break;
+		case 1:
+			FIO1CLR |= (1 << pin);
+			break;
+		case 2:
+			FIO2CLR |= (1 << pin);
+			break;
+		default:
+			break;	
 	}
 }
-void IoInit(void)
+void pll_init(void)
 {
-// 1. Init OSC
+	// 1. Init OSC
 	SCS = (1 << 5);
 	// 2.  Wait for OSC ready
-  while (!(SCS & 0x40)); //	[>Osc stabilization procedure<] 
+	while (!(SCS & 0x40)); //	[>Osc stabilization procedure<] 
 	// 3. Disconnect PLL
 	PLLCON = 1; 
 	PLLFEED = 0xAA;
@@ -98,7 +99,7 @@ void IoInit(void)
 
 
 	PCLKSEL1 = 1 << 2;	//GPIO: 0 - 1/4; 1 - 1; 2 - 1/2; 3 - 1/8
-        
+
 	// 10. Connect the PLL
 	PLLCON |= 1 << 1;
 	PLLFEED = 0xAA;
@@ -113,9 +114,7 @@ void IoInit(void)
 
 int main (void)
 {
-	uint16_t i;
-	uint16_t d;
-	IoInit();
+	pll_init();
 	uart0_init();	
 	SPI0_init();
 	timer0_init();
