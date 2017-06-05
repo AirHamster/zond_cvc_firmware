@@ -4,22 +4,22 @@
 
 uint8_t SPI0_send_1_byte(uint8_t data)
 {
-	S0SPDR = data;
-	while (spi_readStatus() == 0); 
-	/* data = SPI_ADC_data_transfers_8bit(data); */
-	data = S0SPDR;
+	/* S0SPDR = data; */
+	/* while (spi_readStatus() == 0);  */
+	/* data = S0SPDR; */
+	data = SPI_ADC_data_transfers_8bit(data);
 	return data;
 }
 
 uint16_t SPI0_send_2_byte(uint16_t data)
 {
 	uint16_t dat;
-	S0SPDR = (data >> 8) & 0xFF;
-	while (spi_readStatus() == 0); 
-	dat = S0SPDR << 8;
-	S0SPDR = data & 0xFF;
-	while (spi_readStatus() == 0); 
-	dat |= S0SPDR;
+	/* S0SPDR = (data >> 8) & 0xFF; */
+	/* while (spi_readStatus() == 0);  */
+	/* dat = S0SPDR << 8; */
+	/* S0SPDR = data & 0xFF; */
+	/* while (spi_readStatus() == 0);  */
+	dat = SPI_ADC_data_transfers_16bit(data);
 	return dat;
 }
 
@@ -33,9 +33,9 @@ void SPI0_init(void)
 	/* PINMODE3 |= (1 << 15) | (1 << 7); */
 }
 
-unsigned char SPI_ADC_data_transfers_16bit (unsigned short data)
+uint16_t SPI_ADC_data_transfers_16bit (uint16_t data)
 {
-	unsigned char dat = 0;
+	uint16_t dat = 0;
 	char i;
 
 	//Write

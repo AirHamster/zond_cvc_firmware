@@ -10,25 +10,27 @@ void adc_init(void)
 {
 	uint8_t dat = 0;
 
-	FIO1CLR |= 1 << ADC;
 
+	/* FIO1CLR |= 1 << ADC; */
+	/* SPI0_send_1_byte(WRITE_CONF_REG); */
+	/* SPI0_send_2_byte(CONF_REG_VAL); */
+	/* FIO1SET |= 1 << ADC; */
+
+	/* FIO1CLR |= 1 << ADC; */
+	/* SPI0_send_1_byte(WRITE_MODE_REG); */
+	/* SPI0_send_2_byte(MODE_REG_VAL); */
+	/* FIO1SET |= 1 << ADC; */
+
+	FIO1CLR |= 1 << ADC;
 	SPI0_send_1_byte(READ_ID_REG);
 	dat = SPI0_send_1_byte(0xFF);
-
 	FIO1SET |= 1 << ADC;
 
 	UART0_send("\nSPI_recieved: ", 15);
 	UART0_send_byte(dat);
-
-	/* SPI0_send_1_byte(WRITE_CONF_REG); */
-	/* SPI0_send_2_byte(CONF_REG_VAL); */
-
-	/* SPI0_send_1_byte(WRITE_MODE_REG); */
-	/* SPI0_send_2_byte(MODE_REG_VAL); */
-
-	/* SPI0_send_1_byte(WRITE_OFFSET_REG); */
-	/* SPI0_send_2_byte(OFFSET_REG_VAL); */
-	led_set(LED1);
+	/* [> SPI0_send_1_byte(WRITE_OFFSET_REG); <] */
+	/* [> SPI0_send_2_byte(OFFSET_REG_VAL); <] */
+	/* led_set(LED1); */
 
 }
 

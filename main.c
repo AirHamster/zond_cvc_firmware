@@ -18,11 +18,12 @@ void gpio_init (void)
 	/* Leds to output */
 	FIO2DIR |= (1 << LED1) | (1 << LED2);
 
+	/* FIO1MASK = 0xFFFFFFFF & (0 << DAC) | (0 << ADC); */
 	FIO1MASK = 0;
-	/* FIO1DIR |=  (1 << DAC) | (1 << ADC) | (1 << ADC_DIN);	[>  Slave select pins  <] */
-	/* FIO1DIR &= ~(1 << ADC_DOUT); */
-	FIO1DIR |=  (1 << DAC) | (1 << ADC);/* 	Slave select pins  */
-	FIO1SET |= (1 << ADC) | (1 << DAC);	 /*  Set hight level  */
+	FIO1DIR |=  (1 << DAC) | (1 << ADC) | (1 << ADC_DIN) | (1 << ADC_SCLK);	/*  Slave select pins  */
+	FIO1DIR &= ~(1 << ADC_DOUT);
+	/* FIO1DIR |=  (1 << DAC) | (1 << ADC);[> 	Slave select pins  <] */
+	FIO1SET |= (1 << ADC) | (1 << DAC) | (1 << ADC_SCLK);	 /*  Set hight level  */
 }
 void led_set(uint8_t led)
 {
@@ -116,10 +117,9 @@ int main (void)
 {
 	pll_init();
 	uart0_init();	
-	SPI0_init();
+	/* SPI0_init(); */
 	timer0_init();
 	gpio_init();
-	adc_init();
 	UART0_send("\nLPC initialized\n", 17);
 
 
@@ -133,6 +133,7 @@ int main (void)
 #endif
 	while(1)
 	{
+	adc_init();
 		/* led_set(LED2); */
 		/* for (i = 0; i < 200; i++); */
 		/* led_clear(LED2); */
