@@ -52,13 +52,7 @@ void process_command(char *cmd)
 	/* Manual  */
 	if(strncmp(cmd, "help", 4) == 0)
 	{
-		UART0_send(help_msg, sizeof(help_msg));
-		/* UART0_send(S0SPCR, 1);
-		 * UART0_send("\n", 1);
-		 * UART0_send(S0PSR, 1);
-		 * UART0_send("\n", 1);
-		 * UART0_send(S0SPCCR, 1);
-		 * UART0_send("\n", 1); */
+		UART0_send(help_msg, sizeof(help_msg)-1);
 	}
 }
 void UART0_send_byte(uint8_t byte)

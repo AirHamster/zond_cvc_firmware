@@ -10,9 +10,10 @@
 #define READ_DATA_REG 0x58
 #define WRITE_OFFSET_REG 0x38
 #define READ_ID_REG 0x60
+#define READ_STATUS_REG 0x40
 
 #define CONF_REG_VAL 0x1010 //with buffer
-#define MODE_REG_VAL 0x0005
+#define MODE_REG_VAL 0x0001
 #define OFFSET_REG_VAL 0x8000 //0x8000 - default
 
 #define DAC_LOAD_CMD 0x1000

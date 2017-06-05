@@ -9,28 +9,30 @@ void Delay(int value) //Задержка на value микросекунд
 void adc_init(void)
 {
 	uint8_t dat = 0;
-
-
-	/* FIO1CLR |= 1 << ADC; */
-	/* SPI0_send_1_byte(WRITE_CONF_REG); */
-	/* SPI0_send_2_byte(CONF_REG_VAL); */
-	/* FIO1SET |= 1 << ADC; */
-
-	/* FIO1CLR |= 1 << ADC; */
-	/* SPI0_send_1_byte(WRITE_MODE_REG); */
-	/* SPI0_send_2_byte(MODE_REG_VAL); */
-	/* FIO1SET |= 1 << ADC; */
-
+	
 	FIO1CLR |= 1 << ADC;
+
 	SPI0_send_1_byte(READ_ID_REG);
 	dat = SPI0_send_1_byte(0xFF);
+
 	FIO1SET |= 1 << ADC;
 
 	UART0_send("\nSPI_recieved: ", 15);
 	UART0_send_byte(dat);
-	/* [> SPI0_send_1_byte(WRITE_OFFSET_REG); <] */
-	/* [> SPI0_send_2_byte(OFFSET_REG_VAL); <] */
-	/* led_set(LED1); */
+
+	FIO1CLR |= 1 << ADC;
+	SPI0_send_1_byte(WRITE_CONF_REG);
+	SPI0_send_2_byte(CONF_REG_VAL);
+	FIO1SET |= 1 << ADC;
+	
+	FIO1CLR |= 1 << ADC;
+	SPI0_send_1_byte(WRITE_MODE_REG);
+	SPI0_send_2_byte(MODE_REG_VAL);
+	FIO1SET |= 1 << ADC;
+
+	/* SPI0_send_1_byte(WRITE_OFFSET_REG); */
+	/* SPI0_send_2_byte(OFFSET_REG_VAL); */
+	led_set(LED1);
 
 }
 
@@ -53,7 +55,7 @@ uint16_t adc_read_current(void)
 
 	FIO1CLR |= 1 << ADC;
 	SPI0_send_1_byte(READ_DATA_REG);
-	current = SPI0_send_2_byte(0xFF);
+	current = SPI0_send_2_byte(0xFFFF);
 	FIO1SET |= 1 << ADC;
 
 	return current;
@@ -70,7 +72,7 @@ uint16_t adc_read_voltage(void)
 
 	FIO1CLR |= 1 << ADC;
 	SPI0_send_1_byte(READ_DATA_REG);
-	voltage = SPI0_send_2_byte(0xFF);
+	voltage = SPI0_send_2_byte(0xFFFF);
 	FIO1SET |= 1 << ADC;
 
 	return voltage;

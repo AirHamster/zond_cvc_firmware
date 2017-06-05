@@ -38,7 +38,7 @@ void timer0_init(void)
 	T0IR = (1 << 0);	/* Channel 0 match interrupt */
 	T0MCR = 3;
 	T0CTCR = 0;
-	T0PR = 400;	/* Prescaler */
+	T0PR = 200;	/* Prescaler */
 	T0MR0 = 72000;	/* Top value (5 Hz) */
 	RegisterIrq(TIMER0_IRQn, (void *)Isr_TIM0, PRI_LOWEST);
 }

@@ -36,18 +36,21 @@ void SPI0_init(void)
 uint16_t SPI_ADC_data_transfers_16bit (uint16_t data)
 {
 	uint16_t dat = 0;
+	uint16_t mask;
 	char i;
 
 	//Write
+	mask = 0x8000;
 	for(i = 16;  i > 0 ; i--)
 	{
-		if(data & (1 << (i - 1)))
+		FIO1PIN |= 1 << ADC_SCLK;
+		if(data & mask)
 			FIO1PIN |= 1 << ADC_DIN;
 		else
 			FIO1PIN &= ~(1 << ADC_DIN);
 
 		//SCLK
-		FIO1PIN |= 1 << ADC_SCLK;
+		mask = mask >> 1;
 		FIO1PIN &= ~(1 << ADC_SCLK);
 
 		//read

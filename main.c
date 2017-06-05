@@ -115,11 +115,13 @@ void pll_init(void)
 
 int main (void)
 {
+	uint16_t i, j, rise; 
 	pll_init();
 	uart0_init();	
 	/* SPI0_init(); */
 	timer0_init();
 	gpio_init();
+	adc_init();
 	UART0_send("\nLPC initialized\n", 17);
 
 
@@ -133,7 +135,28 @@ int main (void)
 #endif
 	while(1)
 	{
-	adc_init();
+		if (rise == 1)
+		{
+			for (i = 0; i < 4096; i++)
+			{
+				FIO1CLR |= 1 << DAC;
+				SPI0_send_2_byte(0x1000 + i);
+				FIO1SET |= 1 << DAC;
+				for (j = 0; j < 200; j++);
+
+			}
+			rise = 0;
+		}else{
+			for (i = 4095; i > 0; i-- )
+			{
+				FIO1CLR |= 1 << DAC;
+				SPI0_send_2_byte(0x1000 + i);
+				FIO1SET |= 1 << DAC;
+				for (j = 0; j < 200; j++);
+
+			}
+			rise = 1;
+		}
 		/* led_set(LED2); */
 		/* for (i = 0; i < 200; i++); */
 		/* led_clear(LED2); */
