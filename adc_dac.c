@@ -12,8 +12,8 @@ void adc_init(void)
 	
 	FIO1CLR |= 1 << ADC;
 
-	SPI0_send_1_byte(READ_ID_REG);
-	dat = SPI0_send_1_byte(0xFF);
+	SPI0_send_1_byte(READ_ID_REG, ADC);
+	dat = SPI0_send_1_byte(0xFF, ADC);
 
 	FIO1SET |= 1 << ADC;
 
@@ -21,18 +21,18 @@ void adc_init(void)
 	UART0_send_byte(dat);
 
 	FIO1CLR |= 1 << ADC;
-	SPI0_send_1_byte(WRITE_CONF_REG);
-	SPI0_send_2_byte(CONF_REG_VAL);
+	SPI0_send_1_byte(WRITE_CONF_REG, ADC);
+	SPI0_send_2_byte(CONF_REG_VAL, ADC);
 	FIO1SET |= 1 << ADC;
 
 	FIO1CLR |= 1 << ADC;
-	SPI0_send_1_byte(WRITE_MODE_REG);
-	SPI0_send_2_byte(MODE_REG_VAL);
+	SPI0_send_1_byte(WRITE_MODE_REG, ADC);
+	SPI0_send_2_byte(MODE_REG_VAL, ADC);
 	FIO1SET |= 1 << ADC;
 
 	FIO1CLR |= 1 << DAC;
 	/* SPI0_send_2_byte(0x1000 | 578); */
-	SPI0_send_2_byte(0x1000 | 1000);
+	SPI0_send_2_byte((0x1000 | 1000), DAC);
 	FIO1SET |= 1 << DAC;
 
 	/* SPI0_send_1_byte(WRITE_OFFSET_REG); */
@@ -45,7 +45,7 @@ void dac_set_voltage(uint16_t voltage)
 {
 	/* SPI0_send_2_byte((voltage | DAC_LOAD_CMD)); */
 	FIO1CLR |= 1 << DAC;
-	SPI0_send_2_byte(0x1000 | voltage);
+	SPI0_send_2_byte((0x1000 | voltage), DAC);
 	FIO1SET |= 1 << DAC;
 }
 
@@ -54,13 +54,13 @@ uint16_t adc_read_current(void)
 	uint16_t current;
 	/* Need to select proper channel */
 	FIO1CLR |= 1 << ADC;
-	SPI0_send_1_byte(WRITE_MODE_REG);
-	SPI0_send_2_byte(MODE_REG_VAL);
+	SPI0_send_1_byte(WRITE_MODE_REG, ADC);
+	SPI0_send_2_byte(MODE_REG_VAL, ADC);
 	FIO1SET |= 1 << ADC;
 
 	FIO1CLR |= 1 << ADC;
-	SPI0_send_1_byte(READ_DATA_REG);
-	current = SPI0_send_2_byte(0xFFFF);
+	SPI0_send_1_byte(READ_DATA_REG, ADC);
+	current = SPI0_send_2_byte(0xFFFF, ADC);
 	FIO1SET |= 1 << ADC;
 
 	return current;
@@ -71,13 +71,13 @@ uint16_t adc_read_voltage(void)
 	uint16_t voltage;
 	/* Need to select proper channel */
 	FIO1CLR |= 1 << ADC;
-	SPI0_send_1_byte(WRITE_MODE_REG);
-	SPI0_send_2_byte((MODE_REG_VAL | 1));	// | 1 - select 2 channel
+	SPI0_send_1_byte(WRITE_MODE_REG, ADC);
+	SPI0_send_2_byte((MODE_REG_VAL | 1), ADC);	// | 1 - select 2 channel
 	FIO1SET |= 1 << ADC;
 
 	FIO1CLR |= 1 << ADC;
-	SPI0_send_1_byte(READ_DATA_REG);
-	voltage = SPI0_send_2_byte(0xFFFF);
+	SPI0_send_1_byte(READ_DATA_REG, ADC);
+	voltage = SPI0_send_2_byte(0xFFFF, ADC);
 	FIO1SET |= 1 << ADC;
 
 	return voltage;

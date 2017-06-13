@@ -2,16 +2,23 @@
 /* #define DEBUG_SPI */
 
 
-uint8_t SPI0_send_1_byte(uint8_t data)
+uint8_t SPI0_send_1_byte(uint8_t data, uint8_t slave)
 {
+	uint8_t dat = 0;
 	/* S0SPDR = data; */
 	/* while (spi_readStatus() == 0);  */
 	/* data = S0SPDR; */
-	data = SPI_ADC_data_transfers_8bit(data);
+	if (slave == ADC )
+	{
+	dat = SPI_ADC_data_transfers_8bit(data);
+	}else if (slave == DAC)
+	{
+	dat = SPI_DAC_data_transfers_8bit(data);
+	}
 	return data;
 }
 
-uint16_t SPI0_send_2_byte(uint16_t data)
+uint16_t SPI0_send_2_byte(uint16_t data, uint8_t slave)
 {
 	uint16_t dat;
 	/* S0SPDR = (data >> 8) & 0xFF; */
@@ -19,7 +26,13 @@ uint16_t SPI0_send_2_byte(uint16_t data)
 	/* dat = S0SPDR << 8; */
 	/* S0SPDR = data & 0xFF; */
 	/* while (spi_readStatus() == 0);  */
+	if (slave == ADC )
+	{
 	dat = SPI_ADC_data_transfers_16bit(data);
+	}else if (slave == DAC)
+	{
+	dat = SPI_DAC_data_transfers_16bit(data);
+	}
 	return dat;
 }
 
@@ -43,21 +56,21 @@ uint16_t SPI_ADC_data_transfers_16bit (uint16_t data)
 	mask = 0x8000;
 	for(i = 16;  i > 0 ; i--)
 	{
-		FIO1PIN |= 1 << ADC_SCLK;
+		//SCLK
+		FIO1PIN &= ~(1 << ADC_SCLK);
 		if(data & mask)
 			FIO1PIN |= 1 << ADC_DIN;
 		else
 			FIO1PIN &= ~(1 << ADC_DIN);
 
-		//SCLK
 		mask = mask >> 1;
-		FIO1PIN &= ~(1 << ADC_SCLK);
 
 		//read
 		if(FIO1PIN & (1 << (ADC_DOUT)))
 			dat |= 1 << (i - 1);
 		else
 			dat &= ~(1 << (i - 1));
+		FIO1PIN |= 1 << ADC_SCLK;
 
 	}  
 	return dat;
@@ -68,17 +81,19 @@ unsigned char SPI_ADC_data_transfers_8bit (unsigned char data)
 	unsigned char dat = 0;
 	char i;
 
+	uint16_t mask = 0x8000;
 	//Write
 	for(i = 8;  i > 0 ; i--)
 	{
-		if(data & (1 << (i - 1)))
+		//SCLK
+		FIO1PIN &= ~(1 << ADC_SCLK);
+		/* if(data & (1 << (i - 1))) */
+		if(data & mask)
 			FIO1PIN |= 1 << ADC_DIN;
 		else
 			FIO1PIN &= ~(1 << ADC_DIN);
 
-		//SCLK
-		FIO1PIN |= 1 << ADC_SCLK;
-		FIO1PIN &= ~(1 << ADC_SCLK);
+		mask = mask >> 1;
 
 		//read
 		if(FIO1PIN & (1 << (ADC_DOUT)))
@@ -86,6 +101,7 @@ unsigned char SPI_ADC_data_transfers_8bit (unsigned char data)
 		else
 			dat &= ~(1 << (i - 1));
 
+		FIO1PIN |= 1 << ADC_SCLK;
 	}  
 	return dat;
 }
@@ -127,4 +143,60 @@ uint8_t spi_readStatus (void) {
 
 	S0SPCR = S0SPCR; // write cr register to clear status bit
 	return(spif);
+}
+uint16_t SPI_DAC_data_transfers_16bit (uint16_t data)
+{
+	uint16_t dat = 0;
+	uint16_t mask;
+	char i;
+
+	//Write
+	mask = 0x8000;
+	for(i = 16;  i > 0 ; i--)
+	{
+		FIO1PIN |= 1 << ADC_SCLK;
+		if(data & mask)
+			FIO1PIN |= 1 << ADC_DIN;
+		else
+			FIO1PIN &= ~(1 << ADC_DIN);
+
+		//SCLK
+		mask = mask >> 1;
+		FIO1PIN &= ~(1 << ADC_SCLK);
+
+		//read
+		if(FIO1PIN & (1 << (ADC_DOUT)))
+			dat |= 1 << (i - 1);
+		else
+			dat &= ~(1 << (i - 1));
+
+	}  
+	return dat;
+}
+
+unsigned char SPI_DAC_data_transfers_8bit (unsigned char data)
+{
+	unsigned char dat = 0;
+	char i;
+
+	//Write
+	for(i = 8;  i > 0 ; i--)
+	{
+		if(data & (1 << (i - 1)))
+			FIO1PIN |= 1 << ADC_DIN;
+		else
+			FIO1PIN &= ~(1 << ADC_DIN);
+
+		//SCLK
+		FIO1PIN |= 1 << ADC_SCLK;
+		FIO1PIN &= ~(1 << ADC_SCLK);
+
+		//read
+		if(FIO1PIN & (1 << (ADC_DOUT)))
+			dat |= 1 << (i - 1);
+		else
+			dat &= ~(1 << (i - 1));
+
+	}  
+	return dat;
 }
