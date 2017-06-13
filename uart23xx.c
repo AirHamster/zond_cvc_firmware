@@ -76,6 +76,7 @@ void Isr_UART0 (void)
 		d = U0RBR;
 		if (d == '\n')
 		{
+			resiever[rec_len++] = 0;	/* Make null-terminated string */
 			process_command(resiever);
 			rec_len = 0;
 		}else{

@@ -26,7 +26,8 @@ uint16_t hex_to_ascii(uint16_t c){
 }
 void process_command(char *cmd)
 {
-	char answer[20]="";
+	uint16_t num;
+	uint8_t lenth;
 	if(strncmp(cmd, "start", 5) == 0)
 	{
 		UART0_send("\nStarted\n", 9);
@@ -46,7 +47,13 @@ void process_command(char *cmd)
 	/* Voltage setup  */
 	if(strncmp(cmd, "set", 3) == 0)
 	{
-		dac_set_voltage(cmd+4);
+	
+		lenth = strlen(cmd+4)-1;
+		num = atoi(cmd + 4);
+		UART0_send("OK\n", 3);
+		UART0_send_byte(num >> 8);
+		UART0_send_byte(num);
+		dac_set_voltage(num);
 	}
 
 	/* Manual  */
@@ -79,5 +86,3 @@ void UART0_send(unsigned char *BufferPtr, unsigned short Length )
 
 	return;
 }
-
-

@@ -24,11 +24,16 @@ void adc_init(void)
 	SPI0_send_1_byte(WRITE_CONF_REG);
 	SPI0_send_2_byte(CONF_REG_VAL);
 	FIO1SET |= 1 << ADC;
-	
+
 	FIO1CLR |= 1 << ADC;
 	SPI0_send_1_byte(WRITE_MODE_REG);
 	SPI0_send_2_byte(MODE_REG_VAL);
 	FIO1SET |= 1 << ADC;
+
+	FIO1CLR |= 1 << DAC;
+	/* SPI0_send_2_byte(0x1000 | 578); */
+	SPI0_send_2_byte(0x1000 | 1000);
+	FIO1SET |= 1 << DAC;
 
 	/* SPI0_send_1_byte(WRITE_OFFSET_REG); */
 	/* SPI0_send_2_byte(OFFSET_REG_VAL); */
@@ -40,7 +45,7 @@ void dac_set_voltage(uint16_t voltage)
 {
 	/* SPI0_send_2_byte((voltage | DAC_LOAD_CMD)); */
 	FIO1CLR |= 1 << DAC;
-	SPI0_send_2_byte((voltage));
+	SPI0_send_2_byte(0x1000 | voltage);
 	FIO1SET |= 1 << DAC;
 }
 
