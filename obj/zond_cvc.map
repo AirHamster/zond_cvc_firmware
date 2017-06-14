@@ -107,7 +107,7 @@ LOAD /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libg.a
 LOAD /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a
 END GROUP
 
-.text           0x0000000000000000     0x1520
+.text           0x0000000000000000     0x1518
  *(.VECTOR)
  .VECTOR        0x0000000000000000       0x34 obj/asmfunc.o
                 0x00000000000002fc                . = 0x2fc
@@ -126,111 +126,111 @@ END GROUP
                 0x00000000000006a4                gpio_set
                 0x00000000000006e8                gpio_clear
                 0x000000000000072c                pll_init
- .text.startup  0x00000000000007cc       0x24 obj/main.o
+ .text.startup  0x00000000000007cc       0x20 obj/main.o
                 0x00000000000007cc                main
- .text          0x00000000000007f0       0x1c obj/interrupt.o
-                0x00000000000007f0                IrqDisable
-                0x00000000000007f4                IrqEnable
-                0x00000000000007f8                ClearVector
-                0x00000000000007fc                RegisterIrq
-                0x0000000000000800                SelectFiq
-                0x0000000000000804                LoadFiqRegs
-                0x0000000000000808                StoreFiqRegs
- .text          0x000000000000080c      0x180 obj/uart23xx.o
-                0x000000000000080c                Isr_UART0
-                0x000000000000087c                uart0_test
-                0x0000000000000888                uart0_getc
-                0x00000000000008c0                uart0_putc
-                0x0000000000000910                uart0_init
- .text          0x000000000000098c      0x174 obj/usart_console.o
-                0x000000000000098c                hex_to_int
-                0x00000000000009aa                hex_to_ascii
-                0x00000000000009cc                UART0_send_byte
-                0x00000000000009f8                UART0_send
-                0x0000000000000a3c                process_command
- .text          0x0000000000000b00      0x230 obj/spi.o
-                0x0000000000000b00                SPI0_init
-                0x0000000000000b4c                SPI_ADC_data_transfers_16bit
-                0x0000000000000bb0                SPI_ADC_data_transfers_8bit
-                0x0000000000000c14                spi_readStatus
-                0x0000000000000c2c                SPI_DAC_data_transfers_16bit
-                0x0000000000000c90                SPI0_send_2_byte
-                0x0000000000000cae                SPI_DAC_data_transfers_8bit
-                0x0000000000000d10                SPI0_send_1_byte
- .text          0x0000000000000d30      0x180 obj/adc_dac.o
-                0x0000000000000d30                Delay
-                0x0000000000000d32                adc_init
-                0x0000000000000dd8                dac_set_voltage
-                0x0000000000000e08                adc_read_current
-                0x0000000000000e5c                adc_read_voltage
- .text          0x0000000000000eb0      0x110 obj/timers.o
-                0x0000000000000eb0                Isr_TIM0
-                0x0000000000000f1c                timer0_init
-                0x0000000000000f80                timer0_start
-                0x0000000000000fa0                timer0_stop
- .text.atoi     0x0000000000000fc0       0x10 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)
-                0x0000000000000fc0                atoi
- .text.strncmp  0x0000000000000fd0       0x98 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
-                0x0000000000000fd0                strncmp
+ .text          0x00000000000007ec       0x1c obj/interrupt.o
+                0x00000000000007ec                IrqDisable
+                0x00000000000007f0                IrqEnable
+                0x00000000000007f4                ClearVector
+                0x00000000000007f8                RegisterIrq
+                0x00000000000007fc                SelectFiq
+                0x0000000000000800                LoadFiqRegs
+                0x0000000000000804                StoreFiqRegs
+ .text          0x0000000000000808      0x180 obj/uart23xx.o
+                0x0000000000000808                Isr_UART0
+                0x0000000000000878                uart0_test
+                0x0000000000000884                uart0_getc
+                0x00000000000008bc                uart0_putc
+                0x000000000000090c                uart0_init
+ .text          0x0000000000000988      0x174 obj/usart_console.o
+                0x0000000000000988                hex_to_int
+                0x00000000000009a6                hex_to_ascii
+                0x00000000000009c8                UART0_send_byte
+                0x00000000000009f4                UART0_send
+                0x0000000000000a38                process_command
+ .text          0x0000000000000afc      0x22c obj/spi.o
+                0x0000000000000afc                SPI0_init
+                0x0000000000000b48                SPI_ADC_data_transfers_16bit
+                0x0000000000000bac                SPI_ADC_data_transfers_8bit
+                0x0000000000000c0c                spi_readStatus
+                0x0000000000000c24                SPI_DAC_data_transfers_16bit
+                0x0000000000000c88                SPI0_send_2_byte
+                0x0000000000000ca6                SPI_DAC_data_transfers_8bit
+                0x0000000000000d08                SPI0_send_1_byte
+ .text          0x0000000000000d28      0x180 obj/adc_dac.o
+                0x0000000000000d28                Delay
+                0x0000000000000d2a                adc_init
+                0x0000000000000dd0                dac_set_voltage
+                0x0000000000000e00                adc_read_current
+                0x0000000000000e54                adc_read_voltage
+ .text          0x0000000000000ea8      0x110 obj/timers.o
+                0x0000000000000ea8                Isr_TIM0
+                0x0000000000000f14                timer0_init
+                0x0000000000000f78                timer0_start
+                0x0000000000000f98                timer0_stop
+ .text.atoi     0x0000000000000fb8       0x10 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)
+                0x0000000000000fb8                atoi
+ .text.strncmp  0x0000000000000fc8       0x98 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+                0x0000000000000fc8                strncmp
  .text._strtol_r
-                0x0000000000001068      0x178 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
-                0x0000000000001068                _strtol_r
- .text.strtol   0x00000000000011e0       0x20 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
-                0x00000000000011e0                strtol
- .text          0x0000000000001200      0x11c /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
-                0x0000000000001200                __udivsi3
-                0x0000000000001200                __aeabi_uidiv
-                0x00000000000012fc                __aeabi_uidivmod
- .text          0x000000000000131c        0x4 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
-                0x000000000000131c                __aeabi_ldiv0
-                0x000000000000131c                __aeabi_idiv0
- .text.__stub   0x0000000000001320       0x1c linker stubs
+                0x0000000000001060      0x178 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
+                0x0000000000001060                _strtol_r
+ .text.strtol   0x00000000000011d8       0x20 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
+                0x00000000000011d8                strtol
+ .text          0x00000000000011f8      0x11c /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
+                0x00000000000011f8                __udivsi3
+                0x00000000000011f8                __aeabi_uidiv
+                0x00000000000012f4                __aeabi_uidivmod
+ .text          0x0000000000001314        0x4 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
+                0x0000000000001314                __aeabi_ldiv0
+                0x0000000000001314                __aeabi_idiv0
+ .text.__stub   0x0000000000001318       0x1c linker stubs
  *(.gnu.linkonce.t.*)
  *(.glue_7)
- .glue_7        0x0000000000001340        0x0 linker stubs
+ .glue_7        0x0000000000001338        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x0000000000001340        0x0 linker stubs
+ .glue_7t       0x0000000000001338        0x0 linker stubs
  *(.gcc_except_table)
  *(.rodata)
- .rodata        0x0000000000001340       0x87 obj/usart_console.o
-                0x0000000000001340                help_msg
+ .rodata        0x0000000000001338       0x87 obj/usart_console.o
+                0x0000000000001338                help_msg
  *(.rodata*)
  .rodata.str1.1
-                0x00000000000013c7       0x12 obj/main.o
+                0x00000000000013bf       0x12 obj/main.o
  .rodata.str1.1
-                0x00000000000013d9       0x2c obj/usart_console.o
+                0x00000000000013d1       0x2c obj/usart_console.o
  .rodata.str1.1
-                0x0000000000001405       0x10 obj/adc_dac.o
+                0x00000000000013fd       0x10 obj/adc_dac.o
  .rodata.str1.1
-                0x0000000000001415       0x10 obj/timers.o
- *fill*         0x0000000000001415        0x3 
+                0x000000000000140d       0x10 obj/timers.o
+ *fill*         0x000000000000140d        0x3 
  .rodata._ctype_
-                0x0000000000001418      0x104 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-ctype_.o)
-                0x0000000000001418                _ctype_
+                0x0000000000001410      0x104 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-ctype_.o)
+                0x0000000000001410                _ctype_
  .rodata.str1.4
-                0x000000000000151c        0x4 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
+                0x0000000000001514        0x4 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
  *(.gnu.linkonce.r.*)
 
-.vfp11_veneer   0x0000000000001520        0x0
- .vfp11_veneer  0x0000000000001520        0x0 linker stubs
+.vfp11_veneer   0x0000000000001518        0x0
+ .vfp11_veneer  0x0000000000001518        0x0 linker stubs
 
-.v4_bx          0x0000000000001520        0x0
- .v4_bx         0x0000000000001520        0x0 linker stubs
+.v4_bx          0x0000000000001518        0x0
+ .v4_bx         0x0000000000001518        0x0 linker stubs
 
-.iplt           0x0000000000001520        0x0
- .iplt          0x0000000000001520        0x0 obj/asmfunc.o
+.iplt           0x0000000000001518        0x0
+ .iplt          0x0000000000001518        0x0 obj/asmfunc.o
 
-.rel.dyn        0x0000000000001520        0x0
- .rel.iplt      0x0000000000001520        0x0 obj/asmfunc.o
+.rel.dyn        0x0000000000001518        0x0
+ .rel.iplt      0x0000000000001518        0x0 obj/asmfunc.o
 
 .ARM.excep
  *(.ARM.exidx*)
  *(.ARM.extab*)
-                0x0000000000001520                . = ALIGN (0x4)
-                0x0000000000001520                _etext = .
-                0x0000000000001520                _sidata = .
+                0x0000000000001518                . = ALIGN (0x4)
+                0x0000000000001518                _etext = .
+                0x0000000000001518                _sidata = .
 
-.data           0x0000000040000000      0x434 load address 0x0000000000001520
+.data           0x0000000040000000      0x434 load address 0x0000000000001518
                 0x0000000040000000                . = ALIGN (0x4)
                 0x0000000040000000                _sdata = .
  *(.data)
@@ -248,10 +248,10 @@ END GROUP
                 0x0000000040000434                . = ALIGN (0x4)
                 0x0000000040000434                _edata = .
 
-.igot.plt       0x0000000040000434        0x0 load address 0x0000000000001954
+.igot.plt       0x0000000040000434        0x0 load address 0x000000000000194c
  .igot.plt      0x0000000040000434        0x0 obj/asmfunc.o
 
-.bss            0x0000000040000434      0x144 load address 0x0000000000001954
+.bss            0x0000000040000434      0x144 load address 0x000000000000194c
                 0x0000000040000434                . = ALIGN (0x4)
                 0x0000000040000434                _sbss = .
  *(.bss)
@@ -405,59 +405,59 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000     0x34b2
+.debug_info     0x0000000000000000     0x349b
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x0000000000000000       0x52 obj/asmfunc.o
- .debug_info    0x0000000000000052      0x290 obj/main.o
- .debug_info    0x00000000000002e2      0x133 obj/interrupt.o
- .debug_info    0x0000000000000415      0x301 obj/uart23xx.o
- .debug_info    0x0000000000000716      0x58a obj/usart_console.o
- .debug_info    0x0000000000000ca0      0x358 obj/spi.o
- .debug_info    0x0000000000000ff8      0x3db obj/adc_dac.o
- .debug_info    0x00000000000013d3      0x291 obj/timers.o
- .debug_info    0x0000000000001664      0x941 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)
- .debug_info    0x0000000000001fa5       0xf5 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .debug_info    0x000000000000209a      0x9a7 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
- .debug_info    0x0000000000002a41       0x6f /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-ctype_.o)
- .debug_info    0x0000000000002ab0      0x894 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
- .debug_info    0x0000000000003344       0xb7 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
- .debug_info    0x00000000000033fb       0xb7 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
+ .debug_info    0x0000000000000052      0x27d obj/main.o
+ .debug_info    0x00000000000002cf      0x133 obj/interrupt.o
+ .debug_info    0x0000000000000402      0x301 obj/uart23xx.o
+ .debug_info    0x0000000000000703      0x58a obj/usart_console.o
+ .debug_info    0x0000000000000c8d      0x354 obj/spi.o
+ .debug_info    0x0000000000000fe1      0x3db obj/adc_dac.o
+ .debug_info    0x00000000000013bc      0x291 obj/timers.o
+ .debug_info    0x000000000000164d      0x941 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)
+ .debug_info    0x0000000000001f8e       0xf5 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+ .debug_info    0x0000000000002083      0x9a7 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
+ .debug_info    0x0000000000002a2a       0x6f /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-ctype_.o)
+ .debug_info    0x0000000000002a99      0x894 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
+ .debug_info    0x000000000000332d       0xb7 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
+ .debug_info    0x00000000000033e4       0xb7 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
 
-.debug_abbrev   0x0000000000000000      0xeae
+.debug_abbrev   0x0000000000000000      0xebb
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000       0x12 obj/asmfunc.o
  .debug_abbrev  0x0000000000000012      0x13c obj/main.o
  .debug_abbrev  0x000000000000014e       0xa2 obj/interrupt.o
  .debug_abbrev  0x00000000000001f0      0x177 obj/uart23xx.o
  .debug_abbrev  0x0000000000000367      0x1ab obj/usart_console.o
- .debug_abbrev  0x0000000000000512      0x101 obj/spi.o
- .debug_abbrev  0x0000000000000613      0x164 obj/adc_dac.o
- .debug_abbrev  0x0000000000000777       0xe1 obj/timers.o
- .debug_abbrev  0x0000000000000858      0x1ce /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)
- .debug_abbrev  0x0000000000000a26       0x81 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .debug_abbrev  0x0000000000000aa7      0x211 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
- .debug_abbrev  0x0000000000000cb8       0x4e /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-ctype_.o)
- .debug_abbrev  0x0000000000000d06      0x180 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
- .debug_abbrev  0x0000000000000e86       0x14 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
- .debug_abbrev  0x0000000000000e9a       0x14 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
+ .debug_abbrev  0x0000000000000512      0x10e obj/spi.o
+ .debug_abbrev  0x0000000000000620      0x164 obj/adc_dac.o
+ .debug_abbrev  0x0000000000000784       0xe1 obj/timers.o
+ .debug_abbrev  0x0000000000000865      0x1ce /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)
+ .debug_abbrev  0x0000000000000a33       0x81 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+ .debug_abbrev  0x0000000000000ab4      0x211 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
+ .debug_abbrev  0x0000000000000cc5       0x4e /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-ctype_.o)
+ .debug_abbrev  0x0000000000000d13      0x180 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
+ .debug_abbrev  0x0000000000000e93       0x14 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
+ .debug_abbrev  0x0000000000000ea7       0x14 /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
 
-.debug_line     0x0000000000000000      0xea8
+.debug_line     0x0000000000000000      0xe97
  *(.debug_line)
  .debug_line    0x0000000000000000      0x12b obj/asmfunc.o
- .debug_line    0x000000000000012b      0x146 obj/main.o
- .debug_line    0x0000000000000271       0x4f obj/interrupt.o
- .debug_line    0x00000000000002c0       0xfd obj/uart23xx.o
- .debug_line    0x00000000000003bd      0x13e obj/usart_console.o
- .debug_line    0x00000000000004fb      0x12a obj/spi.o
- .debug_line    0x0000000000000625       0xd8 obj/adc_dac.o
- .debug_line    0x00000000000006fd       0xed obj/timers.o
- .debug_line    0x00000000000007ea      0x16a /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)
- .debug_line    0x0000000000000954      0x124 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .debug_line    0x0000000000000a78      0x1f4 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
- .debug_line    0x0000000000000c6c       0x72 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-ctype_.o)
- .debug_line    0x0000000000000cde       0xf1 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
- .debug_line    0x0000000000000dcf       0x7b /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
- .debug_line    0x0000000000000e4a       0x5e /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
+ .debug_line    0x000000000000012b      0x138 obj/main.o
+ .debug_line    0x0000000000000263       0x4f obj/interrupt.o
+ .debug_line    0x00000000000002b2       0xfd obj/uart23xx.o
+ .debug_line    0x00000000000003af      0x13e obj/usart_console.o
+ .debug_line    0x00000000000004ed      0x127 obj/spi.o
+ .debug_line    0x0000000000000614       0xd8 obj/adc_dac.o
+ .debug_line    0x00000000000006ec       0xed obj/timers.o
+ .debug_line    0x00000000000007d9      0x16a /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)
+ .debug_line    0x0000000000000943      0x124 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+ .debug_line    0x0000000000000a67      0x1f4 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
+ .debug_line    0x0000000000000c5b       0x72 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-ctype_.o)
+ .debug_line    0x0000000000000ccd       0xf1 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
+ .debug_line    0x0000000000000dbe       0x7b /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_udivsi3.o)
+ .debug_line    0x0000000000000e39       0x5e /usr/lib/gcc/arm-none-eabi/4.9.3/thumb/libgcc.a(_dvmd_tls.o)
 
 .debug_frame    0x0000000000000000      0x4d8
  *(.debug_frame)
@@ -475,17 +475,17 @@ END GROUP
 
 .debug_str      0x0000000000000000      0xb18
  *(.debug_str)
- .debug_str     0x0000000000000000      0x195 obj/main.o
-                                        0x1e8 (size before relaxing)
- .debug_str     0x0000000000000195       0x4b obj/interrupt.o
+ .debug_str     0x0000000000000000      0x18c obj/main.o
+                                        0x1df (size before relaxing)
+ .debug_str     0x000000000000018c       0x4b obj/interrupt.o
                                          0xf6 (size before relaxing)
- .debug_str     0x00000000000001e0       0x6c obj/uart23xx.o
+ .debug_str     0x00000000000001d7       0x6c obj/uart23xx.o
                                         0x1db (size before relaxing)
- .debug_str     0x000000000000024c       0xb5 obj/usart_console.o
+ .debug_str     0x0000000000000243       0xb5 obj/usart_console.o
                                         0x25a (size before relaxing)
- .debug_str     0x0000000000000301       0xe1 obj/spi.o
+ .debug_str     0x00000000000002f8       0xe1 obj/spi.o
                                         0x235 (size before relaxing)
- .debug_str     0x00000000000003e2       0x32 obj/adc_dac.o
+ .debug_str     0x00000000000003d9       0x3b obj/adc_dac.o
                                         0x1f0 (size before relaxing)
  .debug_str     0x0000000000000414       0x1d obj/timers.o
                                         0x1dd (size before relaxing)
@@ -500,17 +500,17 @@ END GROUP
  .debug_str     0x0000000000000a6a       0xae /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
                                         0x56c (size before relaxing)
 
-.debug_loc      0x0000000000000000     0x10af
+.debug_loc      0x0000000000000000     0x108e
  *(.debug_loc)
  .debug_loc     0x0000000000000000      0x168 obj/main.o
  .debug_loc     0x0000000000000168      0x12e obj/uart23xx.o
  .debug_loc     0x0000000000000296      0x1d0 obj/usart_console.o
- .debug_loc     0x0000000000000466      0x497 obj/spi.o
- .debug_loc     0x00000000000008fd       0xc0 obj/adc_dac.o
- .debug_loc     0x00000000000009bd       0x93 obj/timers.o
- .debug_loc     0x0000000000000a50       0x63 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)
- .debug_loc     0x0000000000000ab3       0xbd /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
- .debug_loc     0x0000000000000b70      0x53f /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
+ .debug_loc     0x0000000000000466      0x476 obj/spi.o
+ .debug_loc     0x00000000000008dc       0xc0 obj/adc_dac.o
+ .debug_loc     0x000000000000099c       0x93 obj/timers.o
+ .debug_loc     0x0000000000000a2f       0x63 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)
+ .debug_loc     0x0000000000000a92       0xbd /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncmp.o)
+ .debug_loc     0x0000000000000b4f      0x53f /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -603,7 +603,6 @@ _sidata                                           obj/asmfunc.o
 _strtol_r                                         /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strtol.o)
                                                   /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)
 adc_init                                          obj/adc_dac.o
-                                                  obj/main.o
 adc_read_current                                  obj/adc_dac.o
 adc_read_voltage                                  obj/adc_dac.o
 atoi                                              /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)

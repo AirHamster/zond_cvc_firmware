@@ -7,6 +7,7 @@
 #include "LPC2300.h"
 #include "uart23xx.h"
 #include "timers.h"
+/* #define GUI */
 unsigned char RxCount,Index;
 const char help_msg[] = "Plazma probe controller\n Usage:\n    start - start measurements\n    stop - finish measurements\n    set <voltage> - probe voltage setup\n";
 
@@ -28,6 +29,8 @@ void process_command(char *cmd)
 {
 	uint16_t num;
 	uint8_t lenth;
+#ifdef GUI
+#else
 	if(strncmp(cmd, "start", 5) == 0)
 	{
 		UART0_send("\nStarted\n", 9);
@@ -61,6 +64,7 @@ void process_command(char *cmd)
 	{
 		UART0_send(help_msg, sizeof(help_msg)-1);
 	}
+#endif
 }
 void UART0_send_byte(uint8_t byte)
 {

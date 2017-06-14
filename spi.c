@@ -87,8 +87,8 @@ unsigned char SPI_ADC_data_transfers_8bit (unsigned char data)
 	{
 		//SCLK
 		FIO1PIN &= ~(1 << ADC_SCLK);
-		/* if(data & (1 << (i - 1))) */
-		if(data & mask)
+		if(data & (1 << (i - 1)))
+		/* if(data & mask) */
 			FIO1PIN |= 1 << ADC_DIN;
 		else
 			FIO1PIN &= ~(1 << ADC_DIN);
