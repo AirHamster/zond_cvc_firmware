@@ -3,11 +3,11 @@ obj/zond_cvc.elf:     file format elf32-littlearm
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00001520  00000000  00000000  00010000  2**3
+  0 .text         000014fc  00000000  00000000  00010000  2**3
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000434  40000000  00001520  00020000  2**3
+  1 .data         00000434  40000000  000014fc  00020000  2**3
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000144  40000434  00001954  00020434  2**1
+  2 .bss          00000144  40000434  00001930  00020434  2**1
                   ALLOC
   3 .stack        00000a10  40000578  40000578  00020434  2**2
                   CONTENTS
@@ -23,19 +23,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   9 .debug_aranges 000001f0  00000000  00000000  00020ee8  2**3
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_info   000034a3  00000000  00000000  000210d8  2**0
+ 10 .debug_info   00003484  00000000  00000000  000210d8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_abbrev 00000ea2  00000000  00000000  0002457b  2**0
+ 11 .debug_abbrev 00000e7d  00000000  00000000  0002455c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_line   00000ea7  00000000  00000000  0002541d  2**0
+ 12 .debug_line   00000e89  00000000  00000000  000253d9  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_frame  000004d8  00000000  00000000  000262c4  2**2
+ 13 .debug_frame  000004b8  00000000  00000000  00026264  2**2
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    00000b18  00000000  00000000  0002679c  2**0
+ 14 .debug_str    00000adc  00000000  00000000  0002671c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_loc    0000108d  00000000  00000000  000272b4  2**0
+ 15 .debug_loc    00000fd0  00000000  00000000  000271f8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_ranges 00000078  00000000  00000000  00028348  2**3
+ 16 .debug_ranges 00000078  00000000  00000000  000281c8  2**3
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -197,7 +197,7 @@ trap:
 
 @ Initialize .data section (Copy ROM data)
 	LDR	R1, =_sidata
-     394:	00001520 	.word	0x00001520
+     394:	000014fc 	.word	0x000014fc
 	LDR	R2, =_sdata
      398:	40000000 	.word	0x40000000
 	LDR	R3, =_edata
@@ -1026,11 +1026,11 @@ int main (void)
      7d2:	f000 f89d 	bl	910 <uart0_init>
 	/* SPI0_init(); */
 	timer0_init();
-     7d6:	f000 fb9f 	bl	f18 <timer0_init>
+     7d6:	f000 fb89 	bl	eec <timer0_init>
 	gpio_init();
      7da:	f7ff ff1f 	bl	61c <gpio_init>
 	adc_init();
-     7de:	f000 faa6 	bl	d2e <adc_init>
+     7de:	f000 fa9e 	bl	d1e <adc_init>
 	UART0_send("\nLPC initialized\n", 17);
      7e2:	4802      	ldr	r0, [pc, #8]	; (7ec <main+0x20>)
      7e4:	2111      	movs	r1, #17
@@ -1042,7 +1042,7 @@ int main (void)
 		/* dac_set_voltage(0x0BE1); */
 	}
      7ea:	e7fe      	b.n	7ea <main+0x1e>
-     7ec:	000013c7 	.word	0x000013c7
+     7ec:	00001397 	.word	0x00001397
 
 000007f0 <IrqDisable>:
 
@@ -1632,13 +1632,13 @@ void UART0_send(unsigned char *BufferPtr, unsigned short Length )
 }
 void process_command(char *cmd)
 {
-     a3c:	b570      	push	{r4, r5, r6, lr}
+     a3c:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
 	uint16_t num;
 	uint8_t lenth;
 #ifdef GUI
 #else
 	if(strncmp(cmd, "start", 5) == 0)
-     a3e:	4928      	ldr	r1, [pc, #160]	; (ae0 <process_command+0xa4>)
+     a3e:	493b      	ldr	r1, [pc, #236]	; (b2c <process_command+0xf0>)
      a40:	2205      	movs	r2, #5
 	uint16_t high = hex_to_int(c >> 8) * 16;
 	uint16_t low = hex_to_int(c & 0xFF);
@@ -1652,12 +1652,12 @@ void process_command(char *cmd)
 #ifdef GUI
 #else
 	if(strncmp(cmd, "start", 5) == 0)
-     a44:	f000 fac2 	bl	fcc <strncmp>
-     a48:	2800      	cmp	r0, #0
-     a4a:	d10c      	bne.n	a66 <process_command+0x2a>
+     a44:	f000 faac 	bl	fa0 <strncmp>
+     a48:	1e04      	subs	r4, r0, #0
+     a4a:	d132      	bne.n	ab2 <process_command+0x76>
 	{
 		UART0_send("\nStarted\n", 9);
-     a4c:	4825      	ldr	r0, [pc, #148]	; (ae4 <process_command+0xa8>)
+     a4c:	4838      	ldr	r0, [pc, #224]	; (b30 <process_command+0xf4>)
      a4e:	2109      	movs	r1, #9
      a50:	f7ff ffd2 	bl	9f8 <UART0_send>
 		gpio_set(OP_AMP_PORT, OP_AMP_PIN);
@@ -1667,1601 +1667,1550 @@ void process_command(char *cmd)
 		led_set(LED2);
      a5c:	2001      	movs	r0, #1
      a5e:	f7ff fe0d 	bl	67c <led_set>
+	FIO1PIN |= (1 << ADC_SCLK);
+     a62:	2180      	movs	r1, #128	; 0x80
+	FIO1CLR |= 1 << ADC;
+     a64:	2680      	movs	r6, #128	; 0x80
+	if(strncmp(cmd, "start", 5) == 0)
+	{
+		UART0_send("\nStarted\n", 9);
+		gpio_set(OP_AMP_PORT, OP_AMP_PIN);
+		led_set(LED2);
+	FIO1PIN |= (1 << ADC_SCLK);
+     a66:	4a33      	ldr	r2, [pc, #204]	; (b34 <process_command+0xf8>)
+     a68:	6813      	ldr	r3, [r2, #0]
+     a6a:	0349      	lsls	r1, r1, #13
+	FIO1CLR |= 1 << ADC;
+     a6c:	4f32      	ldr	r7, [pc, #200]	; (b38 <process_command+0xfc>)
+	if(strncmp(cmd, "start", 5) == 0)
+	{
+		UART0_send("\nStarted\n", 9);
+		gpio_set(OP_AMP_PORT, OP_AMP_PIN);
+		led_set(LED2);
+	FIO1PIN |= (1 << ADC_SCLK);
+     a6e:	430b      	orrs	r3, r1
+     a70:	6013      	str	r3, [r2, #0]
+	FIO1CLR |= 1 << ADC;
+     a72:	683b      	ldr	r3, [r7, #0]
+     a74:	02f6      	lsls	r6, r6, #11
+     a76:	4333      	orrs	r3, r6
+     a78:	603b      	str	r3, [r7, #0]
+	SPI0_send_1_byte(WRITE_CONF_REG, ADC);
+     a7a:	2112      	movs	r1, #18
+     a7c:	2010      	movs	r0, #16
+     a7e:	f000 f93d 	bl	cfc <SPI0_send_1_byte>
+	SPI0_send_2_byte(CONF_REG_VAL, ADC);
+     a82:	1c20      	adds	r0, r4, #0
+	FIO1SET |= 1 << ADC;
+     a84:	4c2d      	ldr	r4, [pc, #180]	; (b3c <process_command+0x100>)
+		gpio_set(OP_AMP_PORT, OP_AMP_PIN);
+		led_set(LED2);
+	FIO1PIN |= (1 << ADC_SCLK);
+	FIO1CLR |= 1 << ADC;
+	SPI0_send_1_byte(WRITE_CONF_REG, ADC);
+	SPI0_send_2_byte(CONF_REG_VAL, ADC);
+     a86:	2112      	movs	r1, #18
+     a88:	f000 f8f8 	bl	c7c <SPI0_send_2_byte>
+	FIO1SET |= 1 << ADC;
+     a8c:	6823      	ldr	r3, [r4, #0]
+     a8e:	4333      	orrs	r3, r6
+     a90:	6023      	str	r3, [r4, #0]
+	FIO1CLR |= 1 << ADC;
+     a92:	683b      	ldr	r3, [r7, #0]
+     a94:	4333      	orrs	r3, r6
+     a96:	603b      	str	r3, [r7, #0]
+	SPI0_send_1_byte(WRITE_MODE_REG, ADC);
+     a98:	2112      	movs	r1, #18
+     a9a:	2008      	movs	r0, #8
+     a9c:	f000 f92e 	bl	cfc <SPI0_send_1_byte>
+	SPI0_send_2_byte(MODE_REG_VAL, ADC);
+     aa0:	2001      	movs	r0, #1
+     aa2:	2112      	movs	r1, #18
+     aa4:	f000 f8ea 	bl	c7c <SPI0_send_2_byte>
+	FIO1SET |= 1 << ADC;
+     aa8:	6823      	ldr	r3, [r4, #0]
+     aaa:	431e      	orrs	r6, r3
+     aac:	6026      	str	r6, [r4, #0]
 		timer0_start();
-     a62:	f000 fa8b 	bl	f7c <timer0_start>
+     aae:	f000 fa4f 	bl	f50 <timer0_start>
 	}    
 
 	/* Turn off amplifier */
 	if(strncmp(cmd, "stop", 4) == 0)
-     a66:	1c28      	adds	r0, r5, #0
-     a68:	491f      	ldr	r1, [pc, #124]	; (ae8 <process_command+0xac>)
-     a6a:	2204      	movs	r2, #4
-     a6c:	f000 faae 	bl	fcc <strncmp>
-     a70:	2800      	cmp	r0, #0
-     a72:	d10c      	bne.n	a8e <process_command+0x52>
+     ab2:	1c28      	adds	r0, r5, #0
+     ab4:	4922      	ldr	r1, [pc, #136]	; (b40 <process_command+0x104>)
+     ab6:	2204      	movs	r2, #4
+     ab8:	f000 fa72 	bl	fa0 <strncmp>
+     abc:	2800      	cmp	r0, #0
+     abe:	d10c      	bne.n	ada <process_command+0x9e>
 	{
 		UART0_send("\nStopped\n", 9);
-     a74:	481d      	ldr	r0, [pc, #116]	; (aec <process_command+0xb0>)
-     a76:	2109      	movs	r1, #9
-     a78:	f7ff ffbe 	bl	9f8 <UART0_send>
+     ac0:	4820      	ldr	r0, [pc, #128]	; (b44 <process_command+0x108>)
+     ac2:	2109      	movs	r1, #9
+     ac4:	f7ff ff98 	bl	9f8 <UART0_send>
 		gpio_clear(OP_AMP_PORT, OP_AMP_PIN);
-     a7c:	210d      	movs	r1, #13
-     a7e:	2002      	movs	r0, #2
-     a80:	f7ff fe32 	bl	6e8 <gpio_clear>
+     ac8:	210d      	movs	r1, #13
+     aca:	2002      	movs	r0, #2
+     acc:	f7ff fe0c 	bl	6e8 <gpio_clear>
 		led_clear(LED2);
-     a84:	2001      	movs	r0, #1
-     a86:	f7ff fe03 	bl	690 <led_clear>
+     ad0:	2001      	movs	r0, #1
+     ad2:	f7ff fddd 	bl	690 <led_clear>
 		timer0_stop();
-     a8a:	f000 fa87 	bl	f9c <timer0_stop>
+     ad6:	f000 fa4b 	bl	f70 <timer0_stop>
 	}
 	/* Voltage setup  */
 	if(strncmp(cmd, "set", 3) == 0)
-     a8e:	1c28      	adds	r0, r5, #0
-     a90:	4917      	ldr	r1, [pc, #92]	; (af0 <process_command+0xb4>)
-     a92:	2203      	movs	r2, #3
-     a94:	f000 fa9a 	bl	fcc <strncmp>
-     a98:	2800      	cmp	r0, #0
-     a9a:	d113      	bne.n	ac4 <process_command+0x88>
+     ada:	1c28      	adds	r0, r5, #0
+     adc:	491a      	ldr	r1, [pc, #104]	; (b48 <process_command+0x10c>)
+     ade:	2203      	movs	r2, #3
+     ae0:	f000 fa5e 	bl	fa0 <strncmp>
+     ae4:	2800      	cmp	r0, #0
+     ae6:	d113      	bne.n	b10 <process_command+0xd4>
 	{
 	
 		lenth = strlen(cmd+4)-1;
 		num = atoi(cmd + 4);
-     a9c:	1d28      	adds	r0, r5, #4
-     a9e:	f000 fa8d 	bl	fbc <atoi>
-     aa2:	1c04      	adds	r4, r0, #0
+     ae8:	1d28      	adds	r0, r5, #4
+     aea:	f000 fa51 	bl	f90 <atoi>
+     aee:	1c04      	adds	r4, r0, #0
 		UART0_send("OK\n", 3);
-     aa4:	2103      	movs	r1, #3
-     aa6:	4813      	ldr	r0, [pc, #76]	; (af4 <process_command+0xb8>)
-     aa8:	f7ff ffa6 	bl	9f8 <UART0_send>
+     af0:	2103      	movs	r1, #3
+     af2:	4816      	ldr	r0, [pc, #88]	; (b4c <process_command+0x110>)
+     af4:	f7ff ff80 	bl	9f8 <UART0_send>
 		UART0_send_byte(num >> 8);
-     aac:	0420      	lsls	r0, r4, #16
-     aae:	0c06      	lsrs	r6, r0, #16
-     ab0:	0e00      	lsrs	r0, r0, #24
-     ab2:	f7ff ff8b 	bl	9cc <UART0_send_byte>
+     af8:	0420      	lsls	r0, r4, #16
+     afa:	0c06      	lsrs	r6, r0, #16
+     afc:	0e00      	lsrs	r0, r0, #24
+     afe:	f7ff ff65 	bl	9cc <UART0_send_byte>
 		UART0_send_byte(num);
-     ab6:	0620      	lsls	r0, r4, #24
-     ab8:	0e00      	lsrs	r0, r0, #24
-     aba:	f7ff ff87 	bl	9cc <UART0_send_byte>
+     b02:	0620      	lsls	r0, r4, #24
+     b04:	0e00      	lsrs	r0, r0, #24
+     b06:	f7ff ff61 	bl	9cc <UART0_send_byte>
 		dac_set_voltage(num);
-     abe:	1c30      	adds	r0, r6, #0
-     ac0:	f000 f988 	bl	dd4 <dac_set_voltage>
+     b0a:	1c30      	adds	r0, r6, #0
+     b0c:	f000 f948 	bl	da0 <dac_set_voltage>
 	}
 
 	/* Manual  */
 	if(strncmp(cmd, "help", 4) == 0)
-     ac4:	1c28      	adds	r0, r5, #0
-     ac6:	490c      	ldr	r1, [pc, #48]	; (af8 <process_command+0xbc>)
-     ac8:	2204      	movs	r2, #4
-     aca:	f000 fa7f 	bl	fcc <strncmp>
-     ace:	2800      	cmp	r0, #0
-     ad0:	d103      	bne.n	ada <process_command+0x9e>
+     b10:	1c28      	adds	r0, r5, #0
+     b12:	490f      	ldr	r1, [pc, #60]	; (b50 <process_command+0x114>)
+     b14:	2204      	movs	r2, #4
+     b16:	f000 fa43 	bl	fa0 <strncmp>
+     b1a:	2800      	cmp	r0, #0
+     b1c:	d103      	bne.n	b26 <process_command+0xea>
 	{
 		UART0_send(help_msg, sizeof(help_msg)-1);
-     ad2:	480a      	ldr	r0, [pc, #40]	; (afc <process_command+0xc0>)
-     ad4:	2186      	movs	r1, #134	; 0x86
-     ad6:	f7ff ff8f 	bl	9f8 <UART0_send>
+     b1e:	480d      	ldr	r0, [pc, #52]	; (b54 <process_command+0x118>)
+     b20:	2186      	movs	r1, #134	; 0x86
+     b22:	f7ff ff69 	bl	9f8 <UART0_send>
 	}
 #endif
 }
-     ada:	bc70      	pop	{r4, r5, r6}
-     adc:	bc01      	pop	{r0}
-     ade:	4700      	bx	r0
-     ae0:	000013d9 	.word	0x000013d9
-     ae4:	000013df 	.word	0x000013df
-     ae8:	000013e9 	.word	0x000013e9
-     aec:	000013ee 	.word	0x000013ee
-     af0:	000013f8 	.word	0x000013f8
-     af4:	000013fc 	.word	0x000013fc
-     af8:	00001400 	.word	0x00001400
-     afc:	00001340 	.word	0x00001340
+     b26:	bcf8      	pop	{r3, r4, r5, r6, r7}
+     b28:	bc01      	pop	{r0}
+     b2a:	4700      	bx	r0
+     b2c:	000013a9 	.word	0x000013a9
+     b30:	000013af 	.word	0x000013af
+     b34:	3fffc034 	.word	0x3fffc034
+     b38:	3fffc03c 	.word	0x3fffc03c
+     b3c:	3fffc038 	.word	0x3fffc038
+     b40:	000013b9 	.word	0x000013b9
+     b44:	000013be 	.word	0x000013be
+     b48:	000013c8 	.word	0x000013c8
+     b4c:	000013cc 	.word	0x000013cc
+     b50:	000013d0 	.word	0x000013d0
+     b54:	00001310 	.word	0x00001310
 
-00000b00 <SPI0_init>:
+00000b58 <SPI_ADC_data_transfers_16bit>:
+	}
 	return dat;
-}
-
-void SPI0_init(void)
-{
-	PCONP |= (1 << 8);
-     b00:	2180      	movs	r1, #128	; 0x80
-     b02:	4a0c      	ldr	r2, [pc, #48]	; (b34 <SPI0_init+0x34>)
-     b04:	6813      	ldr	r3, [r2, #0]
-     b06:	0049      	lsls	r1, r1, #1
-     b08:	430b      	orrs	r3, r1
-	PCLKSEL0 |= (1<<17) | (1<<16);//=72Mhz/8 
-     b0a:	21c0      	movs	r1, #192	; 0xc0
-	return dat;
-}
-
-void SPI0_init(void)
-{
-	PCONP |= (1 << 8);
-     b0c:	6013      	str	r3, [r2, #0]
-	PCLKSEL0 |= (1<<17) | (1<<16);//=72Mhz/8 
-     b0e:	4a0a      	ldr	r2, [pc, #40]	; (b38 <SPI0_init+0x38>)
-     b10:	6813      	ldr	r3, [r2, #0]
-     b12:	0289      	lsls	r1, r1, #10
-     b14:	430b      	orrs	r3, r1
-	S0SPCR |= (1 << 5);	/*   Master mode*/
-     b16:	2120      	movs	r1, #32
-}
-
-void SPI0_init(void)
-{
-	PCONP |= (1 << 8);
-	PCLKSEL0 |= (1<<17) | (1<<16);//=72Mhz/8 
-     b18:	6013      	str	r3, [r2, #0]
-	S0SPCR |= (1 << 5);	/*   Master mode*/
-     b1a:	4a08      	ldr	r2, [pc, #32]	; (b3c <SPI0_init+0x3c>)
-     b1c:	6813      	ldr	r3, [r2, #0]
-     b1e:	430b      	orrs	r3, r1
-     b20:	6013      	str	r3, [r2, #0]
-	S0SPCCR = 0x12; 	/* SPI0 perif clock divided by 18 to reach 500kHz */
-     b22:	2212      	movs	r2, #18
-     b24:	4b06      	ldr	r3, [pc, #24]	; (b40 <SPI0_init+0x40>)
-     b26:	601a      	str	r2, [r3, #0]
-	PINSEL3 |= ((1 << 9) | (1 << 8) | (1 << 14) | (1 << 15) | (1 << 16) | (1 << 17));/* 	[>MISO0, MOSI0, CLK0 as SPI pins<] */
-     b28:	4a06      	ldr	r2, [pc, #24]	; (b44 <SPI0_init+0x44>)
-     b2a:	4907      	ldr	r1, [pc, #28]	; (b48 <SPI0_init+0x48>)
-     b2c:	6813      	ldr	r3, [r2, #0]
-     b2e:	430b      	orrs	r3, r1
-     b30:	6013      	str	r3, [r2, #0]
-	/* PINMODE3 |= (1 << 15) | (1 << 7); */
-}
-     b32:	4770      	bx	lr
-     b34:	e01fc0c4 	.word	0xe01fc0c4
-     b38:	e01fc1a8 	.word	0xe01fc1a8
-     b3c:	e0020000 	.word	0xe0020000
-     b40:	e002000c 	.word	0xe002000c
-     b44:	e002c00c 	.word	0xe002c00c
-     b48:	0003c300 	.word	0x0003c300
-
-00000b4c <SPI_ADC_data_transfers_16bit>:
-
-uint16_t SPI_ADC_data_transfers_16bit (uint16_t data)
-{
-     b4c:	b570      	push	{r4, r5, r6, lr}
-	uint16_t dat = 0;
-	uint16_t mask;
-	char i;
-
-	//Write
-	mask = 0x8000;
-     b4e:	2580      	movs	r5, #128	; 0x80
-	PINSEL3 |= ((1 << 9) | (1 << 8) | (1 << 14) | (1 << 15) | (1 << 16) | (1 << 17));/* 	[>MISO0, MOSI0, CLK0 as SPI pins<] */
-	/* PINMODE3 |= (1 << 15) | (1 << 7); */
 }
 
 uint16_t SPI_ADC_data_transfers_16bit (uint16_t data)
 {
-     b50:	1c06      	adds	r6, r0, #0
-     b52:	240f      	movs	r4, #15
+     b58:	b530      	push	{r4, r5, lr}
+     b5a:	210f      	movs	r1, #15
+     b5c:	1c04      	adds	r4, r0, #0
 	uint16_t dat = 0;
-     b54:	2000      	movs	r0, #0
-	uint16_t mask;
-	char i;
-
+     b5e:	2000      	movs	r0, #0
 	//Write
 	mask = 0x8000;
-     b56:	022d      	lsls	r5, r5, #8
 	for(i = 16;  i > 0 ; i--)
 	{
 		//SCLK
 		FIO1PIN &= ~(1 << ADC_SCLK);
-     b58:	4b12      	ldr	r3, [pc, #72]	; (ba4 <SPI_ADC_data_transfers_16bit+0x58>)
-     b5a:	4a13      	ldr	r2, [pc, #76]	; (ba8 <SPI_ADC_data_transfers_16bit+0x5c>)
-     b5c:	6819      	ldr	r1, [r3, #0]
-     b5e:	400a      	ands	r2, r1
-     b60:	601a      	str	r2, [r3, #0]
-		if(data & mask)
-     b62:	422e      	tst	r6, r5
-     b64:	d004      	beq.n	b70 <SPI_ADC_data_transfers_16bit+0x24>
+     b60:	4b12      	ldr	r3, [pc, #72]	; (bac <SPI_ADC_data_transfers_16bit+0x54>)
+     b62:	4a13      	ldr	r2, [pc, #76]	; (bb0 <SPI_ADC_data_transfers_16bit+0x58>)
+     b64:	681d      	ldr	r5, [r3, #0]
+     b66:	402a      	ands	r2, r5
+     b68:	601a      	str	r2, [r3, #0]
+		/* if(data & mask) */
+		if(data & (1 << (i - 1)))
+     b6a:	1c22      	adds	r2, r4, #0
+     b6c:	410a      	asrs	r2, r1
+     b6e:	07d2      	lsls	r2, r2, #31
+     b70:	d504      	bpl.n	b7c <SPI_ADC_data_transfers_16bit+0x24>
 			FIO1PIN |= 1 << ADC_DIN;
-     b66:	2180      	movs	r1, #128	; 0x80
-     b68:	681a      	ldr	r2, [r3, #0]
-     b6a:	0449      	lsls	r1, r1, #17
-     b6c:	430a      	orrs	r2, r1
-     b6e:	e002      	b.n	b76 <SPI_ADC_data_transfers_16bit+0x2a>
+     b72:	2580      	movs	r5, #128	; 0x80
+     b74:	681a      	ldr	r2, [r3, #0]
+     b76:	046d      	lsls	r5, r5, #17
+     b78:	432a      	orrs	r2, r5
+     b7a:	e002      	b.n	b82 <SPI_ADC_data_transfers_16bit+0x2a>
 		else
 			FIO1PIN &= ~(1 << ADC_DIN);
-     b70:	6819      	ldr	r1, [r3, #0]
-     b72:	4a0e      	ldr	r2, [pc, #56]	; (bac <SPI_ADC_data_transfers_16bit+0x60>)
-     b74:	400a      	ands	r2, r1
-     b76:	601a      	str	r2, [r3, #0]
-     b78:	2201      	movs	r2, #1
+     b7c:	681d      	ldr	r5, [r3, #0]
+     b7e:	4a0d      	ldr	r2, [pc, #52]	; (bb4 <SPI_ADC_data_transfers_16bit+0x5c>)
+     b80:	402a      	ands	r2, r5
 
 		mask = mask >> 1;
 
-		//read
-		if(FIO1PIN & (1 << (ADC_DOUT)))
-     b7a:	6819      	ldr	r1, [r3, #0]
-		if(data & mask)
+		for (j = 0; j < 6; j++);
+		FIO1PIN |= 1 << ADC_SCLK;
+     b82:	2580      	movs	r5, #128	; 0x80
+		FIO1PIN &= ~(1 << ADC_SCLK);
+		/* if(data & mask) */
+		if(data & (1 << (i - 1)))
 			FIO1PIN |= 1 << ADC_DIN;
 		else
 			FIO1PIN &= ~(1 << ADC_DIN);
-
-		mask = mask >> 1;
-     b7c:	086d      	lsrs	r5, r5, #1
-
-		//read
-		if(FIO1PIN & (1 << (ADC_DOUT)))
-			dat |= 1 << (i - 1);
-     b7e:	40a2      	lsls	r2, r4
-			FIO1PIN &= ~(1 << ADC_DIN);
+     b84:	601a      	str	r2, [r3, #0]
 
 		mask = mask >> 1;
 
+		for (j = 0; j < 6; j++);
+		FIO1PIN |= 1 << ADC_SCLK;
+     b86:	681a      	ldr	r2, [r3, #0]
+     b88:	036d      	lsls	r5, r5, #13
+     b8a:	432a      	orrs	r2, r5
+     b8c:	601a      	str	r2, [r3, #0]
 		//read
 		if(FIO1PIN & (1 << (ADC_DOUT)))
-     b80:	0209      	lsls	r1, r1, #8
-     b82:	d503      	bpl.n	b8c <SPI_ADC_data_transfers_16bit+0x40>
+     b8e:	681a      	ldr	r2, [r3, #0]
+     b90:	2301      	movs	r3, #1
 			dat |= 1 << (i - 1);
-     b84:	4302      	orrs	r2, r0
-     b86:	0410      	lsls	r0, r2, #16
-     b88:	0c00      	lsrs	r0, r0, #16
-     b8a:	e000      	b.n	b8e <SPI_ADC_data_transfers_16bit+0x42>
+     b92:	408b      	lsls	r3, r1
+		mask = mask >> 1;
+
+		for (j = 0; j < 6; j++);
+		FIO1PIN |= 1 << ADC_SCLK;
+		//read
+		if(FIO1PIN & (1 << (ADC_DOUT)))
+     b94:	0212      	lsls	r2, r2, #8
+     b96:	d503      	bpl.n	ba0 <SPI_ADC_data_transfers_16bit+0x48>
+			dat |= 1 << (i - 1);
+     b98:	4303      	orrs	r3, r0
+     b9a:	0418      	lsls	r0, r3, #16
+     b9c:	0c00      	lsrs	r0, r0, #16
+     b9e:	e000      	b.n	ba2 <SPI_ADC_data_transfers_16bit+0x4a>
 		else
 			dat &= ~(1 << (i - 1));
-     b8c:	4390      	bics	r0, r2
-		FIO1PIN |= 1 << ADC_SCLK;
-     b8e:	2180      	movs	r1, #128	; 0x80
-     b90:	681a      	ldr	r2, [r3, #0]
-     b92:	0349      	lsls	r1, r1, #13
-     b94:	430a      	orrs	r2, r1
-     b96:	601a      	str	r2, [r3, #0]
+     ba0:	4398      	bics	r0, r3
 	uint16_t mask;
-	char i;
+	char i, j;
 
 	//Write
 	mask = 0x8000;
 	for(i = 16;  i > 0 ; i--)
-     b98:	3c01      	subs	r4, #1
-     b9a:	d2dd      	bcs.n	b58 <SPI_ADC_data_transfers_16bit+0xc>
+     ba2:	3901      	subs	r1, #1
+     ba4:	d2dc      	bcs.n	b60 <SPI_ADC_data_transfers_16bit+0x8>
+		else
 			dat &= ~(1 << (i - 1));
-		FIO1PIN |= 1 << ADC_SCLK;
 
 	}  
 	return dat;
 }
-     b9c:	bc70      	pop	{r4, r5, r6}
-     b9e:	bc02      	pop	{r1}
-     ba0:	4708      	bx	r1
-     ba2:	46c0      	nop			; (mov r8, r8)
-     ba4:	3fffc034 	.word	0x3fffc034
-     ba8:	ffefffff 	.word	0xffefffff
-     bac:	feffffff 	.word	0xfeffffff
+     ba6:	bc30      	pop	{r4, r5}
+     ba8:	bc02      	pop	{r1}
+     baa:	4708      	bx	r1
+     bac:	3fffc034 	.word	0x3fffc034
+     bb0:	ffefffff 	.word	0xffefffff
+     bb4:	feffffff 	.word	0xfeffffff
 
-00000bb0 <SPI_ADC_data_transfers_8bit>:
+00000bb8 <SPI_ADC_data_transfers_8bit>:
 
 unsigned char SPI_ADC_data_transfers_8bit (unsigned char data)
 {
-     bb0:	b530      	push	{r4, r5, lr}
-     bb2:	1c05      	adds	r5, r0, #0
-     bb4:	2407      	movs	r4, #7
+     bb8:	b530      	push	{r4, r5, lr}
+     bba:	2107      	movs	r1, #7
+     bbc:	1c04      	adds	r4, r0, #0
 	unsigned char dat = 0;
-     bb6:	2000      	movs	r0, #0
+     bbe:	2000      	movs	r0, #0
 	uint16_t mask = 0x8000;
 	//Write
 	for(i = 8;  i > 0 ; i--)
 	{
 		//SCLK
 		FIO1PIN &= ~(1 << ADC_SCLK);
-     bb8:	4b12      	ldr	r3, [pc, #72]	; (c04 <SPI_ADC_data_transfers_8bit+0x54>)
-     bba:	4a13      	ldr	r2, [pc, #76]	; (c08 <SPI_ADC_data_transfers_8bit+0x58>)
-     bbc:	6819      	ldr	r1, [r3, #0]
-     bbe:	400a      	ands	r2, r1
-     bc0:	601a      	str	r2, [r3, #0]
+     bc0:	4b12      	ldr	r3, [pc, #72]	; (c0c <SPI_ADC_data_transfers_8bit+0x54>)
+     bc2:	4a13      	ldr	r2, [pc, #76]	; (c10 <SPI_ADC_data_transfers_8bit+0x58>)
+     bc4:	681d      	ldr	r5, [r3, #0]
+     bc6:	402a      	ands	r2, r5
+     bc8:	601a      	str	r2, [r3, #0]
 		if(data & (1 << (i - 1)))
-     bc2:	1c2a      	adds	r2, r5, #0
-     bc4:	4122      	asrs	r2, r4
-     bc6:	07d2      	lsls	r2, r2, #31
-     bc8:	d504      	bpl.n	bd4 <SPI_ADC_data_transfers_8bit+0x24>
+     bca:	1c22      	adds	r2, r4, #0
+     bcc:	410a      	asrs	r2, r1
+     bce:	07d2      	lsls	r2, r2, #31
+     bd0:	d504      	bpl.n	bdc <SPI_ADC_data_transfers_8bit+0x24>
 		/* if(data & mask) */
 			FIO1PIN |= 1 << ADC_DIN;
-     bca:	2180      	movs	r1, #128	; 0x80
-     bcc:	681a      	ldr	r2, [r3, #0]
-     bce:	0449      	lsls	r1, r1, #17
-     bd0:	430a      	orrs	r2, r1
-     bd2:	e002      	b.n	bda <SPI_ADC_data_transfers_8bit+0x2a>
+     bd2:	2580      	movs	r5, #128	; 0x80
+     bd4:	681a      	ldr	r2, [r3, #0]
+     bd6:	046d      	lsls	r5, r5, #17
+     bd8:	432a      	orrs	r2, r5
+     bda:	e002      	b.n	be2 <SPI_ADC_data_transfers_8bit+0x2a>
 		else
 			FIO1PIN &= ~(1 << ADC_DIN);
-     bd4:	6819      	ldr	r1, [r3, #0]
-     bd6:	4a0d      	ldr	r2, [pc, #52]	; (c0c <SPI_ADC_data_transfers_8bit+0x5c>)
-     bd8:	400a      	ands	r2, r1
-     bda:	601a      	str	r2, [r3, #0]
-     bdc:	2201      	movs	r2, #1
+     bdc:	681d      	ldr	r5, [r3, #0]
+     bde:	4a0d      	ldr	r2, [pc, #52]	; (c14 <SPI_ADC_data_transfers_8bit+0x5c>)
+     be0:	402a      	ands	r2, r5
 
 		mask = mask >> 1;
 
-		//read
-		if(FIO1PIN & (1 << (ADC_DOUT)))
-     bde:	6819      	ldr	r1, [r3, #0]
-			dat |= 1 << (i - 1);
-     be0:	40a2      	lsls	r2, r4
+		for (j = 0; j < 6; j++);
+		FIO1PIN |= 1 << ADC_SCLK;
+     be2:	2580      	movs	r5, #128	; 0x80
+		FIO1PIN &= ~(1 << ADC_SCLK);
+		if(data & (1 << (i - 1)))
+		/* if(data & mask) */
+			FIO1PIN |= 1 << ADC_DIN;
+		else
 			FIO1PIN &= ~(1 << ADC_DIN);
+     be4:	601a      	str	r2, [r3, #0]
 
 		mask = mask >> 1;
 
+		for (j = 0; j < 6; j++);
+		FIO1PIN |= 1 << ADC_SCLK;
+     be6:	681a      	ldr	r2, [r3, #0]
+     be8:	036d      	lsls	r5, r5, #13
+     bea:	432a      	orrs	r2, r5
+     bec:	601a      	str	r2, [r3, #0]
 		//read
 		if(FIO1PIN & (1 << (ADC_DOUT)))
-     be2:	0209      	lsls	r1, r1, #8
-     be4:	d503      	bpl.n	bee <SPI_ADC_data_transfers_8bit+0x3e>
+     bee:	681a      	ldr	r2, [r3, #0]
+     bf0:	2301      	movs	r3, #1
 			dat |= 1 << (i - 1);
-     be6:	4302      	orrs	r2, r0
-     be8:	0610      	lsls	r0, r2, #24
-     bea:	0e00      	lsrs	r0, r0, #24
-     bec:	e000      	b.n	bf0 <SPI_ADC_data_transfers_8bit+0x40>
+     bf2:	408b      	lsls	r3, r1
+		mask = mask >> 1;
+
+		for (j = 0; j < 6; j++);
+		FIO1PIN |= 1 << ADC_SCLK;
+		//read
+		if(FIO1PIN & (1 << (ADC_DOUT)))
+     bf4:	0212      	lsls	r2, r2, #8
+     bf6:	d503      	bpl.n	c00 <SPI_ADC_data_transfers_8bit+0x48>
+			dat |= 1 << (i - 1);
+     bf8:	4303      	orrs	r3, r0
+     bfa:	0618      	lsls	r0, r3, #24
+     bfc:	0e00      	lsrs	r0, r0, #24
+     bfe:	e000      	b.n	c02 <SPI_ADC_data_transfers_8bit+0x4a>
 		else
 			dat &= ~(1 << (i - 1));
-     bee:	4390      	bics	r0, r2
-
-		FIO1PIN |= 1 << ADC_SCLK;
-     bf0:	2180      	movs	r1, #128	; 0x80
-     bf2:	681a      	ldr	r2, [r3, #0]
-     bf4:	0349      	lsls	r1, r1, #13
-     bf6:	430a      	orrs	r2, r1
-     bf8:	601a      	str	r2, [r3, #0]
+     c00:	4398      	bics	r0, r3
 	unsigned char dat = 0;
-	char i;
+	char i, j;
 
 	uint16_t mask = 0x8000;
 	//Write
 	for(i = 8;  i > 0 ; i--)
-     bfa:	3c01      	subs	r4, #1
-     bfc:	d2dc      	bcs.n	bb8 <SPI_ADC_data_transfers_8bit+0x8>
+     c02:	3901      	subs	r1, #1
+     c04:	d2dc      	bcs.n	bc0 <SPI_ADC_data_transfers_8bit+0x8>
+		else
 			dat &= ~(1 << (i - 1));
 
-		FIO1PIN |= 1 << ADC_SCLK;
 	}  
 	return dat;
 }
-     bfe:	bc30      	pop	{r4, r5}
-     c00:	bc02      	pop	{r1}
-     c02:	4708      	bx	r1
-     c04:	3fffc034 	.word	0x3fffc034
-     c08:	ffefffff 	.word	0xffefffff
-     c0c:	feffffff 	.word	0xfeffffff
+     c06:	bc30      	pop	{r4, r5}
+     c08:	bc02      	pop	{r1}
+     c0a:	4708      	bx	r1
+     c0c:	3fffc034 	.word	0x3fffc034
+     c10:	ffefffff 	.word	0xffefffff
+     c14:	feffffff 	.word	0xfeffffff
 
-00000c10 <spi_readStatus>:
-uint8_t spi_readStatus (void) {
-
-	uint8_t SPIStatus;
-	uint8_t abrt, modf, rovr, wcol, spif;
-
-	SPIStatus = S0SPSR;
-     c10:	4b03      	ldr	r3, [pc, #12]	; (c20 <spi_readStatus+0x10>)
-     c12:	6818      	ldr	r0, [r3, #0]
-	if(spif==1) { 
-		UART0_send("\nSPIF is 1 - clearing\n", sizeof("\nSPIF is 1 - clearing\n")-1);
-	}
-#endif
-
-	S0SPCR = S0SPCR; // write cr register to clear status bit
-     c14:	4b03      	ldr	r3, [pc, #12]	; (c24 <spi_readStatus+0x14>)
-     c16:	681a      	ldr	r2, [r3, #0]
-	SPIStatus = S0SPSR;
-	abrt = (SPIStatus & 0x8 ) >> 3;
-	modf = (SPIStatus & 0x10) >> 4;
-	rovr = (SPIStatus & 0x20) >> 5;
-	wcol = (SPIStatus & 0x40) >> 6;
-	spif = (SPIStatus & 0x80) >> 7;
-     c18:	0600      	lsls	r0, r0, #24
-		UART0_send("\nSPIF is 1 - clearing\n", sizeof("\nSPIF is 1 - clearing\n")-1);
-	}
-#endif
-
-	S0SPCR = S0SPCR; // write cr register to clear status bit
-	return(spif);
-     c1a:	0fc0      	lsrs	r0, r0, #31
-	if(spif==1) { 
-		UART0_send("\nSPIF is 1 - clearing\n", sizeof("\nSPIF is 1 - clearing\n")-1);
-	}
-#endif
-
-	S0SPCR = S0SPCR; // write cr register to clear status bit
-     c1c:	601a      	str	r2, [r3, #0]
-	return(spif);
-}
-     c1e:	4770      	bx	lr
-     c20:	e0020004 	.word	0xe0020004
-     c24:	e0020000 	.word	0xe0020000
-
-00000c28 <SPI_DAC_data_transfers_16bit>:
+00000c18 <SPI_DAC_data_transfers_16bit>:
 uint16_t SPI_DAC_data_transfers_16bit (uint16_t data)
 {
-     c28:	b570      	push	{r4, r5, r6, lr}
+     c18:	b570      	push	{r4, r5, r6, lr}
 	uint16_t dat = 0;
 	uint16_t mask;
-	char i;
+	char i, j;
 
 	//Write
 	mask = 0x8000;
-     c2a:	2480      	movs	r4, #128	; 0x80
+     c1a:	2480      	movs	r4, #128	; 0x80
 
-	S0SPCR = S0SPCR; // write cr register to clear status bit
-	return(spif);
+	}  
+	return dat;
 }
 uint16_t SPI_DAC_data_transfers_16bit (uint16_t data)
 {
-     c2c:	1c05      	adds	r5, r0, #0
-     c2e:	210f      	movs	r1, #15
+     c1c:	1c05      	adds	r5, r0, #0
+     c1e:	210f      	movs	r1, #15
 	uint16_t dat = 0;
-     c30:	2000      	movs	r0, #0
+     c20:	2000      	movs	r0, #0
 	uint16_t mask;
-	char i;
+	char i, j;
 
 	//Write
 	mask = 0x8000;
-     c32:	0224      	lsls	r4, r4, #8
+     c22:	0224      	lsls	r4, r4, #8
 	for(i = 16;  i > 0 ; i--)
 	{
 		FIO1PIN |= 1 << ADC_SCLK;
-     c34:	2680      	movs	r6, #128	; 0x80
-     c36:	4b12      	ldr	r3, [pc, #72]	; (c80 <SPI_DAC_data_transfers_16bit+0x58>)
-     c38:	681a      	ldr	r2, [r3, #0]
-     c3a:	0376      	lsls	r6, r6, #13
-     c3c:	4332      	orrs	r2, r6
-     c3e:	601a      	str	r2, [r3, #0]
+     c24:	2680      	movs	r6, #128	; 0x80
+     c26:	4b12      	ldr	r3, [pc, #72]	; (c70 <SPI_DAC_data_transfers_16bit+0x58>)
+     c28:	681a      	ldr	r2, [r3, #0]
+     c2a:	0376      	lsls	r6, r6, #13
+     c2c:	4332      	orrs	r2, r6
+     c2e:	601a      	str	r2, [r3, #0]
 		if(data & mask)
-     c40:	4225      	tst	r5, r4
-     c42:	d004      	beq.n	c4e <SPI_DAC_data_transfers_16bit+0x26>
+     c30:	4225      	tst	r5, r4
+     c32:	d004      	beq.n	c3e <SPI_DAC_data_transfers_16bit+0x26>
 			FIO1PIN |= 1 << ADC_DIN;
-     c44:	2680      	movs	r6, #128	; 0x80
-     c46:	681a      	ldr	r2, [r3, #0]
-     c48:	0476      	lsls	r6, r6, #17
-     c4a:	4332      	orrs	r2, r6
-     c4c:	e002      	b.n	c54 <SPI_DAC_data_transfers_16bit+0x2c>
+     c34:	2680      	movs	r6, #128	; 0x80
+     c36:	681a      	ldr	r2, [r3, #0]
+     c38:	0476      	lsls	r6, r6, #17
+     c3a:	4332      	orrs	r2, r6
+     c3c:	e002      	b.n	c44 <SPI_DAC_data_transfers_16bit+0x2c>
 		else
 			FIO1PIN &= ~(1 << ADC_DIN);
-     c4e:	681e      	ldr	r6, [r3, #0]
-     c50:	4a0c      	ldr	r2, [pc, #48]	; (c84 <SPI_DAC_data_transfers_16bit+0x5c>)
-     c52:	4032      	ands	r2, r6
-     c54:	601a      	str	r2, [r3, #0]
+     c3e:	681e      	ldr	r6, [r3, #0]
+     c40:	4a0c      	ldr	r2, [pc, #48]	; (c74 <SPI_DAC_data_transfers_16bit+0x5c>)
+     c42:	4032      	ands	r2, r6
+     c44:	601a      	str	r2, [r3, #0]
 
 		//SCLK
 		mask = mask >> 1;
+		for (j = 0; j < 6; j++);
 		FIO1PIN &= ~(1 << ADC_SCLK);
-     c56:	4a0c      	ldr	r2, [pc, #48]	; (c88 <SPI_DAC_data_transfers_16bit+0x60>)
-     c58:	681e      	ldr	r6, [r3, #0]
-     c5a:	4032      	ands	r2, r6
-     c5c:	601a      	str	r2, [r3, #0]
+     c46:	4a0c      	ldr	r2, [pc, #48]	; (c78 <SPI_DAC_data_transfers_16bit+0x60>)
+     c48:	681e      	ldr	r6, [r3, #0]
+     c4a:	4032      	ands	r2, r6
+     c4c:	601a      	str	r2, [r3, #0]
 
 		//read
 		if(FIO1PIN & (1 << (ADC_DOUT)))
-     c5e:	681a      	ldr	r2, [r3, #0]
-     c60:	2301      	movs	r3, #1
+     c4e:	681a      	ldr	r2, [r3, #0]
+     c50:	2301      	movs	r3, #1
 			FIO1PIN |= 1 << ADC_DIN;
 		else
 			FIO1PIN &= ~(1 << ADC_DIN);
 
 		//SCLK
 		mask = mask >> 1;
-     c62:	0864      	lsrs	r4, r4, #1
+     c52:	0864      	lsrs	r4, r4, #1
+		for (j = 0; j < 6; j++);
 		FIO1PIN &= ~(1 << ADC_SCLK);
 
 		//read
 		if(FIO1PIN & (1 << (ADC_DOUT)))
 			dat |= 1 << (i - 1);
-     c64:	408b      	lsls	r3, r1
-		//SCLK
+     c54:	408b      	lsls	r3, r1
 		mask = mask >> 1;
+		for (j = 0; j < 6; j++);
 		FIO1PIN &= ~(1 << ADC_SCLK);
 
 		//read
 		if(FIO1PIN & (1 << (ADC_DOUT)))
-     c66:	0212      	lsls	r2, r2, #8
-     c68:	d503      	bpl.n	c72 <SPI_DAC_data_transfers_16bit+0x4a>
+     c56:	0212      	lsls	r2, r2, #8
+     c58:	d503      	bpl.n	c62 <SPI_DAC_data_transfers_16bit+0x4a>
 			dat |= 1 << (i - 1);
-     c6a:	4303      	orrs	r3, r0
-     c6c:	0418      	lsls	r0, r3, #16
-     c6e:	0c00      	lsrs	r0, r0, #16
-     c70:	e000      	b.n	c74 <SPI_DAC_data_transfers_16bit+0x4c>
+     c5a:	4303      	orrs	r3, r0
+     c5c:	0418      	lsls	r0, r3, #16
+     c5e:	0c00      	lsrs	r0, r0, #16
+     c60:	e000      	b.n	c64 <SPI_DAC_data_transfers_16bit+0x4c>
 		else
 			dat &= ~(1 << (i - 1));
-     c72:	4398      	bics	r0, r3
+     c62:	4398      	bics	r0, r3
 	uint16_t mask;
-	char i;
+	char i, j;
 
 	//Write
 	mask = 0x8000;
 	for(i = 16;  i > 0 ; i--)
-     c74:	3901      	subs	r1, #1
-     c76:	d2dd      	bcs.n	c34 <SPI_DAC_data_transfers_16bit+0xc>
+     c64:	3901      	subs	r1, #1
+     c66:	d2dd      	bcs.n	c24 <SPI_DAC_data_transfers_16bit+0xc>
 		else
 			dat &= ~(1 << (i - 1));
 
 	}  
 	return dat;
 }
-     c78:	bc70      	pop	{r4, r5, r6}
-     c7a:	bc02      	pop	{r1}
-     c7c:	4708      	bx	r1
-     c7e:	46c0      	nop			; (mov r8, r8)
-     c80:	3fffc034 	.word	0x3fffc034
-     c84:	feffffff 	.word	0xfeffffff
-     c88:	ffefffff 	.word	0xffefffff
+     c68:	bc70      	pop	{r4, r5, r6}
+     c6a:	bc02      	pop	{r1}
+     c6c:	4708      	bx	r1
+     c6e:	46c0      	nop			; (mov r8, r8)
+     c70:	3fffc034 	.word	0x3fffc034
+     c74:	feffffff 	.word	0xfeffffff
+     c78:	ffefffff 	.word	0xffefffff
 
-00000c8c <SPI0_send_2_byte>:
+00000c7c <SPI0_send_2_byte>:
 	}
 	return dat;
 }
 
 uint16_t SPI0_send_2_byte(uint16_t data, uint8_t slave)
 {
-     c8c:	b508      	push	{r3, lr}
-	/* S0SPDR = (data >> 8) & 0xFF; */
-	/* while (spi_readStatus() == 0);  */
-	/* dat = S0SPDR << 8; */
-	/* S0SPDR = data & 0xFF; */
-	/* while (spi_readStatus() == 0);  */
+     c7c:	b508      	push	{r3, lr}
+	uint16_t dat;
 	if (slave == ADC )
-     c8e:	2912      	cmp	r1, #18
-     c90:	d102      	bne.n	c98 <SPI0_send_2_byte+0xc>
+     c7e:	2912      	cmp	r1, #18
+     c80:	d102      	bne.n	c88 <SPI0_send_2_byte+0xc>
 	{
 	dat = SPI_ADC_data_transfers_16bit(data);
-     c92:	f7ff ff5b 	bl	b4c <SPI_ADC_data_transfers_16bit>
-     c96:	e003      	b.n	ca0 <SPI0_send_2_byte+0x14>
+     c82:	f7ff ff69 	bl	b58 <SPI_ADC_data_transfers_16bit>
+     c86:	e003      	b.n	c90 <SPI0_send_2_byte+0x14>
 	}else if (slave == DAC)
-     c98:	291d      	cmp	r1, #29
-     c9a:	d102      	bne.n	ca2 <SPI0_send_2_byte+0x16>
+     c88:	291d      	cmp	r1, #29
+     c8a:	d102      	bne.n	c92 <SPI0_send_2_byte+0x16>
 	{
 	dat = SPI_DAC_data_transfers_16bit(data);
-     c9c:	f7ff ffc4 	bl	c28 <SPI_DAC_data_transfers_16bit>
-     ca0:	1c03      	adds	r3, r0, #0
+     c8c:	f7ff ffc4 	bl	c18 <SPI_DAC_data_transfers_16bit>
+     c90:	1c03      	adds	r3, r0, #0
 	}
 	return dat;
 }
-     ca2:	1c18      	adds	r0, r3, #0
-     ca4:	bc08      	pop	{r3}
-     ca6:	bc02      	pop	{r1}
-     ca8:	4708      	bx	r1
+     c92:	1c18      	adds	r0, r3, #0
+     c94:	bc08      	pop	{r3}
+     c96:	bc02      	pop	{r1}
+     c98:	4708      	bx	r1
 
-00000caa <SPI_DAC_data_transfers_8bit>:
+00000c9a <SPI_DAC_data_transfers_8bit>:
 	}  
 	return dat;
 }
 
 unsigned char SPI_DAC_data_transfers_8bit (unsigned char data)
 {
-     caa:	b530      	push	{r4, r5, lr}
-     cac:	2107      	movs	r1, #7
-     cae:	1c04      	adds	r4, r0, #0
+     c9a:	b530      	push	{r4, r5, lr}
+     c9c:	2107      	movs	r1, #7
+     c9e:	1c04      	adds	r4, r0, #0
 	unsigned char dat = 0;
-     cb0:	2000      	movs	r0, #0
-	char i;
+     ca0:	2000      	movs	r0, #0
+	char i, j;
 
 	//Write
 	for(i = 8;  i > 0 ; i--)
 	{
 		if(data & (1 << (i - 1)))
-     cb2:	1c22      	adds	r2, r4, #0
-     cb4:	410a      	asrs	r2, r1
-     cb6:	4b12      	ldr	r3, [pc, #72]	; (d00 <SPI_DAC_data_transfers_8bit+0x56>)
-     cb8:	07d2      	lsls	r2, r2, #31
-     cba:	d504      	bpl.n	cc6 <SPI_DAC_data_transfers_8bit+0x1c>
+     ca2:	1c22      	adds	r2, r4, #0
+     ca4:	410a      	asrs	r2, r1
+     ca6:	4b12      	ldr	r3, [pc, #72]	; (cf0 <SPI_DAC_data_transfers_8bit+0x56>)
+     ca8:	07d2      	lsls	r2, r2, #31
+     caa:	d504      	bpl.n	cb6 <SPI_DAC_data_transfers_8bit+0x1c>
 			FIO1PIN |= 1 << ADC_DIN;
-     cbc:	2580      	movs	r5, #128	; 0x80
-     cbe:	681a      	ldr	r2, [r3, #0]
-     cc0:	046d      	lsls	r5, r5, #17
-     cc2:	432a      	orrs	r2, r5
-     cc4:	e002      	b.n	ccc <SPI_DAC_data_transfers_8bit+0x22>
+     cac:	2580      	movs	r5, #128	; 0x80
+     cae:	681a      	ldr	r2, [r3, #0]
+     cb0:	046d      	lsls	r5, r5, #17
+     cb2:	432a      	orrs	r2, r5
+     cb4:	e002      	b.n	cbc <SPI_DAC_data_transfers_8bit+0x22>
 		else
 			FIO1PIN &= ~(1 << ADC_DIN);
-     cc6:	681d      	ldr	r5, [r3, #0]
-     cc8:	4a0e      	ldr	r2, [pc, #56]	; (d04 <SPI_DAC_data_transfers_8bit+0x5a>)
-     cca:	402a      	ands	r2, r5
+     cb6:	681d      	ldr	r5, [r3, #0]
+     cb8:	4a0e      	ldr	r2, [pc, #56]	; (cf4 <SPI_DAC_data_transfers_8bit+0x5a>)
+     cba:	402a      	ands	r2, r5
 
 		//SCLK
 		FIO1PIN |= 1 << ADC_SCLK;
-     ccc:	2580      	movs	r5, #128	; 0x80
+     cbc:	2580      	movs	r5, #128	; 0x80
 	for(i = 8;  i > 0 ; i--)
 	{
 		if(data & (1 << (i - 1)))
 			FIO1PIN |= 1 << ADC_DIN;
 		else
 			FIO1PIN &= ~(1 << ADC_DIN);
+     cbe:	601a      	str	r2, [r3, #0]
+
+		//SCLK
+		FIO1PIN |= 1 << ADC_SCLK;
+     cc0:	681a      	ldr	r2, [r3, #0]
+     cc2:	036d      	lsls	r5, r5, #13
+     cc4:	432a      	orrs	r2, r5
+     cc6:	601a      	str	r2, [r3, #0]
+		for (j = 0; j < 6; j++);
+		FIO1PIN &= ~(1 << ADC_SCLK);
+     cc8:	4a0b      	ldr	r2, [pc, #44]	; (cf8 <SPI_DAC_data_transfers_8bit+0x5e>)
+     cca:	681d      	ldr	r5, [r3, #0]
+     ccc:	402a      	ands	r2, r5
      cce:	601a      	str	r2, [r3, #0]
 
-		//SCLK
-		FIO1PIN |= 1 << ADC_SCLK;
+		//read
+		if(FIO1PIN & (1 << (ADC_DOUT)))
      cd0:	681a      	ldr	r2, [r3, #0]
-     cd2:	036d      	lsls	r5, r5, #13
-     cd4:	432a      	orrs	r2, r5
-     cd6:	601a      	str	r2, [r3, #0]
-		FIO1PIN &= ~(1 << ADC_SCLK);
-     cd8:	4a0b      	ldr	r2, [pc, #44]	; (d08 <SPI_DAC_data_transfers_8bit+0x5e>)
-     cda:	681d      	ldr	r5, [r3, #0]
-     cdc:	402a      	ands	r2, r5
-     cde:	601a      	str	r2, [r3, #0]
-
-		//read
-		if(FIO1PIN & (1 << (ADC_DOUT)))
-     ce0:	681a      	ldr	r2, [r3, #0]
-     ce2:	2301      	movs	r3, #1
+     cd2:	2301      	movs	r3, #1
 			dat |= 1 << (i - 1);
-     ce4:	408b      	lsls	r3, r1
-		//SCLK
+     cd4:	408b      	lsls	r3, r1
 		FIO1PIN |= 1 << ADC_SCLK;
+		for (j = 0; j < 6; j++);
 		FIO1PIN &= ~(1 << ADC_SCLK);
 
 		//read
 		if(FIO1PIN & (1 << (ADC_DOUT)))
-     ce6:	0212      	lsls	r2, r2, #8
-     ce8:	d503      	bpl.n	cf2 <SPI_DAC_data_transfers_8bit+0x48>
+     cd6:	0212      	lsls	r2, r2, #8
+     cd8:	d503      	bpl.n	ce2 <SPI_DAC_data_transfers_8bit+0x48>
 			dat |= 1 << (i - 1);
-     cea:	4303      	orrs	r3, r0
-     cec:	0618      	lsls	r0, r3, #24
-     cee:	0e00      	lsrs	r0, r0, #24
-     cf0:	e000      	b.n	cf4 <SPI_DAC_data_transfers_8bit+0x4a>
+     cda:	4303      	orrs	r3, r0
+     cdc:	0618      	lsls	r0, r3, #24
+     cde:	0e00      	lsrs	r0, r0, #24
+     ce0:	e000      	b.n	ce4 <SPI_DAC_data_transfers_8bit+0x4a>
 		else
 			dat &= ~(1 << (i - 1));
-     cf2:	4398      	bics	r0, r3
+     ce2:	4398      	bics	r0, r3
 {
 	unsigned char dat = 0;
-	char i;
+	char i, j;
 
 	//Write
 	for(i = 8;  i > 0 ; i--)
-     cf4:	3901      	subs	r1, #1
-     cf6:	d2dc      	bcs.n	cb2 <SPI_DAC_data_transfers_8bit+0x8>
+     ce4:	3901      	subs	r1, #1
+     ce6:	d2dc      	bcs.n	ca2 <SPI_DAC_data_transfers_8bit+0x8>
 		else
 			dat &= ~(1 << (i - 1));
 
 	}  
 	return dat;
 }
-     cf8:	bc30      	pop	{r4, r5}
-     cfa:	bc02      	pop	{r1}
-     cfc:	4708      	bx	r1
-     cfe:	46c0      	nop			; (mov r8, r8)
-     d00:	3fffc034 	.word	0x3fffc034
-     d04:	feffffff 	.word	0xfeffffff
-     d08:	ffefffff 	.word	0xffefffff
+     ce8:	bc30      	pop	{r4, r5}
+     cea:	bc02      	pop	{r1}
+     cec:	4708      	bx	r1
+     cee:	46c0      	nop			; (mov r8, r8)
+     cf0:	3fffc034 	.word	0x3fffc034
+     cf4:	feffffff 	.word	0xfeffffff
+     cf8:	ffefffff 	.word	0xffefffff
 
-00000d0c <SPI0_send_1_byte>:
+00000cfc <SPI0_send_1_byte>:
 #include "spi.h"
 /* #define DEBUG_SPI */
 
 
 uint8_t SPI0_send_1_byte(uint8_t data, uint8_t slave)
 {
-     d0c:	b508      	push	{r3, lr}
+     cfc:	b508      	push	{r3, lr}
 	uint8_t dat = 0;
-	/* S0SPDR = data; */
-	/* while (spi_readStatus() == 0);  */
-	/* data = S0SPDR; */
 	if (slave == ADC )
-     d0e:	2912      	cmp	r1, #18
-     d10:	d102      	bne.n	d18 <SPI0_send_1_byte+0xc>
+     cfe:	2912      	cmp	r1, #18
+     d00:	d102      	bne.n	d08 <SPI0_send_1_byte+0xc>
 	{
 	dat = SPI_ADC_data_transfers_8bit(data);
-     d12:	f7ff ff4d 	bl	bb0 <SPI_ADC_data_transfers_8bit>
-     d16:	e004      	b.n	d22 <SPI0_send_1_byte+0x16>
+     d02:	f7ff ff59 	bl	bb8 <SPI_ADC_data_transfers_8bit>
+     d06:	e004      	b.n	d12 <SPI0_send_1_byte+0x16>
 /* #define DEBUG_SPI */
 
 
 uint8_t SPI0_send_1_byte(uint8_t data, uint8_t slave)
 {
 	uint8_t dat = 0;
-     d18:	2300      	movs	r3, #0
-	/* while (spi_readStatus() == 0);  */
-	/* data = S0SPDR; */
+     d08:	2300      	movs	r3, #0
 	if (slave == ADC )
 	{
 	dat = SPI_ADC_data_transfers_8bit(data);
 	}else if (slave == DAC)
-     d1a:	291d      	cmp	r1, #29
-     d1c:	d102      	bne.n	d24 <SPI0_send_1_byte+0x18>
+     d0a:	291d      	cmp	r1, #29
+     d0c:	d102      	bne.n	d14 <SPI0_send_1_byte+0x18>
 	{
 	dat = SPI_DAC_data_transfers_8bit(data);
-     d1e:	f7ff ffc4 	bl	caa <SPI_DAC_data_transfers_8bit>
-     d22:	1c03      	adds	r3, r0, #0
+     d0e:	f7ff ffc4 	bl	c9a <SPI_DAC_data_transfers_8bit>
+     d12:	1c03      	adds	r3, r0, #0
 	}
 	return dat;
 }
-     d24:	1c18      	adds	r0, r3, #0
-     d26:	bc08      	pop	{r3}
-     d28:	bc02      	pop	{r1}
-     d2a:	4708      	bx	r1
+     d14:	1c18      	adds	r0, r3, #0
+     d16:	bc08      	pop	{r3}
+     d18:	bc02      	pop	{r1}
+     d1a:	4708      	bx	r1
 
-00000d2c <Delay>:
+00000d1c <Delay>:
 {
 	int i, j;
 	for(j = 0; j < value; j++)
 		for(i = 0; i < 10; i++)
 			i = i;
 }
-     d2c:	4770      	bx	lr
+     d1c:	4770      	bx	lr
 
-00000d2e <adc_init>:
+00000d1e <adc_init>:
 void adc_init(void)
 {
-     d2e:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
-	uint8_t dat = 0;
+	uint16_t dat = 0;
+	FIO1PIN |= (1 << ADC_SCLK);
+     d1e:	2180      	movs	r1, #128	; 0x80
+	for(j = 0; j < value; j++)
+		for(i = 0; i < 10; i++)
+			i = i;
+}
+void adc_init(void)
+{
+     d20:	b570      	push	{r4, r5, r6, lr}
+	uint16_t dat = 0;
+	FIO1PIN |= (1 << ADC_SCLK);
 	
 	FIO1CLR |= 1 << ADC;
-     d30:	2680      	movs	r6, #128	; 0x80
-     d32:	4d23      	ldr	r5, [pc, #140]	; (dc0 <adc_init+0x92>)
-     d34:	682b      	ldr	r3, [r5, #0]
-     d36:	02f6      	lsls	r6, r6, #11
-     d38:	4333      	orrs	r3, r6
-     d3a:	602b      	str	r3, [r5, #0]
-
-	SPI0_send_1_byte(READ_ID_REG, ADC);
-     d3c:	2112      	movs	r1, #18
-     d3e:	2060      	movs	r0, #96	; 0x60
-     d40:	f7ff ffe4 	bl	d0c <SPI0_send_1_byte>
-	dat = SPI0_send_1_byte(0xFF, ADC);
-     d44:	2112      	movs	r1, #18
-     d46:	20ff      	movs	r0, #255	; 0xff
-     d48:	f7ff ffe0 	bl	d0c <SPI0_send_1_byte>
-     d4c:	1c07      	adds	r7, r0, #0
-
-	FIO1SET |= 1 << ADC;
-     d4e:	4c1d      	ldr	r4, [pc, #116]	; (dc4 <adc_init+0x96>)
-     d50:	6823      	ldr	r3, [r4, #0]
-     d52:	4333      	orrs	r3, r6
-     d54:	6023      	str	r3, [r4, #0]
-
-	UART0_send("\nSPI_recieved: ", 15);
-     d56:	210f      	movs	r1, #15
-     d58:	481b      	ldr	r0, [pc, #108]	; (dc8 <adc_init+0x9a>)
-     d5a:	f7ff fe4d 	bl	9f8 <UART0_send>
-	UART0_send_byte(dat);
-     d5e:	1c38      	adds	r0, r7, #0
-     d60:	f7ff fe34 	bl	9cc <UART0_send_byte>
-
+     d22:	2680      	movs	r6, #128	; 0x80
+			i = i;
+}
+void adc_init(void)
+{
+	uint16_t dat = 0;
+	FIO1PIN |= (1 << ADC_SCLK);
+     d24:	4a1a      	ldr	r2, [pc, #104]	; (d90 <adc_init+0x72>)
+     d26:	6813      	ldr	r3, [r2, #0]
+     d28:	0349      	lsls	r1, r1, #13
+     d2a:	430b      	orrs	r3, r1
+     d2c:	6013      	str	r3, [r2, #0]
+	
 	FIO1CLR |= 1 << ADC;
-     d64:	682b      	ldr	r3, [r5, #0]
-     d66:	4333      	orrs	r3, r6
-     d68:	602b      	str	r3, [r5, #0]
+     d2e:	4d19      	ldr	r5, [pc, #100]	; (d94 <adc_init+0x76>)
+     d30:	682b      	ldr	r3, [r5, #0]
+     d32:	02f6      	lsls	r6, r6, #11
+     d34:	4333      	orrs	r3, r6
 	SPI0_send_1_byte(WRITE_CONF_REG, ADC);
-     d6a:	2112      	movs	r1, #18
-     d6c:	2010      	movs	r0, #16
-     d6e:	f7ff ffcd 	bl	d0c <SPI0_send_1_byte>
 	SPI0_send_2_byte(CONF_REG_VAL, ADC);
-     d72:	2112      	movs	r1, #18
-     d74:	4815      	ldr	r0, [pc, #84]	; (dcc <adc_init+0x9e>)
-     d76:	f7ff ff89 	bl	c8c <SPI0_send_2_byte>
 	FIO1SET |= 1 << ADC;
-     d7a:	6823      	ldr	r3, [r4, #0]
-     d7c:	4333      	orrs	r3, r6
-     d7e:	6023      	str	r3, [r4, #0]
+     d36:	4c18      	ldr	r4, [pc, #96]	; (d98 <adc_init+0x7a>)
+void adc_init(void)
+{
+	uint16_t dat = 0;
+	FIO1PIN |= (1 << ADC_SCLK);
+	
+	FIO1CLR |= 1 << ADC;
+     d38:	602b      	str	r3, [r5, #0]
+	SPI0_send_1_byte(WRITE_CONF_REG, ADC);
+     d3a:	2112      	movs	r1, #18
+     d3c:	2010      	movs	r0, #16
+     d3e:	f7ff ffdd 	bl	cfc <SPI0_send_1_byte>
+	SPI0_send_2_byte(CONF_REG_VAL, ADC);
+     d42:	2112      	movs	r1, #18
+     d44:	2000      	movs	r0, #0
+     d46:	f7ff ff99 	bl	c7c <SPI0_send_2_byte>
+	FIO1SET |= 1 << ADC;
+     d4a:	6823      	ldr	r3, [r4, #0]
+     d4c:	4333      	orrs	r3, r6
+     d4e:	6023      	str	r3, [r4, #0]
+
 
 	FIO1CLR |= 1 << ADC;
-     d80:	682b      	ldr	r3, [r5, #0]
-     d82:	4333      	orrs	r3, r6
-     d84:	602b      	str	r3, [r5, #0]
+     d50:	682b      	ldr	r3, [r5, #0]
+     d52:	4333      	orrs	r3, r6
+     d54:	602b      	str	r3, [r5, #0]
 	SPI0_send_1_byte(WRITE_MODE_REG, ADC);
-     d86:	2112      	movs	r1, #18
-     d88:	2008      	movs	r0, #8
-     d8a:	f7ff ffbf 	bl	d0c <SPI0_send_1_byte>
+     d56:	2112      	movs	r1, #18
+     d58:	2008      	movs	r0, #8
+     d5a:	f7ff ffcf 	bl	cfc <SPI0_send_1_byte>
 	SPI0_send_2_byte(MODE_REG_VAL, ADC);
-     d8e:	2112      	movs	r1, #18
-     d90:	2001      	movs	r0, #1
-     d92:	f7ff ff7b 	bl	c8c <SPI0_send_2_byte>
+     d5e:	2112      	movs	r1, #18
+     d60:	2001      	movs	r0, #1
+     d62:	f7ff ff8b 	bl	c7c <SPI0_send_2_byte>
 	FIO1SET |= 1 << ADC;
-     d96:	6823      	ldr	r3, [r4, #0]
-     d98:	431e      	orrs	r6, r3
-     d9a:	6026      	str	r6, [r4, #0]
+     d66:	6823      	ldr	r3, [r4, #0]
+     d68:	431e      	orrs	r6, r3
+     d6a:	6026      	str	r6, [r4, #0]
 
 	FIO1CLR |= 1 << DAC;
-     d9c:	2680      	movs	r6, #128	; 0x80
-     d9e:	682b      	ldr	r3, [r5, #0]
-     da0:	05b6      	lsls	r6, r6, #22
-     da2:	4333      	orrs	r3, r6
-     da4:	602b      	str	r3, [r5, #0]
+     d6c:	2680      	movs	r6, #128	; 0x80
+     d6e:	682b      	ldr	r3, [r5, #0]
+     d70:	05b6      	lsls	r6, r6, #22
+     d72:	4333      	orrs	r3, r6
+     d74:	602b      	str	r3, [r5, #0]
 	/* SPI0_send_2_byte(0x1000 | 578); */
 	SPI0_send_2_byte((0x1000 | 578), DAC);
-     da6:	211d      	movs	r1, #29
-     da8:	4809      	ldr	r0, [pc, #36]	; (dd0 <adc_init+0xa2>)
-     daa:	f7ff ff6f 	bl	c8c <SPI0_send_2_byte>
+     d76:	211d      	movs	r1, #29
+     d78:	4808      	ldr	r0, [pc, #32]	; (d9c <adc_init+0x7e>)
+     d7a:	f7ff ff7f 	bl	c7c <SPI0_send_2_byte>
 	FIO1SET |= 1 << DAC;
-     dae:	6823      	ldr	r3, [r4, #0]
-     db0:	4333      	orrs	r3, r6
-     db2:	6023      	str	r3, [r4, #0]
+     d7e:	6823      	ldr	r3, [r4, #0]
+     d80:	4333      	orrs	r3, r6
+     d82:	6023      	str	r3, [r4, #0]
 
 	/* SPI0_send_1_byte(WRITE_OFFSET_REG); */
 	/* SPI0_send_2_byte(OFFSET_REG_VAL); */
 	led_set(LED1);
-     db4:	2000      	movs	r0, #0
-     db6:	f7ff fc61 	bl	67c <led_set>
+     d84:	2000      	movs	r0, #0
+     d86:	f7ff fc79 	bl	67c <led_set>
 
 }
-     dba:	bcf8      	pop	{r3, r4, r5, r6, r7}
-     dbc:	bc01      	pop	{r0}
-     dbe:	4700      	bx	r0
-     dc0:	3fffc03c 	.word	0x3fffc03c
-     dc4:	3fffc038 	.word	0x3fffc038
-     dc8:	00001405 	.word	0x00001405
-     dcc:	00001010 	.word	0x00001010
-     dd0:	00001242 	.word	0x00001242
+     d8a:	bc70      	pop	{r4, r5, r6}
+     d8c:	bc01      	pop	{r0}
+     d8e:	4700      	bx	r0
+     d90:	3fffc034 	.word	0x3fffc034
+     d94:	3fffc03c 	.word	0x3fffc03c
+     d98:	3fffc038 	.word	0x3fffc038
+     d9c:	00001242 	.word	0x00001242
 
-00000dd4 <dac_set_voltage>:
+00000da0 <dac_set_voltage>:
 
 void dac_set_voltage(uint16_t voltage)
 {
-     dd4:	b510      	push	{r4, lr}
+     da0:	b510      	push	{r4, lr}
 	/* SPI0_send_2_byte((voltage | DAC_LOAD_CMD)); */
 	FIO1CLR |= 1 << DAC;
-     dd6:	2480      	movs	r4, #128	; 0x80
-     dd8:	4a08      	ldr	r2, [pc, #32]	; (dfc <dac_set_voltage+0x28>)
-     dda:	6813      	ldr	r3, [r2, #0]
-     ddc:	05a4      	lsls	r4, r4, #22
-     dde:	4323      	orrs	r3, r4
-     de0:	6013      	str	r3, [r2, #0]
+     da2:	2480      	movs	r4, #128	; 0x80
+     da4:	4a08      	ldr	r2, [pc, #32]	; (dc8 <dac_set_voltage+0x28>)
+     da6:	6813      	ldr	r3, [r2, #0]
+     da8:	05a4      	lsls	r4, r4, #22
+     daa:	4323      	orrs	r3, r4
+     dac:	6013      	str	r3, [r2, #0]
 	SPI0_send_2_byte((0x1000 | voltage), DAC);
-     de2:	2380      	movs	r3, #128	; 0x80
-     de4:	015b      	lsls	r3, r3, #5
-     de6:	4318      	orrs	r0, r3
-     de8:	211d      	movs	r1, #29
-     dea:	f7ff ff4f 	bl	c8c <SPI0_send_2_byte>
+     dae:	2380      	movs	r3, #128	; 0x80
+     db0:	015b      	lsls	r3, r3, #5
+     db2:	4318      	orrs	r0, r3
+     db4:	211d      	movs	r1, #29
+     db6:	f7ff ff61 	bl	c7c <SPI0_send_2_byte>
 	FIO1SET |= 1 << DAC;
-     dee:	4a04      	ldr	r2, [pc, #16]	; (e00 <dac_set_voltage+0x2c>)
-     df0:	6813      	ldr	r3, [r2, #0]
-     df2:	4323      	orrs	r3, r4
-     df4:	6013      	str	r3, [r2, #0]
+     dba:	4a04      	ldr	r2, [pc, #16]	; (dcc <dac_set_voltage+0x2c>)
+     dbc:	6813      	ldr	r3, [r2, #0]
+     dbe:	4323      	orrs	r3, r4
+     dc0:	6013      	str	r3, [r2, #0]
 }
-     df6:	bc10      	pop	{r4}
-     df8:	bc01      	pop	{r0}
-     dfa:	4700      	bx	r0
-     dfc:	3fffc03c 	.word	0x3fffc03c
-     e00:	3fffc038 	.word	0x3fffc038
+     dc2:	bc10      	pop	{r4}
+     dc4:	bc01      	pop	{r0}
+     dc6:	4700      	bx	r0
+     dc8:	3fffc03c 	.word	0x3fffc03c
+     dcc:	3fffc038 	.word	0x3fffc038
 
-00000e04 <adc_read_current>:
+00000dd0 <adc_read_current>:
 
 uint16_t adc_read_current(void)
 {
-     e04:	b570      	push	{r4, r5, r6, lr}
+     dd0:	b570      	push	{r4, r5, r6, lr}
 	uint16_t current;
 	/* Need to select proper channel */
 	FIO1CLR |= 1 << ADC;
-     e06:	2580      	movs	r5, #128	; 0x80
-     e08:	4e10      	ldr	r6, [pc, #64]	; (e4c <adc_read_current+0x48>)
-     e0a:	6833      	ldr	r3, [r6, #0]
-     e0c:	02ed      	lsls	r5, r5, #11
-     e0e:	432b      	orrs	r3, r5
-     e10:	6033      	str	r3, [r6, #0]
+     dd2:	2580      	movs	r5, #128	; 0x80
+     dd4:	4e10      	ldr	r6, [pc, #64]	; (e18 <adc_read_current+0x48>)
+     dd6:	6833      	ldr	r3, [r6, #0]
+     dd8:	02ed      	lsls	r5, r5, #11
+     dda:	432b      	orrs	r3, r5
+     ddc:	6033      	str	r3, [r6, #0]
 	SPI0_send_1_byte(WRITE_MODE_REG, ADC);
 	SPI0_send_2_byte(MODE_REG_VAL, ADC);
 	FIO1SET |= 1 << ADC;
-     e12:	4c0f      	ldr	r4, [pc, #60]	; (e50 <adc_read_current+0x4c>)
+     dde:	4c0f      	ldr	r4, [pc, #60]	; (e1c <adc_read_current+0x4c>)
 uint16_t adc_read_current(void)
 {
 	uint16_t current;
 	/* Need to select proper channel */
 	FIO1CLR |= 1 << ADC;
 	SPI0_send_1_byte(WRITE_MODE_REG, ADC);
-     e14:	2112      	movs	r1, #18
-     e16:	2008      	movs	r0, #8
-     e18:	f7ff ff78 	bl	d0c <SPI0_send_1_byte>
+     de0:	2112      	movs	r1, #18
+     de2:	2008      	movs	r0, #8
+     de4:	f7ff ff8a 	bl	cfc <SPI0_send_1_byte>
 	SPI0_send_2_byte(MODE_REG_VAL, ADC);
-     e1c:	2112      	movs	r1, #18
-     e1e:	2001      	movs	r0, #1
-     e20:	f7ff ff34 	bl	c8c <SPI0_send_2_byte>
+     de8:	2112      	movs	r1, #18
+     dea:	2001      	movs	r0, #1
+     dec:	f7ff ff46 	bl	c7c <SPI0_send_2_byte>
 	FIO1SET |= 1 << ADC;
-     e24:	6823      	ldr	r3, [r4, #0]
-     e26:	432b      	orrs	r3, r5
-     e28:	6023      	str	r3, [r4, #0]
+     df0:	6823      	ldr	r3, [r4, #0]
+     df2:	432b      	orrs	r3, r5
+     df4:	6023      	str	r3, [r4, #0]
 
 	FIO1CLR |= 1 << ADC;
-     e2a:	6833      	ldr	r3, [r6, #0]
-     e2c:	432b      	orrs	r3, r5
-     e2e:	6033      	str	r3, [r6, #0]
+     df6:	6833      	ldr	r3, [r6, #0]
+     df8:	432b      	orrs	r3, r5
+     dfa:	6033      	str	r3, [r6, #0]
 	SPI0_send_1_byte(READ_DATA_REG, ADC);
-     e30:	2112      	movs	r1, #18
-     e32:	2058      	movs	r0, #88	; 0x58
-     e34:	f7ff ff6a 	bl	d0c <SPI0_send_1_byte>
+     dfc:	2112      	movs	r1, #18
+     dfe:	2058      	movs	r0, #88	; 0x58
+     e00:	f7ff ff7c 	bl	cfc <SPI0_send_1_byte>
 	current = SPI0_send_2_byte(0xFFFF, ADC);
-     e38:	2112      	movs	r1, #18
-     e3a:	4806      	ldr	r0, [pc, #24]	; (e54 <adc_read_current+0x50>)
-     e3c:	f7ff ff26 	bl	c8c <SPI0_send_2_byte>
+     e04:	2112      	movs	r1, #18
+     e06:	4806      	ldr	r0, [pc, #24]	; (e20 <adc_read_current+0x50>)
+     e08:	f7ff ff38 	bl	c7c <SPI0_send_2_byte>
 	FIO1SET |= 1 << ADC;
-     e40:	6823      	ldr	r3, [r4, #0]
-     e42:	431d      	orrs	r5, r3
-     e44:	6025      	str	r5, [r4, #0]
+     e0c:	6823      	ldr	r3, [r4, #0]
+     e0e:	431d      	orrs	r5, r3
+     e10:	6025      	str	r5, [r4, #0]
 
 	return current;
 }
-     e46:	bc70      	pop	{r4, r5, r6}
-     e48:	bc02      	pop	{r1}
-     e4a:	4708      	bx	r1
-     e4c:	3fffc03c 	.word	0x3fffc03c
-     e50:	3fffc038 	.word	0x3fffc038
-     e54:	0000ffff 	.word	0x0000ffff
+     e12:	bc70      	pop	{r4, r5, r6}
+     e14:	bc02      	pop	{r1}
+     e16:	4708      	bx	r1
+     e18:	3fffc03c 	.word	0x3fffc03c
+     e1c:	3fffc038 	.word	0x3fffc038
+     e20:	0000ffff 	.word	0x0000ffff
 
-00000e58 <adc_read_voltage>:
+00000e24 <adc_read_voltage>:
 
 uint16_t adc_read_voltage(void)
 {
-     e58:	b570      	push	{r4, r5, r6, lr}
+     e24:	b570      	push	{r4, r5, r6, lr}
 	uint16_t voltage;
 	/* Need to select proper channel */
 	FIO1CLR |= 1 << ADC;
-     e5a:	2580      	movs	r5, #128	; 0x80
-     e5c:	4e10      	ldr	r6, [pc, #64]	; (ea0 <adc_read_voltage+0x48>)
-     e5e:	6833      	ldr	r3, [r6, #0]
-     e60:	02ed      	lsls	r5, r5, #11
-     e62:	432b      	orrs	r3, r5
-     e64:	6033      	str	r3, [r6, #0]
+     e26:	2580      	movs	r5, #128	; 0x80
+     e28:	4e10      	ldr	r6, [pc, #64]	; (e6c <adc_read_voltage+0x48>)
+     e2a:	6833      	ldr	r3, [r6, #0]
+     e2c:	02ed      	lsls	r5, r5, #11
+     e2e:	432b      	orrs	r3, r5
+     e30:	6033      	str	r3, [r6, #0]
 	SPI0_send_1_byte(WRITE_MODE_REG, ADC);
 	SPI0_send_2_byte((MODE_REG_VAL | 1), ADC);	// | 1 - select 2 channel
 	FIO1SET |= 1 << ADC;
-     e66:	4c0f      	ldr	r4, [pc, #60]	; (ea4 <adc_read_voltage+0x4c>)
+     e32:	4c0f      	ldr	r4, [pc, #60]	; (e70 <adc_read_voltage+0x4c>)
 uint16_t adc_read_voltage(void)
 {
 	uint16_t voltage;
 	/* Need to select proper channel */
 	FIO1CLR |= 1 << ADC;
 	SPI0_send_1_byte(WRITE_MODE_REG, ADC);
-     e68:	2112      	movs	r1, #18
-     e6a:	2008      	movs	r0, #8
-     e6c:	f7ff ff4e 	bl	d0c <SPI0_send_1_byte>
+     e34:	2112      	movs	r1, #18
+     e36:	2008      	movs	r0, #8
+     e38:	f7ff ff60 	bl	cfc <SPI0_send_1_byte>
 	SPI0_send_2_byte((MODE_REG_VAL | 1), ADC);	// | 1 - select 2 channel
-     e70:	2112      	movs	r1, #18
-     e72:	2001      	movs	r0, #1
-     e74:	f7ff ff0a 	bl	c8c <SPI0_send_2_byte>
+     e3c:	2112      	movs	r1, #18
+     e3e:	2001      	movs	r0, #1
+     e40:	f7ff ff1c 	bl	c7c <SPI0_send_2_byte>
 	FIO1SET |= 1 << ADC;
-     e78:	6823      	ldr	r3, [r4, #0]
-     e7a:	432b      	orrs	r3, r5
-     e7c:	6023      	str	r3, [r4, #0]
+     e44:	6823      	ldr	r3, [r4, #0]
+     e46:	432b      	orrs	r3, r5
+     e48:	6023      	str	r3, [r4, #0]
 
 	FIO1CLR |= 1 << ADC;
-     e7e:	6833      	ldr	r3, [r6, #0]
-     e80:	432b      	orrs	r3, r5
-     e82:	6033      	str	r3, [r6, #0]
+     e4a:	6833      	ldr	r3, [r6, #0]
+     e4c:	432b      	orrs	r3, r5
+     e4e:	6033      	str	r3, [r6, #0]
 	SPI0_send_1_byte(READ_DATA_REG, ADC);
-     e84:	2112      	movs	r1, #18
-     e86:	2058      	movs	r0, #88	; 0x58
-     e88:	f7ff ff40 	bl	d0c <SPI0_send_1_byte>
+     e50:	2112      	movs	r1, #18
+     e52:	2058      	movs	r0, #88	; 0x58
+     e54:	f7ff ff52 	bl	cfc <SPI0_send_1_byte>
 	voltage = SPI0_send_2_byte(0xFFFF, ADC);
-     e8c:	2112      	movs	r1, #18
-     e8e:	4806      	ldr	r0, [pc, #24]	; (ea8 <adc_read_voltage+0x50>)
-     e90:	f7ff fefc 	bl	c8c <SPI0_send_2_byte>
+     e58:	2112      	movs	r1, #18
+     e5a:	4806      	ldr	r0, [pc, #24]	; (e74 <adc_read_voltage+0x50>)
+     e5c:	f7ff ff0e 	bl	c7c <SPI0_send_2_byte>
 	FIO1SET |= 1 << ADC;
-     e94:	6823      	ldr	r3, [r4, #0]
-     e96:	431d      	orrs	r5, r3
-     e98:	6025      	str	r5, [r4, #0]
+     e60:	6823      	ldr	r3, [r4, #0]
+     e62:	431d      	orrs	r5, r3
+     e64:	6025      	str	r5, [r4, #0]
 
 	return voltage;
 
 }
-     e9a:	bc70      	pop	{r4, r5, r6}
-     e9c:	bc02      	pop	{r1}
-     e9e:	4708      	bx	r1
-     ea0:	3fffc03c 	.word	0x3fffc03c
-     ea4:	3fffc038 	.word	0x3fffc038
-     ea8:	0000ffff 	.word	0x0000ffff
+     e66:	bc70      	pop	{r4, r5, r6}
+     e68:	bc02      	pop	{r1}
+     e6a:	4708      	bx	r1
+     e6c:	3fffc03c 	.word	0x3fffc03c
+     e70:	3fffc038 	.word	0x3fffc038
+     e74:	0000ffff 	.word	0x0000ffff
 
-00000eac <Isr_TIM0>:
+00000e78 <Isr_TIM0>:
 extern void gpio_set(uint8_t port, uint8_t pin);
 extern void gpio_clear(uint8_t port, uint8_t pin);
 void Isr_TIM0(void)
 {
-	uint8_t dat;
+	uint16_t dat;
 	T0IR = 0x3F;
-     eac:	223f      	movs	r2, #63	; 0x3f
- *         data = curr >> 8;
- *         UART0_send_byte(data);
- *         data = curr & 0xFF;
- *         UART0_send_byte(data); */
-
+     e78:	223f      	movs	r2, #63	; 0x3f
+	uint16_t volts, curr;
+	uint8_t data;
 	FIO1PIN |= (1 << ADC_SCLK);
-     eae:	2180      	movs	r1, #128	; 0x80
+     e7a:	2180      	movs	r1, #128	; 0x80
 #include "adc_dac.h"
 #include "usart_console.h"
 extern void gpio_set(uint8_t port, uint8_t pin);
 extern void gpio_clear(uint8_t port, uint8_t pin);
 void Isr_TIM0(void)
 {
-     eb0:	b538      	push	{r3, r4, r5, lr}
- *         UART0_send_byte(data);
- *         data = curr & 0xFF;
- *         UART0_send_byte(data); */
-
-	FIO1PIN |= (1 << ADC_SCLK);
-	FIO1CLR |= 1 << ADC;
-     eb2:	2480      	movs	r4, #128	; 0x80
-extern void gpio_set(uint8_t port, uint8_t pin);
-extern void gpio_clear(uint8_t port, uint8_t pin);
-void Isr_TIM0(void)
-{
-	uint8_t dat;
+     e7c:	b538      	push	{r3, r4, r5, lr}
+	uint16_t dat;
 	T0IR = 0x3F;
-     eb4:	4b12      	ldr	r3, [pc, #72]	; (f00 <VIC_VectAddr>)
-     eb6:	601a      	str	r2, [r3, #0]
- *         data = curr >> 8;
- *         UART0_send_byte(data);
- *         data = curr & 0xFF;
- *         UART0_send_byte(data); */
-
+     e7e:	4b16      	ldr	r3, [pc, #88]	; (ed8 <Isr_TIM0+0x60>)
+     e80:	601a      	str	r2, [r3, #0]
+	uint16_t volts, curr;
+	uint8_t data;
 	FIO1PIN |= (1 << ADC_SCLK);
-     eb8:	4a12      	ldr	r2, [pc, #72]	; (f04 <VIC_VectAddr+0x4>)
-     eba:	6813      	ldr	r3, [r2, #0]
-     ebc:	0349      	lsls	r1, r1, #13
-     ebe:	430b      	orrs	r3, r1
-     ec0:	6013      	str	r3, [r2, #0]
-	FIO1CLR |= 1 << ADC;
-     ec2:	4a11      	ldr	r2, [pc, #68]	; (f08 <VIC_VectAddr+0x8>)
-     ec4:	6813      	ldr	r3, [r2, #0]
-     ec6:	02e4      	lsls	r4, r4, #11
-     ec8:	4323      	orrs	r3, r4
-     eca:	6013      	str	r3, [r2, #0]
+     e82:	4a16      	ldr	r2, [pc, #88]	; (edc <Isr_TIM0+0x64>)
+     e84:	6813      	ldr	r3, [r2, #0]
+     e86:	0349      	lsls	r1, r1, #13
+     e88:	430b      	orrs	r3, r1
+     e8a:	6013      	str	r3, [r2, #0]
+        volts = adc_read_voltage();
+     e8c:	f7ff ffca 	bl	e24 <adc_read_voltage>
+     e90:	1c05      	adds	r5, r0, #0
+	curr = adc_read_current();
+     e92:	f7ff ff9d 	bl	dd0 <adc_read_current>
+     e96:	1c04      	adds	r4, r0, #0
+	UART0_send("\nOutput voltage: ",17 );
+     e98:	2111      	movs	r1, #17
+     e9a:	4811      	ldr	r0, [pc, #68]	; (ee0 <Isr_TIM0+0x68>)
+     e9c:	f7ff fdac 	bl	9f8 <UART0_send>
+	UART0_send_byte(volts >> 8);
+     ea0:	0a28      	lsrs	r0, r5, #8
+     ea2:	0600      	lsls	r0, r0, #24
+     ea4:	0e00      	lsrs	r0, r0, #24
+     ea6:	f7ff fd91 	bl	9cc <UART0_send_byte>
+	UART0_send_byte(volts);
+     eaa:	0628      	lsls	r0, r5, #24
+     eac:	0e00      	lsrs	r0, r0, #24
+     eae:	f7ff fd8d 	bl	9cc <UART0_send_byte>
 
-	SPI0_send_1_byte(READ_ID_REG, ADC);
-     ecc:	2112      	movs	r1, #18
-     ece:	2060      	movs	r0, #96	; 0x60
-     ed0:	f7ff ff1c 	bl	d0c <SPI0_send_1_byte>
-	dat = SPI0_send_1_byte(0xFF, ADC);
-     ed4:	2112      	movs	r1, #18
-     ed6:	20ff      	movs	r0, #255	; 0xff
-     ed8:	f7ff ff18 	bl	d0c <SPI0_send_1_byte>
-     edc:	1c05      	adds	r5, r0, #0
-
-	FIO1SET |= 1 << ADC;
-     ede:	4a0b      	ldr	r2, [pc, #44]	; (f0c <VIC_VectAddr+0xc>)
-     ee0:	6813      	ldr	r3, [r2, #0]
-     ee2:	4323      	orrs	r3, r4
-     ee4:	6013      	str	r3, [r2, #0]
-
-	UART0_send("\nSPI_recieved: ", 15);
-     ee6:	210f      	movs	r1, #15
-     ee8:	4809      	ldr	r0, [pc, #36]	; (f10 <VIC_VectAddr+0x10>)
-     eea:	f7ff fd85 	bl	9f8 <UART0_send>
-	UART0_send_byte(dat);
-     eee:	1c28      	adds	r0, r5, #0
-     ef0:	f7ff fd6c 	bl	9cc <UART0_send_byte>
-	/* UART0_send(&data, 1); */
-	/* UART0_send("Tim0\n", 5); */
+	UART0_send("\nCurrent: ",10 );
+     eb2:	210a      	movs	r1, #10
+     eb4:	480b      	ldr	r0, [pc, #44]	; (ee4 <Isr_TIM0+0x6c>)
+     eb6:	f7ff fd9f 	bl	9f8 <UART0_send>
+	UART0_send_byte(curr >> 8);
+     eba:	0a20      	lsrs	r0, r4, #8
+     ebc:	0600      	lsls	r0, r0, #24
+     ebe:	0e00      	lsrs	r0, r0, #24
+     ec0:	f7ff fd84 	bl	9cc <UART0_send_byte>
+        UART0_send_byte(curr); 
+     ec4:	0620      	lsls	r0, r4, #24
+     ec6:	0e00      	lsrs	r0, r0, #24
+     ec8:	f7ff fd80 	bl	9cc <UART0_send_byte>
+ * 
+ *         FIO1SET |= 1 << ADC;
+ * 
+ *         UART0_send("\nSPI_recieved: ", 15);
+ *         UART0_send_byte(dat); */
 	VICVectAddr = 0;
-     ef4:	2200      	movs	r2, #0
-     ef6:	4b07      	ldr	r3, [pc, #28]	; (f14 <VIC_VectAddr+0x14>)
-     ef8:	601a      	str	r2, [r3, #0]
+     ecc:	2200      	movs	r2, #0
+     ece:	4b06      	ldr	r3, [pc, #24]	; (ee8 <Isr_TIM0+0x70>)
+     ed0:	601a      	str	r2, [r3, #0]
 }
-     efa:	bc38      	pop	{r3, r4, r5}
-     efc:	bc01      	pop	{r0}
-     efe:	4700      	bx	r0
-     f00:	e0004000 	.word	0xe0004000
-     f04:	3fffc034 	.word	0x3fffc034
-     f08:	3fffc03c 	.word	0x3fffc03c
-     f0c:	3fffc038 	.word	0x3fffc038
-     f10:	00001405 	.word	0x00001405
-     f14:	ffffff00 	.word	0xffffff00
+     ed2:	bc38      	pop	{r3, r4, r5}
+     ed4:	bc01      	pop	{r0}
+     ed6:	4700      	bx	r0
+     ed8:	e0004000 	.word	0xe0004000
+     edc:	3fffc034 	.word	0x3fffc034
+     ee0:	000013d5 	.word	0x000013d5
+     ee4:	000013e7 	.word	0x000013e7
+     ee8:	ffffff00 	.word	0xffffff00
 
-00000f18 <timer0_init>:
+00000eec <timer0_init>:
 void timer0_init(void)
 {
 	PCONP |= (1 << 1);	/* Power on tim0 */
-     f18:	2102      	movs	r1, #2
-     f1a:	4a0f      	ldr	r2, [pc, #60]	; (f58 <timer0_init+0x40>)
-	/* UART0_send(&data, 1); */
-	/* UART0_send("Tim0\n", 5); */
+     eec:	2102      	movs	r1, #2
+     eee:	4a0f      	ldr	r2, [pc, #60]	; (f2c <VIC_VectAddr+0x2c>)
+ *         UART0_send("\nSPI_recieved: ", 15);
+ *         UART0_send_byte(dat); */
 	VICVectAddr = 0;
 }
 void timer0_init(void)
 {
-     f1c:	b508      	push	{r3, lr}
+     ef0:	b508      	push	{r3, lr}
 	PCONP |= (1 << 1);	/* Power on tim0 */
-     f1e:	6813      	ldr	r3, [r2, #0]
-     f20:	430b      	orrs	r3, r1
-     f22:	6013      	str	r3, [r2, #0]
+     ef2:	6813      	ldr	r3, [r2, #0]
+     ef4:	430b      	orrs	r3, r1
+     ef6:	6013      	str	r3, [r2, #0]
 	T0TCR = 0;	/* Disable tim0 */
-     f24:	2300      	movs	r3, #0
-     f26:	4a0d      	ldr	r2, [pc, #52]	; (f5c <timer0_init+0x44>)
-     f28:	6013      	str	r3, [r2, #0]
+     ef8:	2300      	movs	r3, #0
+     efa:	4a0d      	ldr	r2, [pc, #52]	; (f30 <VIC_VectAddr+0x30>)
+     efc:	6013      	str	r3, [r2, #0]
 
 	T0IR = (1 << 0);	/* Channel 0 match interrupt */
-     f2a:	4a0d      	ldr	r2, [pc, #52]	; (f60 <timer0_init+0x48>)
-     f2c:	3901      	subs	r1, #1
-     f2e:	6011      	str	r1, [r2, #0]
+     efe:	4a0d      	ldr	r2, [pc, #52]	; (f34 <VIC_VectAddr+0x34>)
+     f00:	3901      	subs	r1, #1
+     f02:	6011      	str	r1, [r2, #0]
 	T0MCR = 3;
-     f30:	4a0c      	ldr	r2, [pc, #48]	; (f64 <timer0_init+0x4c>)
-     f32:	3102      	adds	r1, #2
-     f34:	6011      	str	r1, [r2, #0]
+     f04:	4a0c      	ldr	r2, [pc, #48]	; (f38 <VIC_VectAddr+0x38>)
+     f06:	3102      	adds	r1, #2
+     f08:	6011      	str	r1, [r2, #0]
 	T0CTCR = 0;
-     f36:	4a0c      	ldr	r2, [pc, #48]	; (f68 <timer0_init+0x50>)
-     f38:	6013      	str	r3, [r2, #0]
-	T0PR = 50;	/* Prescaler */
-     f3a:	2232      	movs	r2, #50	; 0x32
-     f3c:	4b0b      	ldr	r3, [pc, #44]	; (f6c <timer0_init+0x54>)
-     f3e:	601a      	str	r2, [r3, #0]
+     f0a:	4a0c      	ldr	r2, [pc, #48]	; (f3c <VIC_VectAddr+0x3c>)
+     f0c:	6013      	str	r3, [r2, #0]
+	T0PR = 200;	/* Prescaler */
+     f0e:	22c8      	movs	r2, #200	; 0xc8
+     f10:	4b0b      	ldr	r3, [pc, #44]	; (f40 <VIC_VectAddr+0x40>)
+     f12:	601a      	str	r2, [r3, #0]
 	T0MR0 = 72000;	/* Top value (5 Hz) */
-     f40:	4a0b      	ldr	r2, [pc, #44]	; (f70 <timer0_init+0x58>)
-     f42:	4b0c      	ldr	r3, [pc, #48]	; (f74 <timer0_init+0x5c>)
+     f14:	4a0b      	ldr	r2, [pc, #44]	; (f44 <VIC_VectAddr+0x44>)
+     f16:	4b0c      	ldr	r3, [pc, #48]	; (f48 <VIC_VectAddr+0x48>)
 	RegisterIrq(TIMER0_IRQn, (void *)Isr_TIM0, PRI_LOWEST);
-     f44:	2004      	movs	r0, #4
+     f18:	2004      	movs	r0, #4
 
 	T0IR = (1 << 0);	/* Channel 0 match interrupt */
 	T0MCR = 3;
 	T0CTCR = 0;
-	T0PR = 50;	/* Prescaler */
+	T0PR = 200;	/* Prescaler */
 	T0MR0 = 72000;	/* Top value (5 Hz) */
-     f46:	601a      	str	r2, [r3, #0]
+     f1a:	601a      	str	r2, [r3, #0]
 	RegisterIrq(TIMER0_IRQn, (void *)Isr_TIM0, PRI_LOWEST);
-     f48:	490b      	ldr	r1, [pc, #44]	; (f78 <timer0_init+0x60>)
-     f4a:	220f      	movs	r2, #15
-     f4c:	f7ff fc56 	bl	7fc <RegisterIrq>
+     f1c:	490b      	ldr	r1, [pc, #44]	; (f4c <VIC_VectAddr+0x4c>)
+     f1e:	220f      	movs	r2, #15
+     f20:	f7ff fc6c 	bl	7fc <RegisterIrq>
 }
-     f50:	bc08      	pop	{r3}
-     f52:	bc01      	pop	{r0}
-     f54:	4700      	bx	r0
-     f56:	46c0      	nop			; (mov r8, r8)
-     f58:	e01fc0c4 	.word	0xe01fc0c4
-     f5c:	e0004004 	.word	0xe0004004
-     f60:	e0004000 	.word	0xe0004000
-     f64:	e0004014 	.word	0xe0004014
-     f68:	e0004070 	.word	0xe0004070
-     f6c:	e000400c 	.word	0xe000400c
-     f70:	00011940 	.word	0x00011940
-     f74:	e0004018 	.word	0xe0004018
-     f78:	00000ead 	.word	0x00000ead
+     f24:	bc08      	pop	{r3}
+     f26:	bc01      	pop	{r0}
+     f28:	4700      	bx	r0
+     f2a:	46c0      	nop			; (mov r8, r8)
+     f2c:	e01fc0c4 	.word	0xe01fc0c4
+     f30:	e0004004 	.word	0xe0004004
+     f34:	e0004000 	.word	0xe0004000
+     f38:	e0004014 	.word	0xe0004014
+     f3c:	e0004070 	.word	0xe0004070
+     f40:	e000400c 	.word	0xe000400c
+     f44:	00011940 	.word	0x00011940
+     f48:	e0004018 	.word	0xe0004018
+     f4c:	00000e79 	.word	0x00000e79
 
-00000f7c <timer0_start>:
+00000f50 <timer0_start>:
 
 void timer0_start(void)
 {
 	T0TCR |= 1;
-     f7c:	2101      	movs	r1, #1
-     f7e:	4a06      	ldr	r2, [pc, #24]	; (f98 <timer0_start+0x1c>)
+     f50:	2101      	movs	r1, #1
+     f52:	4a06      	ldr	r2, [pc, #24]	; (f6c <timer0_start+0x1c>)
 	T0MR0 = 72000;	/* Top value (5 Hz) */
 	RegisterIrq(TIMER0_IRQn, (void *)Isr_TIM0, PRI_LOWEST);
 }
 
 void timer0_start(void)
 {
-     f80:	b508      	push	{r3, lr}
+     f54:	b508      	push	{r3, lr}
 	T0TCR |= 1;
-     f82:	6813      	ldr	r3, [r2, #0]
-     f84:	430b      	orrs	r3, r1
-     f86:	6013      	str	r3, [r2, #0]
+     f56:	6813      	ldr	r3, [r2, #0]
+     f58:	430b      	orrs	r3, r1
+     f5a:	6013      	str	r3, [r2, #0]
 	gpio_set(OP_AMP_PORT, OP_AMP_PIN);
-     f88:	2002      	movs	r0, #2
-     f8a:	310c      	adds	r1, #12
-     f8c:	f7ff fb8a 	bl	6a4 <gpio_set>
+     f5c:	2002      	movs	r0, #2
+     f5e:	310c      	adds	r1, #12
+     f60:	f7ff fba0 	bl	6a4 <gpio_set>
 }
-     f90:	bc08      	pop	{r3}
-     f92:	bc01      	pop	{r0}
-     f94:	4700      	bx	r0
-     f96:	46c0      	nop			; (mov r8, r8)
-     f98:	e0004004 	.word	0xe0004004
+     f64:	bc08      	pop	{r3}
+     f66:	bc01      	pop	{r0}
+     f68:	4700      	bx	r0
+     f6a:	46c0      	nop			; (mov r8, r8)
+     f6c:	e0004004 	.word	0xe0004004
 
-00000f9c <timer0_stop>:
+00000f70 <timer0_stop>:
 
 void timer0_stop(void)
 {
 	T0TCR &= ~1;
-     f9c:	2101      	movs	r1, #1
-     f9e:	4a06      	ldr	r2, [pc, #24]	; (fb8 <timer0_stop+0x1c>)
+     f70:	2101      	movs	r1, #1
+     f72:	4a06      	ldr	r2, [pc, #24]	; (f8c <timer0_stop+0x1c>)
 	T0TCR |= 1;
 	gpio_set(OP_AMP_PORT, OP_AMP_PIN);
 }
 
 void timer0_stop(void)
 {
-     fa0:	b508      	push	{r3, lr}
+     f74:	b508      	push	{r3, lr}
 	T0TCR &= ~1;
-     fa2:	6813      	ldr	r3, [r2, #0]
-     fa4:	438b      	bics	r3, r1
-     fa6:	6013      	str	r3, [r2, #0]
+     f76:	6813      	ldr	r3, [r2, #0]
+     f78:	438b      	bics	r3, r1
+     f7a:	6013      	str	r3, [r2, #0]
 	gpio_clear(OP_AMP_PORT, OP_AMP_PIN);
-     fa8:	2002      	movs	r0, #2
-     faa:	310c      	adds	r1, #12
-     fac:	f7ff fb9c 	bl	6e8 <gpio_clear>
+     f7c:	2002      	movs	r0, #2
+     f7e:	310c      	adds	r1, #12
+     f80:	f7ff fbb2 	bl	6e8 <gpio_clear>
 }
-     fb0:	bc08      	pop	{r3}
-     fb2:	bc01      	pop	{r0}
-     fb4:	4700      	bx	r0
-     fb6:	46c0      	nop			; (mov r8, r8)
-     fb8:	e0004004 	.word	0xe0004004
+     f84:	bc08      	pop	{r3}
+     f86:	bc01      	pop	{r0}
+     f88:	4700      	bx	r0
+     f8a:	46c0      	nop			; (mov r8, r8)
+     f8c:	e0004004 	.word	0xe0004004
 
-00000fbc <atoi>:
-     fbc:	b508      	push	{r3, lr}
-     fbe:	2100      	movs	r1, #0
-     fc0:	220a      	movs	r2, #10
-     fc2:	f000 f90b 	bl	11dc <strtol>
-     fc6:	bc08      	pop	{r3}
-     fc8:	bc02      	pop	{r1}
-     fca:	4708      	bx	r1
+00000f90 <atoi>:
+     f90:	b508      	push	{r3, lr}
+     f92:	2100      	movs	r1, #0
+     f94:	220a      	movs	r2, #10
+     f96:	f000 f90b 	bl	11b0 <strtol>
+     f9a:	bc08      	pop	{r3}
+     f9c:	bc02      	pop	{r1}
+     f9e:	4708      	bx	r1
 
-00000fcc <strncmp>:
-     fcc:	1c03      	adds	r3, r0, #0
-     fce:	b530      	push	{r4, r5, lr}
-     fd0:	2000      	movs	r0, #0
-     fd2:	2a00      	cmp	r2, #0
-     fd4:	d03a      	beq.n	104c <strncmp+0x80>
-     fd6:	1c1c      	adds	r4, r3, #0
-     fd8:	430c      	orrs	r4, r1
-     fda:	07a4      	lsls	r4, r4, #30
-     fdc:	d120      	bne.n	1020 <strncmp+0x54>
-     fde:	2a03      	cmp	r2, #3
-     fe0:	d91e      	bls.n	1020 <strncmp+0x54>
-     fe2:	681c      	ldr	r4, [r3, #0]
-     fe4:	680d      	ldr	r5, [r1, #0]
-     fe6:	42ac      	cmp	r4, r5
-     fe8:	d11a      	bne.n	1020 <strncmp+0x54>
-     fea:	3a04      	subs	r2, #4
-     fec:	2a00      	cmp	r2, #0
-     fee:	d02d      	beq.n	104c <strncmp+0x80>
-     ff0:	4d1a      	ldr	r5, [pc, #104]	; (105c <strncmp+0x90>)
-     ff2:	1965      	adds	r5, r4, r5
-     ff4:	43a5      	bics	r5, r4
-     ff6:	1c2c      	adds	r4, r5, #0
-     ff8:	4d19      	ldr	r5, [pc, #100]	; (1060 <strncmp+0x94>)
-     ffa:	422c      	tst	r4, r5
-     ffc:	d00c      	beq.n	1018 <strncmp+0x4c>
-     ffe:	e025      	b.n	104c <strncmp+0x80>
-    1000:	6818      	ldr	r0, [r3, #0]
-    1002:	680c      	ldr	r4, [r1, #0]
-    1004:	42a0      	cmp	r0, r4
-    1006:	d10b      	bne.n	1020 <strncmp+0x54>
-    1008:	3a04      	subs	r2, #4
-    100a:	2a00      	cmp	r2, #0
-    100c:	d021      	beq.n	1052 <strncmp+0x86>
-    100e:	4c13      	ldr	r4, [pc, #76]	; (105c <strncmp+0x90>)
-    1010:	1904      	adds	r4, r0, r4
-    1012:	4384      	bics	r4, r0
-    1014:	422c      	tst	r4, r5
-    1016:	d11c      	bne.n	1052 <strncmp+0x86>
-    1018:	3304      	adds	r3, #4
-    101a:	3104      	adds	r1, #4
-    101c:	2a03      	cmp	r2, #3
-    101e:	d8ef      	bhi.n	1000 <strncmp+0x34>
-    1020:	781d      	ldrb	r5, [r3, #0]
-    1022:	7808      	ldrb	r0, [r1, #0]
-    1024:	3a01      	subs	r2, #1
-    1026:	4285      	cmp	r5, r0
-    1028:	d115      	bne.n	1056 <strncmp+0x8a>
-    102a:	2a00      	cmp	r2, #0
-    102c:	d011      	beq.n	1052 <strncmp+0x86>
-    102e:	2d00      	cmp	r5, #0
-    1030:	d104      	bne.n	103c <strncmp+0x70>
-    1032:	e00e      	b.n	1052 <strncmp+0x86>
-    1034:	2c00      	cmp	r4, #0
-    1036:	d00c      	beq.n	1052 <strncmp+0x86>
-    1038:	2a00      	cmp	r2, #0
-    103a:	d00a      	beq.n	1052 <strncmp+0x86>
-    103c:	3301      	adds	r3, #1
-    103e:	3101      	adds	r1, #1
-    1040:	781c      	ldrb	r4, [r3, #0]
-    1042:	7808      	ldrb	r0, [r1, #0]
-    1044:	3a01      	subs	r2, #1
-    1046:	4284      	cmp	r4, r0
-    1048:	d0f4      	beq.n	1034 <strncmp+0x68>
-    104a:	1a20      	subs	r0, r4, r0
-    104c:	bc30      	pop	{r4, r5}
-    104e:	bc02      	pop	{r1}
-    1050:	4708      	bx	r1
-    1052:	2000      	movs	r0, #0
-    1054:	e7fa      	b.n	104c <strncmp+0x80>
-    1056:	1c2c      	adds	r4, r5, #0
-    1058:	1a20      	subs	r0, r4, r0
-    105a:	e7f7      	b.n	104c <strncmp+0x80>
-    105c:	fefefeff 	.word	0xfefefeff
-    1060:	80808080 	.word	0x80808080
+00000fa0 <strncmp>:
+     fa0:	1c03      	adds	r3, r0, #0
+     fa2:	b530      	push	{r4, r5, lr}
+     fa4:	2000      	movs	r0, #0
+     fa6:	2a00      	cmp	r2, #0
+     fa8:	d03a      	beq.n	1020 <strncmp+0x80>
+     faa:	1c1c      	adds	r4, r3, #0
+     fac:	430c      	orrs	r4, r1
+     fae:	07a4      	lsls	r4, r4, #30
+     fb0:	d120      	bne.n	ff4 <strncmp+0x54>
+     fb2:	2a03      	cmp	r2, #3
+     fb4:	d91e      	bls.n	ff4 <strncmp+0x54>
+     fb6:	681c      	ldr	r4, [r3, #0]
+     fb8:	680d      	ldr	r5, [r1, #0]
+     fba:	42ac      	cmp	r4, r5
+     fbc:	d11a      	bne.n	ff4 <strncmp+0x54>
+     fbe:	3a04      	subs	r2, #4
+     fc0:	2a00      	cmp	r2, #0
+     fc2:	d02d      	beq.n	1020 <strncmp+0x80>
+     fc4:	4d1a      	ldr	r5, [pc, #104]	; (1030 <strncmp+0x90>)
+     fc6:	1965      	adds	r5, r4, r5
+     fc8:	43a5      	bics	r5, r4
+     fca:	1c2c      	adds	r4, r5, #0
+     fcc:	4d19      	ldr	r5, [pc, #100]	; (1034 <strncmp+0x94>)
+     fce:	422c      	tst	r4, r5
+     fd0:	d00c      	beq.n	fec <strncmp+0x4c>
+     fd2:	e025      	b.n	1020 <strncmp+0x80>
+     fd4:	6818      	ldr	r0, [r3, #0]
+     fd6:	680c      	ldr	r4, [r1, #0]
+     fd8:	42a0      	cmp	r0, r4
+     fda:	d10b      	bne.n	ff4 <strncmp+0x54>
+     fdc:	3a04      	subs	r2, #4
+     fde:	2a00      	cmp	r2, #0
+     fe0:	d021      	beq.n	1026 <strncmp+0x86>
+     fe2:	4c13      	ldr	r4, [pc, #76]	; (1030 <strncmp+0x90>)
+     fe4:	1904      	adds	r4, r0, r4
+     fe6:	4384      	bics	r4, r0
+     fe8:	422c      	tst	r4, r5
+     fea:	d11c      	bne.n	1026 <strncmp+0x86>
+     fec:	3304      	adds	r3, #4
+     fee:	3104      	adds	r1, #4
+     ff0:	2a03      	cmp	r2, #3
+     ff2:	d8ef      	bhi.n	fd4 <strncmp+0x34>
+     ff4:	781d      	ldrb	r5, [r3, #0]
+     ff6:	7808      	ldrb	r0, [r1, #0]
+     ff8:	3a01      	subs	r2, #1
+     ffa:	4285      	cmp	r5, r0
+     ffc:	d115      	bne.n	102a <strncmp+0x8a>
+     ffe:	2a00      	cmp	r2, #0
+    1000:	d011      	beq.n	1026 <strncmp+0x86>
+    1002:	2d00      	cmp	r5, #0
+    1004:	d104      	bne.n	1010 <strncmp+0x70>
+    1006:	e00e      	b.n	1026 <strncmp+0x86>
+    1008:	2c00      	cmp	r4, #0
+    100a:	d00c      	beq.n	1026 <strncmp+0x86>
+    100c:	2a00      	cmp	r2, #0
+    100e:	d00a      	beq.n	1026 <strncmp+0x86>
+    1010:	3301      	adds	r3, #1
+    1012:	3101      	adds	r1, #1
+    1014:	781c      	ldrb	r4, [r3, #0]
+    1016:	7808      	ldrb	r0, [r1, #0]
+    1018:	3a01      	subs	r2, #1
+    101a:	4284      	cmp	r4, r0
+    101c:	d0f4      	beq.n	1008 <strncmp+0x68>
+    101e:	1a20      	subs	r0, r4, r0
+    1020:	bc30      	pop	{r4, r5}
+    1022:	bc02      	pop	{r1}
+    1024:	4708      	bx	r1
+    1026:	2000      	movs	r0, #0
+    1028:	e7fa      	b.n	1020 <strncmp+0x80>
+    102a:	1c2c      	adds	r4, r5, #0
+    102c:	1a20      	subs	r0, r4, r0
+    102e:	e7f7      	b.n	1020 <strncmp+0x80>
+    1030:	fefefeff 	.word	0xfefefeff
+    1034:	80808080 	.word	0x80808080
 
-00001064 <_strtol_r>:
-    1064:	b5f0      	push	{r4, r5, r6, r7, lr}
-    1066:	464d      	mov	r5, r9
-    1068:	4656      	mov	r6, sl
-    106a:	465f      	mov	r7, fp
-    106c:	4644      	mov	r4, r8
-    106e:	b4f0      	push	{r4, r5, r6, r7}
-    1070:	1c1e      	adds	r6, r3, #0
-    1072:	4b58      	ldr	r3, [pc, #352]	; (11d4 <_strtol_r+0x170>)
-    1074:	b085      	sub	sp, #20
-    1076:	9102      	str	r1, [sp, #8]
-    1078:	681d      	ldr	r5, [r3, #0]
-    107a:	9003      	str	r0, [sp, #12]
-    107c:	1c0b      	adds	r3, r1, #0
-    107e:	4691      	mov	r9, r2
-    1080:	2108      	movs	r1, #8
-    1082:	e000      	b.n	1086 <_strtol_r+0x22>
-    1084:	1c3b      	adds	r3, r7, #0
-    1086:	781c      	ldrb	r4, [r3, #0]
-    1088:	192a      	adds	r2, r5, r4
-    108a:	7852      	ldrb	r2, [r2, #1]
-    108c:	1c5f      	adds	r7, r3, #1
-    108e:	4211      	tst	r1, r2
-    1090:	d1f8      	bne.n	1084 <_strtol_r+0x20>
-    1092:	2c2d      	cmp	r4, #45	; 0x2d
-    1094:	d100      	bne.n	1098 <_strtol_r+0x34>
-    1096:	e072      	b.n	117e <_strtol_r+0x11a>
-    1098:	2200      	movs	r2, #0
-    109a:	9201      	str	r2, [sp, #4]
-    109c:	2c2b      	cmp	r4, #43	; 0x2b
-    109e:	d100      	bne.n	10a2 <_strtol_r+0x3e>
-    10a0:	e07f      	b.n	11a2 <_strtol_r+0x13e>
-    10a2:	2310      	movs	r3, #16
-    10a4:	1c32      	adds	r2, r6, #0
-    10a6:	46b0      	mov	r8, r6
-    10a8:	439a      	bics	r2, r3
-    10aa:	d10a      	bne.n	10c2 <_strtol_r+0x5e>
-    10ac:	4273      	negs	r3, r6
-    10ae:	4173      	adcs	r3, r6
-    10b0:	2c30      	cmp	r4, #48	; 0x30
-    10b2:	d100      	bne.n	10b6 <_strtol_r+0x52>
-    10b4:	e078      	b.n	11a8 <_strtol_r+0x144>
-    10b6:	2b00      	cmp	r3, #0
-    10b8:	d100      	bne.n	10bc <_strtol_r+0x58>
-    10ba:	e088      	b.n	11ce <_strtol_r+0x16a>
-    10bc:	230a      	movs	r3, #10
-    10be:	260a      	movs	r6, #10
-    10c0:	4698      	mov	r8, r3
-    10c2:	4a45      	ldr	r2, [pc, #276]	; (11d8 <_strtol_r+0x174>)
+00001038 <_strtol_r>:
+    1038:	b5f0      	push	{r4, r5, r6, r7, lr}
+    103a:	464d      	mov	r5, r9
+    103c:	4656      	mov	r6, sl
+    103e:	465f      	mov	r7, fp
+    1040:	4644      	mov	r4, r8
+    1042:	b4f0      	push	{r4, r5, r6, r7}
+    1044:	1c1e      	adds	r6, r3, #0
+    1046:	4b58      	ldr	r3, [pc, #352]	; (11a8 <_strtol_r+0x170>)
+    1048:	b085      	sub	sp, #20
+    104a:	9102      	str	r1, [sp, #8]
+    104c:	681d      	ldr	r5, [r3, #0]
+    104e:	9003      	str	r0, [sp, #12]
+    1050:	1c0b      	adds	r3, r1, #0
+    1052:	4691      	mov	r9, r2
+    1054:	2108      	movs	r1, #8
+    1056:	e000      	b.n	105a <_strtol_r+0x22>
+    1058:	1c3b      	adds	r3, r7, #0
+    105a:	781c      	ldrb	r4, [r3, #0]
+    105c:	192a      	adds	r2, r5, r4
+    105e:	7852      	ldrb	r2, [r2, #1]
+    1060:	1c5f      	adds	r7, r3, #1
+    1062:	4211      	tst	r1, r2
+    1064:	d1f8      	bne.n	1058 <_strtol_r+0x20>
+    1066:	2c2d      	cmp	r4, #45	; 0x2d
+    1068:	d100      	bne.n	106c <_strtol_r+0x34>
+    106a:	e072      	b.n	1152 <_strtol_r+0x11a>
+    106c:	2200      	movs	r2, #0
+    106e:	9201      	str	r2, [sp, #4]
+    1070:	2c2b      	cmp	r4, #43	; 0x2b
+    1072:	d100      	bne.n	1076 <_strtol_r+0x3e>
+    1074:	e07f      	b.n	1176 <_strtol_r+0x13e>
+    1076:	2310      	movs	r3, #16
+    1078:	1c32      	adds	r2, r6, #0
+    107a:	46b0      	mov	r8, r6
+    107c:	439a      	bics	r2, r3
+    107e:	d10a      	bne.n	1096 <_strtol_r+0x5e>
+    1080:	4273      	negs	r3, r6
+    1082:	4173      	adcs	r3, r6
+    1084:	2c30      	cmp	r4, #48	; 0x30
+    1086:	d100      	bne.n	108a <_strtol_r+0x52>
+    1088:	e078      	b.n	117c <_strtol_r+0x144>
+    108a:	2b00      	cmp	r3, #0
+    108c:	d100      	bne.n	1090 <_strtol_r+0x58>
+    108e:	e088      	b.n	11a2 <_strtol_r+0x16a>
+    1090:	230a      	movs	r3, #10
+    1092:	260a      	movs	r6, #10
+    1094:	4698      	mov	r8, r3
+    1096:	4a45      	ldr	r2, [pc, #276]	; (11ac <_strtol_r+0x174>)
+    1098:	4694      	mov	ip, r2
+    109a:	9b01      	ldr	r3, [sp, #4]
+    109c:	4463      	add	r3, ip
+    109e:	1c18      	adds	r0, r3, #0
+    10a0:	4641      	mov	r1, r8
+    10a2:	469a      	mov	sl, r3
+    10a4:	f000 f928 	bl	12f8 <____aeabi_uidivmod_from_thumb>
+    10a8:	4650      	mov	r0, sl
+    10aa:	468b      	mov	fp, r1
+    10ac:	4641      	mov	r1, r8
+    10ae:	f000 f91f 	bl	12f0 <____aeabi_uidiv_from_thumb>
+    10b2:	2204      	movs	r2, #4
+    10b4:	4684      	mov	ip, r0
+    10b6:	4692      	mov	sl, r2
+    10b8:	1c32      	adds	r2, r6, #0
+    10ba:	1c3b      	adds	r3, r7, #0
+    10bc:	1c2e      	adds	r6, r5, #0
+    10be:	2000      	movs	r0, #0
+    10c0:	4665      	mov	r5, ip
+    10c2:	2100      	movs	r1, #0
     10c4:	4694      	mov	ip, r2
-    10c6:	9b01      	ldr	r3, [sp, #4]
-    10c8:	4463      	add	r3, ip
-    10ca:	1c18      	adds	r0, r3, #0
-    10cc:	4641      	mov	r1, r8
-    10ce:	469a      	mov	sl, r3
-    10d0:	f000 f92c 	bl	132c <____aeabi_uidivmod_from_thumb>
-    10d4:	4650      	mov	r0, sl
-    10d6:	468b      	mov	fp, r1
-    10d8:	4641      	mov	r1, r8
-    10da:	f000 f92b 	bl	1334 <____aeabi_uidiv_from_thumb>
-    10de:	2204      	movs	r2, #4
-    10e0:	4684      	mov	ip, r0
-    10e2:	4692      	mov	sl, r2
-    10e4:	1c32      	adds	r2, r6, #0
-    10e6:	1c3b      	adds	r3, r7, #0
-    10e8:	1c2e      	adds	r6, r5, #0
-    10ea:	2000      	movs	r0, #0
-    10ec:	4665      	mov	r5, ip
-    10ee:	2100      	movs	r1, #0
-    10f0:	4694      	mov	ip, r2
-    10f2:	e012      	b.n	111a <_strtol_r+0xb6>
-    10f4:	3c30      	subs	r4, #48	; 0x30
-    10f6:	45a4      	cmp	ip, r4
-    10f8:	dd1d      	ble.n	1136 <_strtol_r+0xd2>
-    10fa:	2800      	cmp	r0, #0
-    10fc:	db09      	blt.n	1112 <_strtol_r+0xae>
-    10fe:	428d      	cmp	r5, r1
-    1100:	d307      	bcc.n	1112 <_strtol_r+0xae>
-    1102:	2201      	movs	r2, #1
-    1104:	455c      	cmp	r4, fp
-    1106:	dc00      	bgt.n	110a <_strtol_r+0xa6>
-    1108:	2200      	movs	r2, #0
-    110a:	0612      	lsls	r2, r2, #24
-    110c:	d02c      	beq.n	1168 <_strtol_r+0x104>
-    110e:	42a9      	cmp	r1, r5
-    1110:	d12a      	bne.n	1168 <_strtol_r+0x104>
-    1112:	2001      	movs	r0, #1
-    1114:	4240      	negs	r0, r0
-    1116:	781c      	ldrb	r4, [r3, #0]
-    1118:	3301      	adds	r3, #1
-    111a:	4657      	mov	r7, sl
-    111c:	1932      	adds	r2, r6, r4
-    111e:	7852      	ldrb	r2, [r2, #1]
-    1120:	4217      	tst	r7, r2
-    1122:	d1e7      	bne.n	10f4 <_strtol_r+0x90>
-    1124:	2703      	movs	r7, #3
-    1126:	403a      	ands	r2, r7
-    1128:	d005      	beq.n	1136 <_strtol_r+0xd2>
-    112a:	2a01      	cmp	r2, #1
-    112c:	d021      	beq.n	1172 <_strtol_r+0x10e>
-    112e:	2257      	movs	r2, #87	; 0x57
-    1130:	1aa4      	subs	r4, r4, r2
-    1132:	45a4      	cmp	ip, r4
-    1134:	dce1      	bgt.n	10fa <_strtol_r+0x96>
-    1136:	1c42      	adds	r2, r0, #1
-    1138:	d026      	beq.n	1188 <_strtol_r+0x124>
-    113a:	9c01      	ldr	r4, [sp, #4]
-    113c:	4262      	negs	r2, r4
-    113e:	4051      	eors	r1, r2
-    1140:	46a4      	mov	ip, r4
-    1142:	464a      	mov	r2, r9
-    1144:	4461      	add	r1, ip
-    1146:	2a00      	cmp	r2, #0
-    1148:	d039      	beq.n	11be <_strtol_r+0x15a>
-    114a:	2800      	cmp	r0, #0
-    114c:	d114      	bne.n	1178 <_strtol_r+0x114>
-    114e:	1c08      	adds	r0, r1, #0
-    1150:	9b02      	ldr	r3, [sp, #8]
-    1152:	464a      	mov	r2, r9
-    1154:	6013      	str	r3, [r2, #0]
-    1156:	b005      	add	sp, #20
-    1158:	bc3c      	pop	{r2, r3, r4, r5}
-    115a:	4690      	mov	r8, r2
-    115c:	4699      	mov	r9, r3
-    115e:	46a2      	mov	sl, r4
-    1160:	46ab      	mov	fp, r5
-    1162:	bcf0      	pop	{r4, r5, r6, r7}
-    1164:	bc02      	pop	{r1}
-    1166:	4708      	bx	r1
-    1168:	4642      	mov	r2, r8
-    116a:	434a      	muls	r2, r1
-    116c:	2001      	movs	r0, #1
-    116e:	18a1      	adds	r1, r4, r2
-    1170:	e7d1      	b.n	1116 <_strtol_r+0xb2>
-    1172:	2237      	movs	r2, #55	; 0x37
-    1174:	1aa4      	subs	r4, r4, r2
-    1176:	e7dc      	b.n	1132 <_strtol_r+0xce>
-    1178:	1c08      	adds	r0, r1, #0
-    117a:	3b01      	subs	r3, #1
-    117c:	e7e9      	b.n	1152 <_strtol_r+0xee>
-    117e:	1c9f      	adds	r7, r3, #2
-    1180:	785c      	ldrb	r4, [r3, #1]
-    1182:	2301      	movs	r3, #1
-    1184:	9301      	str	r3, [sp, #4]
-    1186:	e78c      	b.n	10a2 <_strtol_r+0x3e>
-    1188:	4913      	ldr	r1, [pc, #76]	; (11d8 <_strtol_r+0x174>)
-    118a:	468c      	mov	ip, r1
-    118c:	9a01      	ldr	r2, [sp, #4]
-    118e:	4462      	add	r2, ip
-    1190:	1c10      	adds	r0, r2, #0
-    1192:	2222      	movs	r2, #34	; 0x22
-    1194:	9903      	ldr	r1, [sp, #12]
-    1196:	600a      	str	r2, [r1, #0]
-    1198:	464a      	mov	r2, r9
-    119a:	2a00      	cmp	r2, #0
-    119c:	d0db      	beq.n	1156 <_strtol_r+0xf2>
-    119e:	3b01      	subs	r3, #1
-    11a0:	e7d7      	b.n	1152 <_strtol_r+0xee>
-    11a2:	1c9f      	adds	r7, r3, #2
-    11a4:	785c      	ldrb	r4, [r3, #1]
-    11a6:	e77c      	b.n	10a2 <_strtol_r+0x3e>
-    11a8:	2120      	movs	r1, #32
-    11aa:	783a      	ldrb	r2, [r7, #0]
-    11ac:	438a      	bics	r2, r1
-    11ae:	2a58      	cmp	r2, #88	; 0x58
-    11b0:	d107      	bne.n	11c2 <_strtol_r+0x15e>
-    11b2:	2310      	movs	r3, #16
-    11b4:	787c      	ldrb	r4, [r7, #1]
-    11b6:	4698      	mov	r8, r3
-    11b8:	3702      	adds	r7, #2
-    11ba:	2610      	movs	r6, #16
-    11bc:	e781      	b.n	10c2 <_strtol_r+0x5e>
-    11be:	1c08      	adds	r0, r1, #0
-    11c0:	e7c9      	b.n	1156 <_strtol_r+0xf2>
-    11c2:	2b00      	cmp	r3, #0
-    11c4:	d003      	beq.n	11ce <_strtol_r+0x16a>
-    11c6:	2308      	movs	r3, #8
-    11c8:	2608      	movs	r6, #8
-    11ca:	4698      	mov	r8, r3
-    11cc:	e779      	b.n	10c2 <_strtol_r+0x5e>
-    11ce:	46b0      	mov	r8, r6
-    11d0:	e777      	b.n	10c2 <_strtol_r+0x5e>
-    11d2:	46c0      	nop			; (mov r8, r8)
-    11d4:	40000000 	.word	0x40000000
-    11d8:	7fffffff 	.word	0x7fffffff
+    10c6:	e012      	b.n	10ee <_strtol_r+0xb6>
+    10c8:	3c30      	subs	r4, #48	; 0x30
+    10ca:	45a4      	cmp	ip, r4
+    10cc:	dd1d      	ble.n	110a <_strtol_r+0xd2>
+    10ce:	2800      	cmp	r0, #0
+    10d0:	db09      	blt.n	10e6 <_strtol_r+0xae>
+    10d2:	428d      	cmp	r5, r1
+    10d4:	d307      	bcc.n	10e6 <_strtol_r+0xae>
+    10d6:	2201      	movs	r2, #1
+    10d8:	455c      	cmp	r4, fp
+    10da:	dc00      	bgt.n	10de <_strtol_r+0xa6>
+    10dc:	2200      	movs	r2, #0
+    10de:	0612      	lsls	r2, r2, #24
+    10e0:	d02c      	beq.n	113c <_strtol_r+0x104>
+    10e2:	42a9      	cmp	r1, r5
+    10e4:	d12a      	bne.n	113c <_strtol_r+0x104>
+    10e6:	2001      	movs	r0, #1
+    10e8:	4240      	negs	r0, r0
+    10ea:	781c      	ldrb	r4, [r3, #0]
+    10ec:	3301      	adds	r3, #1
+    10ee:	4657      	mov	r7, sl
+    10f0:	1932      	adds	r2, r6, r4
+    10f2:	7852      	ldrb	r2, [r2, #1]
+    10f4:	4217      	tst	r7, r2
+    10f6:	d1e7      	bne.n	10c8 <_strtol_r+0x90>
+    10f8:	2703      	movs	r7, #3
+    10fa:	403a      	ands	r2, r7
+    10fc:	d005      	beq.n	110a <_strtol_r+0xd2>
+    10fe:	2a01      	cmp	r2, #1
+    1100:	d021      	beq.n	1146 <_strtol_r+0x10e>
+    1102:	2257      	movs	r2, #87	; 0x57
+    1104:	1aa4      	subs	r4, r4, r2
+    1106:	45a4      	cmp	ip, r4
+    1108:	dce1      	bgt.n	10ce <_strtol_r+0x96>
+    110a:	1c42      	adds	r2, r0, #1
+    110c:	d026      	beq.n	115c <_strtol_r+0x124>
+    110e:	9c01      	ldr	r4, [sp, #4]
+    1110:	4262      	negs	r2, r4
+    1112:	4051      	eors	r1, r2
+    1114:	46a4      	mov	ip, r4
+    1116:	464a      	mov	r2, r9
+    1118:	4461      	add	r1, ip
+    111a:	2a00      	cmp	r2, #0
+    111c:	d039      	beq.n	1192 <_strtol_r+0x15a>
+    111e:	2800      	cmp	r0, #0
+    1120:	d114      	bne.n	114c <_strtol_r+0x114>
+    1122:	1c08      	adds	r0, r1, #0
+    1124:	9b02      	ldr	r3, [sp, #8]
+    1126:	464a      	mov	r2, r9
+    1128:	6013      	str	r3, [r2, #0]
+    112a:	b005      	add	sp, #20
+    112c:	bc3c      	pop	{r2, r3, r4, r5}
+    112e:	4690      	mov	r8, r2
+    1130:	4699      	mov	r9, r3
+    1132:	46a2      	mov	sl, r4
+    1134:	46ab      	mov	fp, r5
+    1136:	bcf0      	pop	{r4, r5, r6, r7}
+    1138:	bc02      	pop	{r1}
+    113a:	4708      	bx	r1
+    113c:	4642      	mov	r2, r8
+    113e:	434a      	muls	r2, r1
+    1140:	2001      	movs	r0, #1
+    1142:	18a1      	adds	r1, r4, r2
+    1144:	e7d1      	b.n	10ea <_strtol_r+0xb2>
+    1146:	2237      	movs	r2, #55	; 0x37
+    1148:	1aa4      	subs	r4, r4, r2
+    114a:	e7dc      	b.n	1106 <_strtol_r+0xce>
+    114c:	1c08      	adds	r0, r1, #0
+    114e:	3b01      	subs	r3, #1
+    1150:	e7e9      	b.n	1126 <_strtol_r+0xee>
+    1152:	1c9f      	adds	r7, r3, #2
+    1154:	785c      	ldrb	r4, [r3, #1]
+    1156:	2301      	movs	r3, #1
+    1158:	9301      	str	r3, [sp, #4]
+    115a:	e78c      	b.n	1076 <_strtol_r+0x3e>
+    115c:	4913      	ldr	r1, [pc, #76]	; (11ac <_strtol_r+0x174>)
+    115e:	468c      	mov	ip, r1
+    1160:	9a01      	ldr	r2, [sp, #4]
+    1162:	4462      	add	r2, ip
+    1164:	1c10      	adds	r0, r2, #0
+    1166:	2222      	movs	r2, #34	; 0x22
+    1168:	9903      	ldr	r1, [sp, #12]
+    116a:	600a      	str	r2, [r1, #0]
+    116c:	464a      	mov	r2, r9
+    116e:	2a00      	cmp	r2, #0
+    1170:	d0db      	beq.n	112a <_strtol_r+0xf2>
+    1172:	3b01      	subs	r3, #1
+    1174:	e7d7      	b.n	1126 <_strtol_r+0xee>
+    1176:	1c9f      	adds	r7, r3, #2
+    1178:	785c      	ldrb	r4, [r3, #1]
+    117a:	e77c      	b.n	1076 <_strtol_r+0x3e>
+    117c:	2120      	movs	r1, #32
+    117e:	783a      	ldrb	r2, [r7, #0]
+    1180:	438a      	bics	r2, r1
+    1182:	2a58      	cmp	r2, #88	; 0x58
+    1184:	d107      	bne.n	1196 <_strtol_r+0x15e>
+    1186:	2310      	movs	r3, #16
+    1188:	787c      	ldrb	r4, [r7, #1]
+    118a:	4698      	mov	r8, r3
+    118c:	3702      	adds	r7, #2
+    118e:	2610      	movs	r6, #16
+    1190:	e781      	b.n	1096 <_strtol_r+0x5e>
+    1192:	1c08      	adds	r0, r1, #0
+    1194:	e7c9      	b.n	112a <_strtol_r+0xf2>
+    1196:	2b00      	cmp	r3, #0
+    1198:	d003      	beq.n	11a2 <_strtol_r+0x16a>
+    119a:	2308      	movs	r3, #8
+    119c:	2608      	movs	r6, #8
+    119e:	4698      	mov	r8, r3
+    11a0:	e779      	b.n	1096 <_strtol_r+0x5e>
+    11a2:	46b0      	mov	r8, r6
+    11a4:	e777      	b.n	1096 <_strtol_r+0x5e>
+    11a6:	46c0      	nop			; (mov r8, r8)
+    11a8:	40000000 	.word	0x40000000
+    11ac:	7fffffff 	.word	0x7fffffff
 
-000011dc <strtol>:
-    11dc:	b538      	push	{r3, r4, r5, lr}
-    11de:	1c05      	adds	r5, r0, #0
-    11e0:	1c0c      	adds	r4, r1, #0
-    11e2:	1c13      	adds	r3, r2, #0
-    11e4:	4a04      	ldr	r2, [pc, #16]	; (11f8 <strtol+0x1c>)
-    11e6:	1c29      	adds	r1, r5, #0
-    11e8:	6810      	ldr	r0, [r2, #0]
-    11ea:	1c22      	adds	r2, r4, #0
-    11ec:	f7ff ff3a 	bl	1064 <_strtol_r>
-    11f0:	bc38      	pop	{r3, r4, r5}
-    11f2:	bc02      	pop	{r1}
-    11f4:	4708      	bx	r1
-    11f6:	46c0      	nop			; (mov r8, r8)
-    11f8:	40000430 	.word	0x40000430
+000011b0 <strtol>:
+    11b0:	b538      	push	{r3, r4, r5, lr}
+    11b2:	1c05      	adds	r5, r0, #0
+    11b4:	1c0c      	adds	r4, r1, #0
+    11b6:	1c13      	adds	r3, r2, #0
+    11b8:	4a04      	ldr	r2, [pc, #16]	; (11cc <strtol+0x1c>)
+    11ba:	1c29      	adds	r1, r5, #0
+    11bc:	6810      	ldr	r0, [r2, #0]
+    11be:	1c22      	adds	r2, r4, #0
+    11c0:	f7ff ff3a 	bl	1038 <_strtol_r>
+    11c4:	bc38      	pop	{r3, r4, r5}
+    11c6:	bc02      	pop	{r1}
+    11c8:	4708      	bx	r1
+    11ca:	46c0      	nop			; (mov r8, r8)
+    11cc:	40000430 	.word	0x40000430
 
-000011fc <__aeabi_uidiv>:
-    11fc:	e2512001 	subs	r2, r1, #1
-    1200:	012fff1e 	bxeq	lr
-    1204:	3a000036 	bcc	12e4 <__aeabi_uidiv+0xe8>
-    1208:	e1500001 	cmp	r0, r1
-    120c:	9a000022 	bls	129c <__aeabi_uidiv+0xa0>
-    1210:	e1110002 	tst	r1, r2
-    1214:	0a000023 	beq	12a8 <__aeabi_uidiv+0xac>
-    1218:	e311020e 	tst	r1, #-536870912	; 0xe0000000
-    121c:	01a01181 	lsleq	r1, r1, #3
-    1220:	03a03008 	moveq	r3, #8
-    1224:	13a03001 	movne	r3, #1
-    1228:	e3510201 	cmp	r1, #268435456	; 0x10000000
-    122c:	31510000 	cmpcc	r1, r0
-    1230:	31a01201 	lslcc	r1, r1, #4
-    1234:	31a03203 	lslcc	r3, r3, #4
-    1238:	3afffffa 	bcc	1228 <__aeabi_uidiv+0x2c>
-    123c:	e3510102 	cmp	r1, #-2147483648	; 0x80000000
-    1240:	31510000 	cmpcc	r1, r0
-    1244:	31a01081 	lslcc	r1, r1, #1
-    1248:	31a03083 	lslcc	r3, r3, #1
-    124c:	3afffffa 	bcc	123c <__aeabi_uidiv+0x40>
-    1250:	e3a02000 	mov	r2, #0
-    1254:	e1500001 	cmp	r0, r1
-    1258:	20400001 	subcs	r0, r0, r1
-    125c:	21822003 	orrcs	r2, r2, r3
-    1260:	e15000a1 	cmp	r0, r1, lsr #1
-    1264:	204000a1 	subcs	r0, r0, r1, lsr #1
-    1268:	218220a3 	orrcs	r2, r2, r3, lsr #1
-    126c:	e1500121 	cmp	r0, r1, lsr #2
-    1270:	20400121 	subcs	r0, r0, r1, lsr #2
-    1274:	21822123 	orrcs	r2, r2, r3, lsr #2
-    1278:	e15001a1 	cmp	r0, r1, lsr #3
-    127c:	204001a1 	subcs	r0, r0, r1, lsr #3
-    1280:	218221a3 	orrcs	r2, r2, r3, lsr #3
-    1284:	e3500000 	cmp	r0, #0
-    1288:	11b03223 	lsrsne	r3, r3, #4
-    128c:	11a01221 	lsrne	r1, r1, #4
-    1290:	1affffef 	bne	1254 <__aeabi_uidiv+0x58>
-    1294:	e1a00002 	mov	r0, r2
-    1298:	e12fff1e 	bx	lr
-    129c:	03a00001 	moveq	r0, #1
-    12a0:	13a00000 	movne	r0, #0
-    12a4:	e12fff1e 	bx	lr
-    12a8:	e3510801 	cmp	r1, #65536	; 0x10000
-    12ac:	21a01821 	lsrcs	r1, r1, #16
-    12b0:	23a02010 	movcs	r2, #16
-    12b4:	33a02000 	movcc	r2, #0
-    12b8:	e3510c01 	cmp	r1, #256	; 0x100
-    12bc:	21a01421 	lsrcs	r1, r1, #8
-    12c0:	22822008 	addcs	r2, r2, #8
-    12c4:	e3510010 	cmp	r1, #16
-    12c8:	21a01221 	lsrcs	r1, r1, #4
-    12cc:	22822004 	addcs	r2, r2, #4
-    12d0:	e3510004 	cmp	r1, #4
-    12d4:	82822003 	addhi	r2, r2, #3
-    12d8:	908220a1 	addls	r2, r2, r1, lsr #1
-    12dc:	e1a00230 	lsr	r0, r0, r2
-    12e0:	e12fff1e 	bx	lr
-    12e4:	e12fff1f 	bx	pc
-    12e8:	e1a00000 	nop			; (mov r0, r0)
-    12ec:	e3500000 	cmp	r0, #0
-    12f0:	13e00000 	mvnne	r0, #0
-    12f4:	ea000009 	b	1320 <____aeabi_idiv0_from_arm>
+000011d0 <__aeabi_uidiv>:
+    11d0:	e2512001 	subs	r2, r1, #1
+    11d4:	012fff1e 	bxeq	lr
+    11d8:	3a000036 	bcc	12b8 <__aeabi_uidiv+0xe8>
+    11dc:	e1500001 	cmp	r0, r1
+    11e0:	9a000022 	bls	1270 <__aeabi_uidiv+0xa0>
+    11e4:	e1110002 	tst	r1, r2
+    11e8:	0a000023 	beq	127c <__aeabi_uidiv+0xac>
+    11ec:	e311020e 	tst	r1, #-536870912	; 0xe0000000
+    11f0:	01a01181 	lsleq	r1, r1, #3
+    11f4:	03a03008 	moveq	r3, #8
+    11f8:	13a03001 	movne	r3, #1
+    11fc:	e3510201 	cmp	r1, #268435456	; 0x10000000
+    1200:	31510000 	cmpcc	r1, r0
+    1204:	31a01201 	lslcc	r1, r1, #4
+    1208:	31a03203 	lslcc	r3, r3, #4
+    120c:	3afffffa 	bcc	11fc <__aeabi_uidiv+0x2c>
+    1210:	e3510102 	cmp	r1, #-2147483648	; 0x80000000
+    1214:	31510000 	cmpcc	r1, r0
+    1218:	31a01081 	lslcc	r1, r1, #1
+    121c:	31a03083 	lslcc	r3, r3, #1
+    1220:	3afffffa 	bcc	1210 <__aeabi_uidiv+0x40>
+    1224:	e3a02000 	mov	r2, #0
+    1228:	e1500001 	cmp	r0, r1
+    122c:	20400001 	subcs	r0, r0, r1
+    1230:	21822003 	orrcs	r2, r2, r3
+    1234:	e15000a1 	cmp	r0, r1, lsr #1
+    1238:	204000a1 	subcs	r0, r0, r1, lsr #1
+    123c:	218220a3 	orrcs	r2, r2, r3, lsr #1
+    1240:	e1500121 	cmp	r0, r1, lsr #2
+    1244:	20400121 	subcs	r0, r0, r1, lsr #2
+    1248:	21822123 	orrcs	r2, r2, r3, lsr #2
+    124c:	e15001a1 	cmp	r0, r1, lsr #3
+    1250:	204001a1 	subcs	r0, r0, r1, lsr #3
+    1254:	218221a3 	orrcs	r2, r2, r3, lsr #3
+    1258:	e3500000 	cmp	r0, #0
+    125c:	11b03223 	lsrsne	r3, r3, #4
+    1260:	11a01221 	lsrne	r1, r1, #4
+    1264:	1affffef 	bne	1228 <__aeabi_uidiv+0x58>
+    1268:	e1a00002 	mov	r0, r2
+    126c:	e12fff1e 	bx	lr
+    1270:	03a00001 	moveq	r0, #1
+    1274:	13a00000 	movne	r0, #0
+    1278:	e12fff1e 	bx	lr
+    127c:	e3510801 	cmp	r1, #65536	; 0x10000
+    1280:	21a01821 	lsrcs	r1, r1, #16
+    1284:	23a02010 	movcs	r2, #16
+    1288:	33a02000 	movcc	r2, #0
+    128c:	e3510c01 	cmp	r1, #256	; 0x100
+    1290:	21a01421 	lsrcs	r1, r1, #8
+    1294:	22822008 	addcs	r2, r2, #8
+    1298:	e3510010 	cmp	r1, #16
+    129c:	21a01221 	lsrcs	r1, r1, #4
+    12a0:	22822004 	addcs	r2, r2, #4
+    12a4:	e3510004 	cmp	r1, #4
+    12a8:	82822003 	addhi	r2, r2, #3
+    12ac:	908220a1 	addls	r2, r2, r1, lsr #1
+    12b0:	e1a00230 	lsr	r0, r0, r2
+    12b4:	e12fff1e 	bx	lr
+    12b8:	e12fff1f 	bx	pc
+    12bc:	e1a00000 	nop			; (mov r0, r0)
+    12c0:	e3500000 	cmp	r0, #0
+    12c4:	13e00000 	mvnne	r0, #0
+    12c8:	ea00000c 	b	1300 <____aeabi_idiv0_from_arm>
 
-000012f8 <__aeabi_uidivmod>:
-    12f8:	e3510000 	cmp	r1, #0
-    12fc:	0afffff8 	beq	12e4 <__aeabi_uidiv+0xe8>
-    1300:	e92d4003 	push	{r0, r1, lr}
-    1304:	ebffffbc 	bl	11fc <__aeabi_uidiv>
-    1308:	e8bd4006 	pop	{r1, r2, lr}
-    130c:	e0030092 	mul	r3, r2, r0
-    1310:	e0411003 	sub	r1, r1, r3
-    1314:	e12fff1e 	bx	lr
+000012cc <__aeabi_uidivmod>:
+    12cc:	e3510000 	cmp	r1, #0
+    12d0:	0afffff8 	beq	12b8 <__aeabi_uidiv+0xe8>
+    12d4:	e92d4003 	push	{r0, r1, lr}
+    12d8:	ebffffbc 	bl	11d0 <__aeabi_uidiv>
+    12dc:	e8bd4006 	pop	{r1, r2, lr}
+    12e0:	e0030092 	mul	r3, r2, r0
+    12e4:	e0411003 	sub	r1, r1, r3
+    12e8:	e12fff1e 	bx	lr
 
-00001318 <__aeabi_idiv0>:
-    1318:	4770      	bx	lr
-    131a:	46c0      	nop			; (mov r8, r8)
-    131c:	0000      	movs	r0, r0
+000012ec <__aeabi_idiv0>:
+    12ec:	4770      	bx	lr
+    12ee:	46c0      	nop			; (mov r8, r8)
+
+000012f0 <____aeabi_uidiv_from_thumb>:
+    12f0:	4778      	bx	pc
+    12f2:	46c0      	nop			; (mov r8, r8)
+    12f4:	eaffffb5 	b	11d0 <__aeabi_uidiv>
+
+000012f8 <____aeabi_uidivmod_from_thumb>:
+    12f8:	4778      	bx	pc
+    12fa:	46c0      	nop			; (mov r8, r8)
+    12fc:	eafffff2 	b	12cc <__aeabi_uidivmod>
+
+00001300 <____aeabi_idiv0_from_arm>:
+    1300:	e59fc000 	ldr	ip, [pc]	; 1308 <____aeabi_idiv0_from_arm+0x8>
+    1304:	e12fff1c 	bx	ip
+    1308:	000012ed 	.word	0x000012ed
+    130c:	00000000 	.word	0x00000000
+
+00001310 <help_msg>:
+    1310:	7a616c50 7020616d 65626f72 6e6f6320     Plazma probe con
+    1320:	6c6f7274 0a72656c 61735520 0a3a6567     troller. Usage:.
+    1330:	20202020 72617473 202d2074 72617473         start - star
+    1340:	656d2074 72757361 6e656d65 200a7374     t measurements. 
+    1350:	73202020 20706f74 6966202d 6873696e        stop - finish
+    1360:	61656d20 65727573 746e656d 20200a73      measurements.  
+    1370:	65732020 763c2074 61746c6f 203e6567       set <voltage> 
+    1380:	7270202d 2065626f 746c6f76 20656761     - probe voltage 
+    1390:	75746573 0a000a70 2043504c 74696e69     setup...LPC init
+    13a0:	696c6169 0a64657a 61747300 0a007472     ialized..start..
+    13b0:	72617453 0a646574 6f747300 530a0070     Started..stop..S
+    13c0:	70706f74 000a6465 00746573 000a4b4f     topped..set.OK..
+    13d0:	706c6568 754f0a00 74757074 6c6f7620     help..Output vol
+    13e0:	65676174 0a00203a 72727543 3a746e65     tage: ..Current:
+    13f0:	00000020                                 ...
+
+000013f4 <_ctype_>:
+    13f4:	20202000 20202020 28282020 20282828     .         ((((( 
+    1404:	20202020 20202020 20202020 20202020                     
+    1414:	10108820 10101010 10101010 10101010      ...............
+    1424:	04040410 04040404 10040404 10101010     ................
+    1434:	41411010 41414141 01010101 01010101     ..AAAAAA........
+    1444:	01010101 01010101 01010101 10101010     ................
+    1454:	42421010 42424242 02020202 02020202     ..BBBBBB........
+    1464:	02020202 02020202 02020202 10101010     ................
+    1474:	00000020 00000000 00000000 00000000      ...............
 	...
-
-00001320 <____aeabi_idiv0_from_arm>:
-    1320:	e59fc000 	ldr	ip, [pc]	; 1328 <____aeabi_idiv0_from_arm+0x8>
-    1324:	e12fff1c 	bx	ip
-    1328:	00001319 	.word	0x00001319
-
-0000132c <____aeabi_uidivmod_from_thumb>:
-    132c:	4778      	bx	pc
-    132e:	46c0      	nop			; (mov r8, r8)
-    1330:	eafffff0 	b	12f8 <__aeabi_uidivmod>
-
-00001334 <____aeabi_uidiv_from_thumb>:
-    1334:	4778      	bx	pc
-    1336:	46c0      	nop			; (mov r8, r8)
-    1338:	eaffffaf 	b	11fc <__aeabi_uidiv>
-    133c:	00000000 	andeq	r0, r0, r0
-
-00001340 <help_msg>:
-    1340:	7a616c50 7020616d 65626f72 6e6f6320     Plazma probe con
-    1350:	6c6f7274 0a72656c 61735520 0a3a6567     troller. Usage:.
-    1360:	20202020 72617473 202d2074 72617473         start - star
-    1370:	656d2074 72757361 6e656d65 200a7374     t measurements. 
-    1380:	73202020 20706f74 6966202d 6873696e        stop - finish
-    1390:	61656d20 65727573 746e656d 20200a73      measurements.  
-    13a0:	65732020 763c2074 61746c6f 203e6567       set <voltage> 
-    13b0:	7270202d 2065626f 746c6f76 20656761     - probe voltage 
-    13c0:	75746573 0a000a70 2043504c 74696e69     setup...LPC init
-    13d0:	696c6169 0a64657a 61747300 0a007472     ialized..start..
-    13e0:	72617453 0a646574 6f747300 530a0070     Started..stop..S
-    13f0:	70706f74 000a6465 00746573 000a4b4f     topped..set.OK..
-    1400:	706c6568 50530a00 65725f49 76656963     help..SPI_reciev
-    1410:	203a6465 00000000                       ed: ....
-
-00001418 <_ctype_>:
-    1418:	20202000 20202020 28282020 20282828     .         ((((( 
-    1428:	20202020 20202020 20202020 20202020                     
-    1438:	10108820 10101010 10101010 10101010      ...............
-    1448:	04040410 04040404 10040404 10101010     ................
-    1458:	41411010 41414141 01010101 01010101     ..AAAAAA........
-    1468:	01010101 01010101 01010101 10101010     ................
-    1478:	42421010 42424242 02020202 02020202     ..BBBBBB........
-    1488:	02020202 02020202 02020202 10101010     ................
-    1498:	00000020 00000000 00000000 00000000      ...............
-	...
-    151c:	00000043                                C...
+    14f8:	00000043                                C...

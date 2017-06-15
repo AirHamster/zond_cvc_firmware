@@ -10,36 +10,41 @@ extern void gpio_set(uint8_t port, uint8_t pin);
 extern void gpio_clear(uint8_t port, uint8_t pin);
 void Isr_TIM0(void)
 {
-	uint8_t dat;
+	uint16_t dat;
 	T0IR = 0x3F;
 	uint16_t volts, curr;
 	uint8_t data;
-/*         volts = adc_read_voltage();
- *         curr = adc_read_current();
- *         UART0_send("\nOutput voltage: ",17 );
- *         data = volts >> 8;
- *         UART0_send_byte(data);
- *         data = volts & 0xFF;
- *         UART0_send_byte(data);
- * 
- *         UART0_send("\nCurrent: ",10 );
- *         data = curr >> 8;
- *         UART0_send_byte(data);
- *         data = curr & 0xFF;
- *         UART0_send_byte(data); */
-
 	FIO1PIN |= (1 << ADC_SCLK);
-	FIO1CLR |= 1 << ADC;
+        volts = adc_read_voltage();
+	curr = adc_read_current();
+	UART0_send("\nOutput voltage: ",17 );
+	UART0_send_byte(volts >> 8);
+	UART0_send_byte(volts);
 
-	SPI0_send_1_byte(READ_ID_REG, ADC);
-	dat = SPI0_send_1_byte(0xFF, ADC);
+	UART0_send("\nCurrent: ",10 );
+	UART0_send_byte(curr >> 8);
+        UART0_send_byte(curr); 
 
-	FIO1SET |= 1 << ADC;
-
-	UART0_send("\nSPI_recieved: ", 15);
-	UART0_send_byte(dat);
-	/* UART0_send(&data, 1); */
-	/* UART0_send("Tim0\n", 5); */
+/*         dat = 40 * 5;
+ *         FIO1CLR |= 1 << ADC;
+ * 
+ *         SPI0_send_1_byte((WRITE_CONF_REG | (1 << 6)), ADC);
+ *         dat = SPI0_send_2_byte(0xF1, ADC);
+ * 
+ *         FIO1SET |= 1 << ADC;
+ * 
+ *         UART0_send("\nSPI_recieved: ", 15);
+ *         UART0_send_byte(dat >> 8);
+ *         UART0_send_byte(dat); */
+/*         FIO1CLR |= 1 << ADC;
+ * 
+ *         SPI0_send_1_byte(READ_ID_REG, ADC);
+ *         dat = SPI0_send_1_byte(0xFF, ADC);
+ * 
+ *         FIO1SET |= 1 << ADC;
+ * 
+ *         UART0_send("\nSPI_recieved: ", 15);
+ *         UART0_send_byte(dat); */
 	VICVectAddr = 0;
 }
 void timer0_init(void)
@@ -50,7 +55,7 @@ void timer0_init(void)
 	T0IR = (1 << 0);	/* Channel 0 match interrupt */
 	T0MCR = 3;
 	T0CTCR = 0;
-	T0PR = 50;	/* Prescaler */
+	T0PR = 200;	/* Prescaler */
 	T0MR0 = 72000;	/* Top value (5 Hz) */
 	RegisterIrq(TIMER0_IRQn, (void *)Isr_TIM0, PRI_LOWEST);
 }
