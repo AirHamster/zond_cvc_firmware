@@ -121,7 +121,7 @@ int main (void)
 	/* SPI0_init(); */
 	timer0_init();
 	gpio_init();
-	/* adc_init(); */
+	adc_init();
 	UART0_send("\nLPC initialized\n", 17);
 
 

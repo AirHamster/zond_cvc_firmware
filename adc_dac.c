@@ -32,7 +32,7 @@ void adc_init(void)
 
 	FIO1CLR |= 1 << DAC;
 	/* SPI0_send_2_byte(0x1000 | 578); */
-	SPI0_send_2_byte((0x1000 | 1000), DAC);
+	SPI0_send_2_byte((0x1000 | 578), DAC);
 	FIO1SET |= 1 << DAC;
 
 	/* SPI0_send_1_byte(WRITE_OFFSET_REG); */

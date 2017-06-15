@@ -15,7 +15,7 @@ uint8_t SPI0_send_1_byte(uint8_t data, uint8_t slave)
 	{
 	dat = SPI_DAC_data_transfers_8bit(data);
 	}
-	return data;
+	return dat;
 }
 
 uint16_t SPI0_send_2_byte(uint16_t data, uint8_t slave)
