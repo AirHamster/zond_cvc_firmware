@@ -9,67 +9,57 @@
 #include <stdlib.h>
 extern void gpio_set(uint8_t port, uint8_t pin);
 extern void gpio_clear(uint8_t port, uint8_t pin);
+extern uint8_t channel;
+extern uint16_t volts, curr;
 void Isr_TIM0(void)
 {
 	uint16_t dat;
 	T0IR = 0x3F;
-	uint16_t volts, curr;
 	uint8_t data;
 	uint8_t num = 5;
 	char *volt_ascii[5];
+	char *curr_ascii[5];
 	FIO1PIN |= (1 << ADC_SCLK);
+	if (channel == 1)
+	{
+		volts = adc_read_voltage();
+		UART0_send("\nOutput voltage: ",17 );
 
-	/* curr = adc_read_current(); */
-        dat = 40 * 5;
-	volts = adc_read_voltage();
-	/* FIO1CLR |= 1 << ADC; */
-
-	/* SPI0_send_1_byte((WRITE_CONF_REG | (1 << 6)), ADC); */
-	/* dat = SPI0_send_2_byte(0xF1, ADC); */
-
-	/* FIO1SET |= 1 << ADC; */
-
-	/* UART0_send("\nSPI_recieved: ", 15); */
-	/* UART0_send_byte(dat >> 8); */
-        /* UART0_send_byte(dat);  */
-	UART0_send("\nOutput voltage: ",17 );
-
-	if (volts < 10000)
-		num = 4;
-	if (volts < 1000)
-		num = 3;
-	if (volts < 100)
-		num = 2;
-	if (volts < 10)
-		num = 1;
-	UART0_send(itoa(volts, volt_ascii,10), num);
-	/* UART0_send_byte(volts >> 8); */
-	/* UART0_send_byte(volts); */
-
-	/* UART0_send("\nCurrent: ",10 ); */
-	/* UART0_send_byte(curr >> 8); */
-	/* UART0_send_byte(curr);  */
-
-/*         dat = 40 * 5;
- *         FIO1CLR |= 1 << ADC;
- * 
- *         SPI0_send_1_byte((WRITE_CONF_REG | (1 << 6)), ADC);
- *         dat = SPI0_send_2_byte(0xF1, ADC);
- * 
- *         FIO1SET |= 1 << ADC;
- * 
- *         UART0_send("\nSPI_recieved: ", 15);
- *         UART0_send_byte(dat >> 8);
- *         UART0_send_byte(dat); */
-/*         FIO1CLR |= 1 << ADC;
- * 
- *         SPI0_send_1_byte(READ_ID_REG, ADC);
- *         dat = SPI0_send_1_byte(0xFF, ADC);
- * 
- *         FIO1SET |= 1 << ADC;
- * 
- *         UART0_send("\nSPI_recieved: ", 15);
- *         UART0_send_byte(dat); */
+		if (volts < 10000)
+			num = 4;
+		if (volts < 1000)
+			num = 3;
+		if (volts < 100)
+			num = 2;
+		if (volts < 10)
+			num = 1;
+		UART0_send(itoa(volts, volt_ascii,10), num);
+		UART0_send("\nCurrent: ",10 );
+		if (curr < 10000)
+			num = 4;
+		if (curr < 1000)
+			num = 3;
+		if (curr < 100)
+			num = 2;
+		if (curr < 10)
+			num = 1;
+		UART0_send(itoa(curr, curr_ascii,10), num);
+		channel = 0;
+		/* Need to select proper channel */
+		FIO1CLR |= 1 << ADC;
+		SPI0_send_1_byte(WRITE_CONF_REG, ADC);
+		SPI0_send_2_byte(CONF_REG_VAL, ADC);
+		FIO1SET |= 1 << ADC;
+	}else if (channel == 0)
+	{
+		curr = adc_read_current();
+		channel = 1;
+		/* Need to select proper channel */
+		FIO1CLR |= 1 << ADC;
+		SPI0_send_1_byte(WRITE_CONF_REG, ADC);
+		SPI0_send_2_byte((CONF_REG_VAL | 1), ADC);
+		FIO1SET |= 1 << ADC;
+	}
 	VICVectAddr = 0;
 }
 void timer0_init(void)
@@ -80,7 +70,7 @@ void timer0_init(void)
 	T0IR = (1 << 0);	/* Channel 0 match interrupt */
 	T0MCR = 3;
 	T0CTCR = 0;
-	T0PR = 200;	/* Prescaler */
+	T0PR = 25;	/* Prescaler */
 	T0MR0 = 72000;	/* Top value (5 Hz) */
 	RegisterIrq(TIMER0_IRQn, (void *)Isr_TIM0, PRI_LOWEST);
 }

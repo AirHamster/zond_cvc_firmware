@@ -10,7 +10,8 @@
 #include "spi.h"
 #include "timers.h"
 #include "adc_dac.h"
-
+uint8_t channel = 1;	//adc channel
+uint16_t volts, curr;
 void gpio_init (void)
 {	
 	SCS |= 1;
@@ -124,44 +125,8 @@ int main (void)
 	adc_init();
 	UART0_send("\nLPC initialized\n", 17);
 
-
-#ifdef DEBUG_SPI
-	UART0_send("\nS0SPCR: ", 9);
-	UART0_send_byte(S0SPCR);
-	UART0_send("\nS0SPSR: ", 9);
-	UART0_send_byte(S0SPSR);
-	UART0_send("\nS0SPCCR: ",10 );
-	UART0_send_byte(S0SPCCR);
-#endif
 	while(1)
 	{
-/*                 if (rise == 1)
- *                 {
- *                         for (i = 0; i < 4096; i++)
- *                         {
- *                                 FIO1CLR |= 1 << DAC;
- *                                 SPI0_send_2_byte(0x1000 + i);
- *                                 FIO1SET |= 1 << DAC;
- *                                 for (j = 0; j < 200; j++);
- * 
- *                         }
- *                         rise = 0;
- *                 }else{
- *                         for (i = 4095; i > 0; i-- )
- *                         {
- *                                 FIO1CLR |= 1 << DAC;
- *                                 SPI0_send_2_byte(0x1000 + i);
- *                                 FIO1SET |= 1 << DAC;
- *                                 for (j = 0; j < 200; j++);
- * 
- *                         }
- *                         rise = 1;
- *                 } */
-		/* led_set(LED2); */
-		/* for (i = 0; i < 200; i++); */
-		/* led_clear(LED2); */
-		/* for (i = 0; i < 200; i++); */
-		/* dac_set_voltage(0x0BE1); */
 	}
 	return 0;
 }

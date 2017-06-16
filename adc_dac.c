@@ -25,7 +25,7 @@ void adc_init(void)
 
 	FIO1CLR |= 1 << ADC;
 	SPI0_send_1_byte(WRITE_CONF_REG, ADC);
-	SPI0_send_2_byte(CONF_REG_VAL, ADC);
+	SPI0_send_2_byte((CONF_REG_VAL | 1), ADC);
 	FIO1SET |= 1 << ADC;
 
 	for (dat = 0; dat < 2000; dat++);
