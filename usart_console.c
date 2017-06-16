@@ -37,15 +37,15 @@ void process_command(char *cmd)
 		UART0_send("\nStarted\n", 9);
 		gpio_set(OP_AMP_PORT, OP_AMP_PIN);
 		led_set(LED2);
-	FIO1PIN |= (1 << ADC_SCLK);
-	FIO1CLR |= 1 << ADC;
-	SPI0_send_1_byte(WRITE_CONF_REG, ADC);
-	SPI0_send_2_byte(CONF_REG_VAL, ADC);
-	FIO1SET |= 1 << ADC;
-	FIO1CLR |= 1 << ADC;
-	SPI0_send_1_byte(WRITE_MODE_REG, ADC);
-	SPI0_send_2_byte(MODE_REG_VAL, ADC);
-	FIO1SET |= 1 << ADC;
+	/* FIO1PIN |= (1 << ADC_SCLK); */
+	/* FIO1CLR |= 1 << ADC; */
+	/* SPI0_send_1_byte(WRITE_CONF_REG, ADC); */
+	/* SPI0_send_2_byte(CONF_REG_VAL, ADC); */
+	/* FIO1SET |= 1 << ADC; */
+	/* FIO1CLR |= 1 << ADC; */
+	/* SPI0_send_1_byte(WRITE_MODE_REG, ADC); */
+	/* SPI0_send_2_byte(MODE_REG_VAL, ADC); */
+	/* FIO1SET |= 1 << ADC; */
 		timer0_start();
 	}    
 

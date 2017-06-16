@@ -15,15 +15,26 @@ void Isr_TIM0(void)
 	uint16_t volts, curr;
 	uint8_t data;
 	FIO1PIN |= (1 << ADC_SCLK);
-        volts = adc_read_voltage();
-	curr = adc_read_current();
-	UART0_send("\nOutput voltage: ",17 );
-	UART0_send_byte(volts >> 8);
-	UART0_send_byte(volts);
 
+	curr = adc_read_current();
+        dat = 40 * 5;
+	/* volts = adc_read_voltage(); */
+	FIO1CLR |= 1 << ADC;
+
+	SPI0_send_1_byte((WRITE_CONF_REG | (1 << 6)), ADC);
+	dat = SPI0_send_2_byte(0xF1, ADC);
+
+	FIO1SET |= 1 << ADC;
+
+	UART0_send("\nSPI_recieved: ", 15);
+	UART0_send_byte(dat >> 8);
+        UART0_send_byte(dat); 
+	/* UART0_send("\nOutput voltage: ",17 ); */
+	/* UART0_send_byte(volts >> 8); */
+	/* UART0_send_byte(volts); */
 	UART0_send("\nCurrent: ",10 );
 	UART0_send_byte(curr >> 8);
-        UART0_send_byte(curr); 
+	UART0_send_byte(curr); 
 
 /*         dat = 40 * 5;
  *         FIO1CLR |= 1 << ADC;
