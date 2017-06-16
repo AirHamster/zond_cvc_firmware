@@ -3,11 +3,11 @@ obj/zond_cvc.elf:     file format elf32-littlearm
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00001500  00000000  00000000  00010000  2**3
+  0 .text         00001508  00000000  00000000  00010000  2**3
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000434  40000000  00001500  00020000  2**3
+  1 .data         00000434  40000000  00001508  00020000  2**3
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000144  40000434  00001934  00020434  2**1
+  2 .bss          00000144  40000434  0000193c  00020434  2**1
                   ALLOC
   3 .stack        00000a10  40000578  40000578  00020434  2**2
                   CONTENTS
@@ -197,7 +197,7 @@ trap:
 
 @ Initialize .data section (Copy ROM data)
 	LDR	R1, =_sidata
-     394:	00001500 	.word	0x00001500
+     394:	00001508 	.word	0x00001508
 	LDR	R2, =_sdata
      398:	40000000 	.word	0x40000000
 	LDR	R3, =_edata
@@ -2606,9 +2606,9 @@ void Isr_TIM0(void)
      e66:	0349      	lsls	r1, r1, #13
      e68:	430b      	orrs	r3, r1
 
-	curr = adc_read_current();
+	/* curr = adc_read_current(); */
         dat = 40 * 5;
-	/* volts = adc_read_voltage(); */
+	volts = adc_read_voltage();
 	FIO1CLR |= 1 << ADC;
      e6a:	2680      	movs	r6, #128	; 0x80
 {
@@ -2619,24 +2619,22 @@ void Isr_TIM0(void)
 	FIO1PIN |= (1 << ADC_SCLK);
      e6c:	6013      	str	r3, [r2, #0]
 
-	curr = adc_read_current();
-     e6e:	f7ff ff9b 	bl	da8 <adc_read_current>
+	/* curr = adc_read_current(); */
         dat = 40 * 5;
-	/* volts = adc_read_voltage(); */
+	volts = adc_read_voltage();
+     e6e:	f7ff ffc7 	bl	e00 <adc_read_voltage>
 	FIO1CLR |= 1 << ADC;
      e72:	4a1b      	ldr	r2, [pc, #108]	; (ee0 <Isr_TIM0+0x88>)
      e74:	6813      	ldr	r3, [r2, #0]
      e76:	02f6      	lsls	r6, r6, #11
      e78:	4333      	orrs	r3, r6
-	T0IR = 0x3F;
-	uint16_t volts, curr;
 	uint8_t data;
 	FIO1PIN |= (1 << ADC_SCLK);
 
-	curr = adc_read_current();
-     e7a:	1c04      	adds	r4, r0, #0
+	/* curr = adc_read_current(); */
         dat = 40 * 5;
-	/* volts = adc_read_voltage(); */
+	volts = adc_read_voltage();
+     e7a:	1c04      	adds	r4, r0, #0
 	FIO1CLR |= 1 << ADC;
      e7c:	6013      	str	r3, [r2, #0]
 
@@ -2669,19 +2667,16 @@ void Isr_TIM0(void)
      eaa:	0628      	lsls	r0, r5, #24
      eac:	0e00      	lsrs	r0, r0, #24
      eae:	f7ff fd8d 	bl	9cc <UART0_send_byte>
-	/* UART0_send("\nOutput voltage: ",17 ); */
-	/* UART0_send_byte(volts >> 8); */
-	/* UART0_send_byte(volts); */
-	UART0_send("\nCurrent: ",10 );
-     eb2:	210a      	movs	r1, #10
+	UART0_send("\nOutput voltage: ",17 );
+     eb2:	2111      	movs	r1, #17
      eb4:	480d      	ldr	r0, [pc, #52]	; (eec <Isr_TIM0+0x94>)
      eb6:	f7ff fd9f 	bl	9f8 <UART0_send>
-	UART0_send_byte(curr >> 8);
+	UART0_send_byte(volts >> 8);
      eba:	0a20      	lsrs	r0, r4, #8
      ebc:	0600      	lsls	r0, r0, #24
      ebe:	0e00      	lsrs	r0, r0, #24
      ec0:	f7ff fd84 	bl	9cc <UART0_send_byte>
-	UART0_send_byte(curr); 
+	UART0_send_byte(volts);
      ec4:	0620      	lsls	r0, r4, #24
      ec6:	0e00      	lsrs	r0, r0, #24
      ec8:	f7ff fd80 	bl	9cc <UART0_send_byte>
@@ -3228,17 +3223,18 @@ void timer0_stop(void)
     13b8:	72617453 0a646574 6f747300 530a0070     Started..stop..S
     13c8:	70706f74 000a6465 00746573 000a4b4f     topped..set.OK..
     13d8:	706c6568 50530a00 65725f49 76656963     help..SPI_reciev
-    13e8:	203a6465 75430a00 6e657272 00203a74     ed: ..Current: .
+    13e8:	203a6465 754f0a00 74757074 6c6f7620     ed: ..Output vol
+    13f8:	65676174 0000203a                       tage: ..
 
-000013f8 <_ctype_>:
-    13f8:	20202000 20202020 28282020 20282828     .         ((((( 
-    1408:	20202020 20202020 20202020 20202020                     
-    1418:	10108820 10101010 10101010 10101010      ...............
-    1428:	04040410 04040404 10040404 10101010     ................
-    1438:	41411010 41414141 01010101 01010101     ..AAAAAA........
-    1448:	01010101 01010101 01010101 10101010     ................
-    1458:	42421010 42424242 02020202 02020202     ..BBBBBB........
-    1468:	02020202 02020202 02020202 10101010     ................
-    1478:	00000020 00000000 00000000 00000000      ...............
+00001400 <_ctype_>:
+    1400:	20202000 20202020 28282020 20282828     .         ((((( 
+    1410:	20202020 20202020 20202020 20202020                     
+    1420:	10108820 10101010 10101010 10101010      ...............
+    1430:	04040410 04040404 10040404 10101010     ................
+    1440:	41411010 41414141 01010101 01010101     ..AAAAAA........
+    1450:	01010101 01010101 01010101 10101010     ................
+    1460:	42421010 42424242 02020202 02020202     ..BBBBBB........
+    1470:	02020202 02020202 02020202 10101010     ................
+    1480:	00000020 00000000 00000000 00000000      ...............
 	...
-    14fc:	00000043                                C...
+    1504:	00000043                                C...

@@ -107,7 +107,7 @@ LOAD /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libg.a
 LOAD /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a
 END GROUP
 
-.text           0x0000000000000000     0x1500
+.text           0x0000000000000000     0x1508
  *(.VECTOR)
  .VECTOR        0x0000000000000000       0x34 obj/asmfunc.o
                 0x00000000000002fc                . = 0x2fc
@@ -198,34 +198,35 @@ END GROUP
  .rodata.str1.1
                 0x00000000000013b1       0x2c obj/usart_console.o
  .rodata.str1.1
-                0x00000000000013dd       0x1b obj/timers.o
+                0x00000000000013dd       0x22 obj/timers.o
+ *fill*         0x00000000000013ff        0x1 
  .rodata._ctype_
-                0x00000000000013f8      0x104 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-ctype_.o)
-                0x00000000000013f8                _ctype_
+                0x0000000000001400      0x104 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-ctype_.o)
+                0x0000000000001400                _ctype_
  .rodata.str1.4
-                0x00000000000014fc        0x4 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
+                0x0000000000001504        0x4 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
  *(.gnu.linkonce.r.*)
 
-.vfp11_veneer   0x0000000000001500        0x0
- .vfp11_veneer  0x0000000000001500        0x0 linker stubs
+.vfp11_veneer   0x0000000000001508        0x0
+ .vfp11_veneer  0x0000000000001508        0x0 linker stubs
 
-.v4_bx          0x0000000000001500        0x0
- .v4_bx         0x0000000000001500        0x0 linker stubs
+.v4_bx          0x0000000000001508        0x0
+ .v4_bx         0x0000000000001508        0x0 linker stubs
 
-.iplt           0x0000000000001500        0x0
- .iplt          0x0000000000001500        0x0 obj/asmfunc.o
+.iplt           0x0000000000001508        0x0
+ .iplt          0x0000000000001508        0x0 obj/asmfunc.o
 
-.rel.dyn        0x0000000000001500        0x0
- .rel.iplt      0x0000000000001500        0x0 obj/asmfunc.o
+.rel.dyn        0x0000000000001508        0x0
+ .rel.iplt      0x0000000000001508        0x0 obj/asmfunc.o
 
 .ARM.excep
  *(.ARM.exidx*)
  *(.ARM.extab*)
-                0x0000000000001500                . = ALIGN (0x4)
-                0x0000000000001500                _etext = .
-                0x0000000000001500                _sidata = .
+                0x0000000000001508                . = ALIGN (0x4)
+                0x0000000000001508                _etext = .
+                0x0000000000001508                _sidata = .
 
-.data           0x0000000040000000      0x434 load address 0x0000000000001500
+.data           0x0000000040000000      0x434 load address 0x0000000000001508
                 0x0000000040000000                . = ALIGN (0x4)
                 0x0000000040000000                _sdata = .
  *(.data)
@@ -243,10 +244,10 @@ END GROUP
                 0x0000000040000434                . = ALIGN (0x4)
                 0x0000000040000434                _edata = .
 
-.igot.plt       0x0000000040000434        0x0 load address 0x0000000000001934
+.igot.plt       0x0000000040000434        0x0 load address 0x000000000000193c
  .igot.plt      0x0000000040000434        0x0 obj/asmfunc.o
 
-.bss            0x0000000040000434      0x144 load address 0x0000000000001934
+.bss            0x0000000040000434      0x144 load address 0x000000000000193c
                 0x0000000040000434                . = ALIGN (0x4)
                 0x0000000040000434                _sbss = .
  *(.bss)
@@ -598,8 +599,8 @@ _strtol_r                                         /usr/lib/gcc/arm-none-eabi/4.9
 adc_init                                          obj/adc_dac.o
                                                   obj/main.o
 adc_read_current                                  obj/adc_dac.o
-                                                  obj/timers.o
 adc_read_voltage                                  obj/adc_dac.o
+                                                  obj/timers.o
 atoi                                              /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/thumb/libc.a(lib_a-atoi.o)
                                                   obj/usart_console.o
 dac_set_voltage                                   obj/adc_dac.o

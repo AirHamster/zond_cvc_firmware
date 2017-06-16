@@ -93,9 +93,9 @@
 00001300 t ____aeabi_uidivmod_from_thumb
 00001308 t ____aeabi_idiv0_from_arm
 00001318 T help_msg
-000013f8 T _ctype_
-00001500 D _etext
-00001500 D _sidata
+00001400 T _ctype_
+00001508 D _etext
+00001508 D _sidata
 40000000 D __ctype_ptr__
 40000000 D _sdata
 40000008 d impure_data
