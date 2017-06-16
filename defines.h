@@ -12,7 +12,7 @@
 #define READ_ID_REG 0x60
 #define READ_STATUS_REG 0x40
 
-#define CONF_REG_VAL 0x0800 //unipolar mode 
+#define CONF_REG_VAL 0x1000 //unipolar mode 
 #define MODE_REG_VAL 0x0001
 #define OFFSET_REG_VAL 0x8000 //0x8000 - default
 

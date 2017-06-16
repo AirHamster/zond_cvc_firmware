@@ -6,6 +6,7 @@
 #include "uart23xx.h"
 #include "adc_dac.h"
 #include "usart_console.h"
+#include <stdlib.h>
 extern void gpio_set(uint8_t port, uint8_t pin);
 extern void gpio_clear(uint8_t port, uint8_t pin);
 void Isr_TIM0(void)
@@ -14,27 +15,40 @@ void Isr_TIM0(void)
 	T0IR = 0x3F;
 	uint16_t volts, curr;
 	uint8_t data;
+	uint8_t num = 5;
+	char *volt_ascii[5];
 	FIO1PIN |= (1 << ADC_SCLK);
 
-	curr = adc_read_current();
+	/* curr = adc_read_current(); */
         dat = 40 * 5;
-	/* volts = adc_read_voltage(); */
-	FIO1CLR |= 1 << ADC;
+	volts = adc_read_voltage();
+	/* FIO1CLR |= 1 << ADC; */
 
-	SPI0_send_1_byte((WRITE_CONF_REG | (1 << 6)), ADC);
-	dat = SPI0_send_2_byte(0xF1, ADC);
+	/* SPI0_send_1_byte((WRITE_CONF_REG | (1 << 6)), ADC); */
+	/* dat = SPI0_send_2_byte(0xF1, ADC); */
 
-	FIO1SET |= 1 << ADC;
+	/* FIO1SET |= 1 << ADC; */
 
-	UART0_send("\nSPI_recieved: ", 15);
-	UART0_send_byte(dat >> 8);
-        UART0_send_byte(dat); 
-	/* UART0_send("\nOutput voltage: ",17 ); */
+	/* UART0_send("\nSPI_recieved: ", 15); */
+	/* UART0_send_byte(dat >> 8); */
+        /* UART0_send_byte(dat);  */
+	UART0_send("\nOutput voltage: ",17 );
+
+	if (volts < 10000)
+		num = 4;
+	if (volts < 1000)
+		num = 3;
+	if (volts < 100)
+		num = 2;
+	if (volts < 10)
+		num = 1;
+	UART0_send(itoa(volts, volt_ascii,10), num);
 	/* UART0_send_byte(volts >> 8); */
 	/* UART0_send_byte(volts); */
-	UART0_send("\nCurrent: ",10 );
-	UART0_send_byte(curr >> 8);
-	UART0_send_byte(curr); 
+
+	/* UART0_send("\nCurrent: ",10 ); */
+	/* UART0_send_byte(curr >> 8); */
+	/* UART0_send_byte(curr);  */
 
 /*         dat = 40 * 5;
  *         FIO1CLR |= 1 << ADC;

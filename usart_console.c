@@ -63,9 +63,9 @@ void process_command(char *cmd)
 	
 		lenth = strlen(cmd+4)-1;
 		num = atoi(cmd + 4);
-		UART0_send("OK\n", 3);
-		UART0_send_byte(num >> 8);
-		UART0_send_byte(num);
+		UART0_send("\nOK\n", 4);
+		/* UART0_send_byte(num >> 8); */
+		/* UART0_send_byte(num); */
 		dac_set_voltage(num);
 	}
 
