@@ -1,6 +1,7 @@
 #include "defines.h"
 #include "string.h"
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "xprintf.h"
 #include "usart_console.h" 
@@ -9,6 +10,7 @@
 #include "timers.h"
 #include "spi.h"
 /* #define GUI */
+#define isdigit(c) (c >= '0' && c <= '9')
 unsigned char RxCount,Index;
 extern uint8_t native;
 const char help_msg[] = "Plazma probe controller\n Usage:\n    start - start measurements\n    stop - finish measurements\n    set <voltage> - probe voltage setup\n    native - non-formated output\n    ascii - output in ascii presentation\n";
@@ -31,6 +33,7 @@ void process_command(char *cmd)
 {
 	uint16_t num;
 	uint8_t lenth;
+	double input;
 #ifdef GUI
 #else
 	if(strncmp(cmd, "start", 5) == 0)
@@ -57,10 +60,17 @@ void process_command(char *cmd)
 	{
 
 		lenth = strlen(cmd+4)-1;
+		if (native == 1)
+		{
 		num = atoi(cmd + 4);
+		}else{
+		input = atof(cmd + 4);
+		input = input/0.01445 +578;	
+		num = (int)input;
+		}
 		UART0_send("\nOK\n", 4);
-		/* UART0_send_byte(num >> 8); */
-		/* UART0_send_byte(num); */
+		UART0_send_byte(num >> 8);
+		UART0_send_byte(num);
 		dac_set_voltage(num);
 	}
 
@@ -104,3 +114,57 @@ void UART0_send(unsigned char *BufferPtr, unsigned short Length )
 
 	return;
 }
+
+
+
+double atof(const char *s)
+{
+	// This function stolen from either Rolf Neugebauer or Andrew Tolmach. 
+	// Probably Rolf.
+	double a = 0.0;
+	int e = 0;
+	int c;
+	uint8_t neg_flag = 0;
+	if ((c = *s) == '-')
+	{
+		neg_flag = 1;
+		*s++;
+	}
+	while ((c = *s++) != '\0' && isdigit(c)) {
+		a = a*10.0 + (c - '0');
+	}
+	if (c == '.') {
+		while ((c = *s++) != '\0' && isdigit(c)) {
+			a = a*10.0 + (c - '0');
+			e = e-1;
+		}
+	}
+	if (c == 'e' || c == 'E') {
+		int sign = 1;
+		int i = 0;
+		c = *s++;
+		if (c == '+')
+			c = *s++;
+		else if (c == '-') {
+			c = *s++;
+			sign = -1;
+		}
+		while (isdigit(c)) {
+			i = i*10 + (c - '0');
+			c = *s++;
+		}
+		e += i*sign;
+	}
+	while (e > 0) {
+		a *= 10.0;
+		e--;
+	}
+	while (e < 0) {
+		a *= 0.1;
+		e++;
+	}
+	if (neg_flag == 1)
+		a = a*(-1);
+	return a;
+}
+

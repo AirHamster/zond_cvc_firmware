@@ -120,30 +120,30 @@ void timer0_stop(void)
 	T0TCR &= ~1;
 	gpio_clear(OP_AMP_PORT, OP_AMP_PIN);
 }
- void ftoa(float num, char *str)
+void ftoa(float num, char *str)
 {
-  int intpart = num;
-  int intdecimal;
-  int i;
-  float decimal_part;
-  char decimal[20];
+	int intpart = num;
+	int intdecimal;
+	int i;
+	float decimal_part;
+	char decimal[20];
 
-  memset(str, 0x0, 20);
-  itoa(num, str, 10);
+	memset(str, 0x0, 20);
+	itoa(num, str, 10);
 
-  strcat(str, ".");
+	strcat(str, ".");
 
-  decimal_part = num - intpart;
-  intdecimal = decimal_part * 1000000;
+	decimal_part = num - intpart;
+	intdecimal = decimal_part * 1000000;
 
-  if(intdecimal < 0)
-  {
-    intdecimal = -intdecimal;
-  }
-  itoa(intdecimal, decimal, 10);
-  for(i =0;i < (PRECISION - strlen(decimal));i++)
-  {
-    strcat(str, "0");
-  }
-  strcat(str, decimal);
+	if(intdecimal < 0)
+	{
+		intdecimal = -intdecimal;
+	}
+	itoa(intdecimal, decimal, 10);
+	for(i =0;i < (PRECISION - strlen(decimal));i++)
+	{
+		strcat(str, "0");
+	}
+	strcat(str, decimal);
 }
