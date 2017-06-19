@@ -10,7 +10,8 @@
 #include "spi.h"
 /* #define GUI */
 unsigned char RxCount,Index;
-const char help_msg[] = "Plazma probe controller\n Usage:\n    start - start measurements\n    stop - finish measurements\n    set <voltage> - probe voltage setup\n";
+extern uint8_t native;
+const char help_msg[] = "Plazma probe controller\n Usage:\n    start - start measurements\n    stop - finish measurements\n    set <voltage> - probe voltage setup\n    native - non-formated output\n    ascii - output in ascii presentation\n";
 
 
 uint16_t hex_to_int(uint8_t c){
@@ -37,15 +38,6 @@ void process_command(char *cmd)
 		UART0_send("\nStarted\n", 9);
 		gpio_set(OP_AMP_PORT, OP_AMP_PIN);
 		led_set(LED2);
-	/* FIO1PIN |= (1 << ADC_SCLK); */
-	/* FIO1CLR |= 1 << ADC; */
-	/* SPI0_send_1_byte(WRITE_CONF_REG, ADC); */
-	/* SPI0_send_2_byte(CONF_REG_VAL, ADC); */
-	/* FIO1SET |= 1 << ADC; */
-	/* FIO1CLR |= 1 << ADC; */
-	/* SPI0_send_1_byte(WRITE_MODE_REG, ADC); */
-	/* SPI0_send_2_byte(MODE_REG_VAL, ADC); */
-	/* FIO1SET |= 1 << ADC; */
 		timer0_start();
 	}    
 
@@ -56,11 +48,14 @@ void process_command(char *cmd)
 		gpio_clear(OP_AMP_PORT, OP_AMP_PIN);
 		led_clear(LED2);
 		timer0_stop();
+		FIO1CLR |= 1 << DAC;
+		SPI0_send_2_byte((0x1000 | 578), DAC);
+		FIO1SET |= 1 << DAC;
 	}
 	/* Voltage setup  */
 	if(strncmp(cmd, "set", 3) == 0)
 	{
-	
+
 		lenth = strlen(cmd+4)-1;
 		num = atoi(cmd + 4);
 		UART0_send("\nOK\n", 4);
@@ -73,6 +68,15 @@ void process_command(char *cmd)
 	if(strncmp(cmd, "help", 4) == 0)
 	{
 		UART0_send(help_msg, sizeof(help_msg)-1);
+	}
+	/* Switching between output value presentation */
+	if (strncmp(cmd, "native", 6) == 0)
+	{
+		native = 1;
+	}
+	if (strncmp(cmd, "ascii", 5) == 0)
+	{
+		native = 0;
 	}
 #endif
 }

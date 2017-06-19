@@ -11,6 +11,7 @@
 #include "timers.h"
 #include "adc_dac.h"
 uint8_t channel = 1;	//adc channel
+uint8_t native = 0;
 uint16_t volts, curr;
 void gpio_init (void)
 {	
