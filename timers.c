@@ -16,8 +16,9 @@
 #define ASCII
 extern void gpio_set(uint8_t port, uint8_t pin);
 extern void gpio_clear(uint8_t port, uint8_t pin);
-extern uint8_t native;
+extern uint8_t native, getflag, conv_number;
 extern uint8_t channel;
+extern uint64_t curr_big;
 extern uint16_t volts, curr;
 void Isr_TIM0(void)
 {
@@ -28,16 +29,85 @@ void Isr_TIM0(void)
 	char *volt_ascii[50];
 	char *curr_ascii[50];
 	FIO1PIN |= (1 << ADC_SCLK);
-	if (channel == 1)
-	{
-		volts = adc_read_voltage();
-		channel = 0;
+	if (getflag == 0){
+		if (channel == 1)
+		{
+			read_volt();
+			channel = 0;
+			send_results();
+		}else if (channel == 0)
+		{
+			read_curr();
+			channel = 1;
+		}
+	}else{
+		//UART0_send("\ngf\n", 4);
+		if (conv_number == 11) {
+			conv_number--;
+			volts = adc_read_voltage();
+		//UART0_send_byte(volts>>8);
+		//UART0_send_byte(volts & 0xFF);
 		/* Need to select proper channel */
 		FIO1CLR |= 1 << ADC;
 		SPI0_send_1_byte(WRITE_CONF_REG, ADC);
 		SPI0_send_2_byte(CONF_REG_VAL, ADC);
 		FIO1SET |= 1 << ADC;
-		if (native == 1)
+		}else if (conv_number != 0){
+			conv_number--;
+			curr_big += adc_read_current();
+		}else{
+			curr = (curr_big/10);
+			conv_number = 11;
+			getflag = 0;
+			
+					/* Need to select proper channel */
+		FIO1CLR |= 1 << ADC;
+		SPI0_send_1_byte(WRITE_CONF_REG, ADC);
+		SPI0_send_2_byte((CONF_REG_VAL | 1), ADC);
+		FIO1SET |= 1 << ADC;
+		curr_big = 0;
+		send_results();
+		timer0_stop();
+		led_clear(LED1);
+		}
+	}
+	VICVectAddr = 0;
+}
+void read_volt(void)
+{
+		volts = adc_read_voltage();
+		
+		/* Need to select proper channel */
+		FIO1CLR |= 1 << ADC;
+		SPI0_send_1_byte(WRITE_CONF_REG, ADC);
+		SPI0_send_2_byte(CONF_REG_VAL, ADC);
+		FIO1SET |= 1 << ADC;
+}
+void read_curr(void){
+			curr = adc_read_current();
+		
+		/* Need to select proper channel */
+		FIO1CLR |= 1 << ADC;
+		SPI0_send_1_byte(WRITE_CONF_REG, ADC);
+		SPI0_send_2_byte((CONF_REG_VAL | 1), ADC);
+		FIO1SET |= 1 << ADC;
+}
+void timer0_set_freq(uint8_t hz){
+	T0TCR = 0;	/* Disable tim0 */
+	if (hz == 100)
+	{
+		T0MR0 = 28800;	/* Top value (100 Hz) */
+	}else{
+		T0MR0 = 72000;	/* Top value (40 Hz) */
+	}
+}
+void send_results(void){
+	uint16_t dat;
+	uint8_t data;
+	uint8_t num = 5;
+	char *volt_ascii[50];
+	char *curr_ascii[50];
+	if (native == 1)
 		{
 			/* UART0_send("\nOutput voltage: ",17 ); */
 			UART0_send("\n\nVoltage, V  : ",16 );
@@ -74,27 +144,19 @@ void Isr_TIM0(void)
 			/* fvolts = (volts)/3.3; */
 			/* fcurr = (curr - 1000); */
 
-			UART0_send("\n\nVoltage, V  : ",16 );
+			//UART0_send("\n\nVoltage, V  : ",16 );
+			UART0_send("V", 1);
 			/* sprintf(volt_ascii, "%+f", fvolts); */
 			ftoa(fvolts, volt_ascii);
 			UART0_send(volt_ascii, 6);
-			UART0_send("\nCurrent, mkA: ",15 );
+			//UART0_send("\nCurrent, mkA: ",15 );
+			UART0_send("C", 1);
 			/* sprintf(curr_ascii, "+%f", fcurr); */
 			ftoa(fcurr, curr_ascii);
 			UART0_send(curr_ascii, 6);
+			UART0_send("\n", 1);
 
 		}
-	}else if (channel == 0)
-	{
-		curr = adc_read_current();
-		channel = 1;
-		/* Need to select proper channel */
-		FIO1CLR |= 1 << ADC;
-		SPI0_send_1_byte(WRITE_CONF_REG, ADC);
-		SPI0_send_2_byte((CONF_REG_VAL | 1), ADC);
-		FIO1SET |= 1 << ADC;
-	}
-	VICVectAddr = 0;
 }
 void timer0_init(void)
 {

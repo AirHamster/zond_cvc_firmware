@@ -13,6 +13,8 @@
 #define isdigit(c) (c >= '0' && c <= '9')
 unsigned char RxCount,Index;
 extern uint8_t native;
+extern uint16_t volts, curr;
+extern uint8_t getflag;
 const char help_msg[] = "Plazma probe controller\n Usage:\n    start - start measurements\n    stop - finish measurements\n    set <voltage> - probe voltage setup\n    native - non-formated output\n    ascii - output in ascii presentation\n";
 
 
@@ -36,11 +38,19 @@ void process_command(char *cmd)
 	double input;
 #ifdef GUI
 #else
+		if(strncmp(cmd, "Z?", 2) == 0)
+	{
+		UART0_send("z\n", 2);
+		//gpio_set(OP_AMP_PORT, OP_AMP_PIN);
+		led_set(LED2);
+	//	timer0_start();
+	}    
+	
 	if(strncmp(cmd, "start", 5) == 0)
 	{
 		UART0_send("\nStarted\n", 9);
 		gpio_set(OP_AMP_PORT, OP_AMP_PIN);
-		led_set(LED2);
+		led_set(LED1);
 		timer0_start();
 	}    
 
@@ -49,7 +59,7 @@ void process_command(char *cmd)
 	{
 		UART0_send("\nStopped\n", 9);
 		gpio_clear(OP_AMP_PORT, OP_AMP_PIN);
-		led_clear(LED2);
+		led_clear(LED1);
 		timer0_stop();
 		FIO1CLR |= 1 << DAC;
 		SPI0_send_2_byte((0x1000 | 578), DAC);
@@ -73,7 +83,33 @@ void process_command(char *cmd)
 		UART0_send_byte(num);
 		dac_set_voltage(num);
 	}
-
+	if(strncmp(cmd, "get", 3) == 0)
+	{
+		//read_volt();
+		lenth = strlen(cmd+4)-1;
+		if (native == 1)
+		{
+		num = atoi(cmd + 4);
+		}else{
+		input = atof(cmd + 4);
+		input = input/0.01445 +578;	
+		num = (int)input;
+		}
+		dac_set_voltage(num);
+		//UART0_send_byte(num >> 8);
+		//UART0_send_byte(num);
+		getflag = 1;
+		
+		
+		//UART0_send_byte(volts>>8);
+		//UART0_send_byte(volts & 0xFF);
+		timer0_set_freq(100);
+		led_set(LED1);
+		
+		timer0_start();
+		//UART0_send("\nOK\n", 4);
+		
+	}
 	/* Manual  */
 	if(strncmp(cmd, "help", 4) == 0)
 	{
