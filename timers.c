@@ -148,11 +148,13 @@ void send_results(void){
 			UART0_send("V", 1);
 			/* sprintf(volt_ascii, "%+f", fvolts); */
 			ftoa(fvolts, volt_ascii);
+			//my_ftoa(fvolts, volt_ascii);
 			UART0_send(volt_ascii, 6);
 			//UART0_send("\nCurrent, mkA: ",15 );
 			UART0_send("C", 1);
 			/* sprintf(curr_ascii, "+%f", fcurr); */
 			ftoa(fcurr, curr_ascii);
+			//ftoa2(fcurr, curr_ascii, 4);
 			UART0_send(curr_ascii, 6);
 			UART0_send("\n", 1);
 
@@ -182,6 +184,7 @@ void timer0_stop(void)
 	T0TCR &= ~1;
 	gpio_clear(OP_AMP_PORT, OP_AMP_PIN);
 }
+/*
 void ftoa(float num, char *str)
 {
 	int intpart = num;
@@ -208,4 +211,37 @@ void ftoa(float num, char *str)
 		strcat(str, "0");
 	}
 	strcat(str, decimal);
+}
+*/
+void ftoa(float num, char *str)
+{
+    int intpart = num;
+    int intdecimal;
+    int i;
+    float decimal_part;
+    char decimal[20];
+
+    memset(str, 0x0, 20);
+    if (num > (-1) && num < (0))
+    {
+        strcat(str, "-");
+        itoa(num, str+1, 10);
+    }else{
+        itoa(num, str, 10);
+    }
+    strcat(str, ".");
+
+    decimal_part = num - intpart;
+    intdecimal = decimal_part * 1000000;
+
+    if(intdecimal < 0)
+    {
+        intdecimal = -intdecimal;
+    }
+    itoa(intdecimal, decimal, 10);
+    for(i =0;i < (PRECISION - strlen(decimal));i++)
+    {
+        strcat(str, "0");
+    }
+    strcat(str, decimal);
 }

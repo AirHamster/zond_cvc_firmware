@@ -7,3 +7,5 @@ void ftoa(float num, char *str);
 void read_volt(void);
 void read_curr(void);
 void send_results(void);
+char * my_ftoa(float value, char *result);
+int ftoaEngine(float value, char *buffer, int presc);

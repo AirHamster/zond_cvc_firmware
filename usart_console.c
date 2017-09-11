@@ -57,7 +57,7 @@ void process_command(char *cmd)
 	/* Turn off amplifier */
 	if(strncmp(cmd, "stop", 4) == 0)
 	{
-		UART0_send("\nStopped\n", 9);
+		//UART0_send("\nStopped\n", 9);
 		gpio_clear(OP_AMP_PORT, OP_AMP_PIN);
 		led_clear(LED1);
 		timer0_stop();
