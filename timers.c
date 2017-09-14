@@ -42,7 +42,7 @@ void Isr_TIM0(void)
 		}
 	}else{
 		//UART0_send("\ngf\n", 4);
-		if (conv_number == 11) {
+		if (conv_number == 101) {
 			conv_number--;
 			volts = adc_read_voltage();
 		//UART0_send_byte(volts>>8);
@@ -55,9 +55,9 @@ void Isr_TIM0(void)
 		}else if (conv_number != 0){
 			conv_number--;
 			curr_big += adc_read_current();
-		}else{
-			curr = (curr_big/10);
-			conv_number = 11;
+		}else if (conv_number == 0){
+			curr = (curr_big/100);
+			conv_number = 101;
 			getflag = 0;
 			
 					/* Need to select proper channel */
@@ -96,9 +96,14 @@ void timer0_set_freq(uint8_t hz){
 	T0TCR = 0;	/* Disable tim0 */
 	if (hz == 100)
 	{
-		T0MR0 = 28800;	/* Top value (100 Hz) */
+		T0PR = 250;	/* Prescaler */
+		//T0MR0 = 28800;	/* Top value (100 Hz) */
+		T0MR0 = 720;	/* Top value (100 Hz) */
 	}else{
-		T0MR0 = 72000;	/* Top value (40 Hz) */
+		//T0MR0 = 72000;	/* Top value (40 Hz) */
+		UART0_send("100hz\n", 6);
+		T0PR = 250;	/* Prescaler */
+		T0MR0 = 36000;	/* Top value (1 Hz) */
 	}
 }
 void send_results(void){

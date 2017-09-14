@@ -12,7 +12,7 @@
 #include "adc_dac.h"
 uint8_t channel = 1;	//adc channel
 uint8_t native = 0;
-uint8_t conv_number = 11;
+uint8_t conv_number = 101;
 uint8_t getflag =0;
 uint64_t curr_big;
 uint16_t volts, curr;

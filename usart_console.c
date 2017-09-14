@@ -51,6 +51,7 @@ void process_command(char *cmd)
 		UART0_send("\nStarted\n", 9);
 		gpio_set(OP_AMP_PORT, OP_AMP_PIN);
 		led_set(LED1);
+		timer0_set_freq(1);
 		timer0_start();
 	}    
 
