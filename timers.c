@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 #define _FTOA_TOO_LARGE 1
 #define _FTOA_TOO_SMALL 2
 #define PRECISION 6
@@ -144,7 +145,10 @@ void send_results(void){
 			uint16_t volt_ascii_pointer;
 			uint16_t curr_ascii_pointer;
 
-			fvolts = (volts - 9211)/1065.2;
+			//fvolts = (volts - 9211)/1065.2;
+			//fcurr = (curr - 6037)/0.7927817;
+			//fvolts = volts*0.0185-25.523;
+			fvolts = volts * 0.00124-27.723;
 			fcurr = (curr - 6037)/0.7927817;
 			/* fvolts = (volts)/3.3; */
 			/* fcurr = (curr - 1000); */
@@ -249,4 +253,53 @@ void ftoa(float num, char *str)
         strcat(str, "0");
     }
     strcat(str, decimal);
+}
+
+float calculateSD(float data[])
+{
+    float sum = 0.0, mean, standardDeviation = 0.0;
+
+    int i;
+
+    for(i=0; i<50; ++i)
+    {
+        sum += data[i];
+    }
+
+    mean = sum/50;
+
+    for(i=0; i<50; ++i)
+        standardDeviation += pow(data[i] - mean, 2);
+
+    return sqrt(standardDeviation/50);
+}
+
+float process_array(char array[])
+{
+    float result = 0.0, median = 0.0, median2 = 0.0, sd = 0.0;
+    int i, counter = 0;
+    
+    for (i = 0; i < 50; i++)
+    {
+       median += array[i];
+    }
+    median = median / 50;
+    
+    sd = calculateSD(array);
+    
+    for (i = 0; i < 50; i++)
+    {
+       if (!((array[i] < (median - sd)) || (array[i] > (median + sd))))
+       {
+           median2 += array[i];
+           counter++;
+       }
+    }
+    if (counter != 0)
+    {
+      return (median2 / counter);
+    }else{
+        return 0;
+    }
+    
 }

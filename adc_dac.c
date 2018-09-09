@@ -36,7 +36,8 @@ void adc_init(void)
 	FIO1SET |= 1 << ADC;
 
 	FIO1CLR |= 1 << DAC;
-	SPI0_send_2_byte((0x1000 | 578), DAC);
+	//SPI0_send_2_byte((0x1000 | 578), DAC);
+	SPI0_send_2_byte((0x1000 | 1382), DAC);
 	FIO1SET |= 1 << DAC;
 
 	/* Switch on green led to indicate successful  initialization */
