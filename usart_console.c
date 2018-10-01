@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include "defines.h"
 #include "string.h"
 #include <stdio.h>

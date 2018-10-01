@@ -13,6 +13,7 @@
 #define _FTOA_TOO_LARGE 1
 #define _FTOA_TOO_SMALL 2
 #define PRECISION 6
+#define NUM_OF_CONV 50
 /* #define NATIVE */
 #define ASCII
 extern void gpio_set(uint8_t port, uint8_t pin);
@@ -43,7 +44,7 @@ void Isr_TIM0(void)
 		}
 	}else{
 		//UART0_send("\ngf\n", 4);
-		if (conv_number == 101) {
+		if (conv_number == NUM_OF_CONV+1) {
 			conv_number--;
 			volts = adc_read_voltage();
 		//UART0_send_byte(volts>>8);
@@ -57,8 +58,8 @@ void Isr_TIM0(void)
 			conv_number--;
 			curr_big += adc_read_current();
 		}else if (conv_number == 0){
-			curr = (curr_big/100);
-			conv_number = 101;
+			curr = (curr_big/NUM_OF_CONV);
+			conv_number = NUM_OF_CONV+1;
 			getflag = 0;
 			
 					/* Need to select proper channel */
@@ -261,17 +262,17 @@ float calculateSD(float data[])
 
     int i;
 
-    for(i=0; i<50; ++i)
+    for(i=0; i<NUM_OF_CONV; ++i)
     {
         sum += data[i];
     }
 
-    mean = sum/50;
+    mean = sum/NUM_OF_CONV;
 
-    for(i=0; i<50; ++i)
+    for(i=0; i<NUM_OF_CONV; ++i)
         standardDeviation += pow(data[i] - mean, 2);
 
-    return sqrt(standardDeviation/50);
+    return sqrt(standardDeviation/NUM_OF_CONV);
 }
 
 float process_array(char array[])
@@ -279,15 +280,15 @@ float process_array(char array[])
     float result = 0.0, median = 0.0, median2 = 0.0, sd = 0.0;
     int i, counter = 0;
     
-    for (i = 0; i < 50; i++)
+    for (i = 0; i < NUM_OF_CONV; i++)
     {
        median += array[i];
     }
-    median = median / 50;
+    median = median / NUM_OF_CONV;
     
     sd = calculateSD(array);
     
-    for (i = 0; i < 50; i++)
+    for (i = 0; i < NUM_OF_CONV; i++)
     {
        if (!((array[i] < (median - sd)) || (array[i] > (median + sd))))
        {
