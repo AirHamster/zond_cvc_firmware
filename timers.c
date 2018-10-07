@@ -144,7 +144,7 @@ void send_results(void){
 			uint16_t volt_ascii_pointer;
 			uint16_t curr_ascii_pointer;
 
-			fvolts = (volts - 9211)/1065.2;
+			fvolts = (volts - 22267)/807.0;
 			fcurr = (curr - 6037)/0.7927817;
 			/* fvolts = (volts)/3.3; */
 			/* fcurr = (curr - 1000); */

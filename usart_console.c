@@ -76,7 +76,7 @@ void process_command(char *cmd)
 		num = atoi(cmd + 4);
 		}else{
 		input = atof(cmd + 4);
-		input = input/0.01445 +578;	
+		input = input/0.01837 + 1378;	
 		num = (int)input;
 		}
 		UART0_send("\nOK\n", 4);
@@ -93,7 +93,7 @@ void process_command(char *cmd)
 		num = atoi(cmd + 4);
 		}else{
 		input = atof(cmd + 4);
-		input = input/0.01445 +578;	
+		input = input/0.01837 + 1378;	
 		num = (int)input;
 		}
 		dac_set_voltage(num);
