@@ -17,6 +17,7 @@ uint8_t getflag =0;
 uint64_t curr_big;
 uint16_t volts, curr;
 uint16_t curr_array[CONV_NUMBER];
+uint16_t volt_array[CONV_NUMBER];
 void gpio_init (void)
 {	
 	SCS |= 1;

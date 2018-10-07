@@ -65,6 +65,8 @@ void process_command(char *cmd)
 		FIO1CLR |= 1 << DAC;
 		SPI0_send_2_byte((0x1000 | 1378), DAC);
 		FIO1SET |= 1 << DAC;
+		
+		adc_init();
 	}
 	/* Voltage setup  */
 	if(strncmp(cmd, "set", 3) == 0)

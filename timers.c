@@ -21,6 +21,7 @@ extern uint8_t channel;
 extern uint64_t curr_big;
 extern uint16_t volts, curr;
 extern uint16_t curr_array[CONV_NUMBER];
+extern uint16_t volt_array[CONV_NUMBER];
 void Isr_TIM0(void)
 {
 	uint16_t dat;
@@ -33,39 +34,44 @@ void Isr_TIM0(void)
 	if (getflag == 0){
 		if (channel == 1)
 		{
-			read_volt();
-			channel = 0;
-			send_results();
+			//read_volt();
+		//	channel = 0;
+		//	send_results();
 		}else if (channel == 0)
 		{
-			read_curr();
-			channel = 1;
+		//	read_curr();
+		//	channel = 1;
 		}
 	}else{
 		//UART0_send("\ngf\n", 4);
 		if (conv_number == CONV_NUMBER + 1) {
 			conv_number--;
-			volts = adc_read_voltage();
+			volts = read_volt();
+			//read_volt();
 		/* Need to select proper channel */
-		FIO1CLR |= 1 << ADC;
-		SPI0_send_1_byte(WRITE_CONF_REG, ADC);
-		SPI0_send_2_byte(CONF_REG_VAL, ADC);
-		FIO1SET |= 1 << ADC;
+		//FIO1CLR |= 1 << ADC;
+		//SPI0_send_1_byte(WRITE_CONF_REG, ADC);
+		//SPI0_send_2_byte(CONF_REG_VAL, ADC);
+		//FIO1SET |= 1 << ADC;
 		}else if (conv_number != 0){
 			conv_number--;
 			//curr_big += adc_read_current();
-			curr_array[conv_number] = adc_read_current();
+			curr_array[conv_number] = read_curr();
+			volt_array[conv_number] = read_volt();
+			//volts = read_volt();
 		}else if (conv_number == 0){
 			//curr = (curr_big/CONV_NUMBER);
 			curr = process_array(curr_array);
+			//volts = process_array(volt_array);
 			conv_number = CONV_NUMBER + 1;
 			getflag = 0;
 			
 					/* Need to select proper channel */
-		FIO1CLR |= 1 << ADC;
-		SPI0_send_1_byte(WRITE_CONF_REG, ADC);
-		SPI0_send_2_byte((CONF_REG_VAL | 1), ADC);
-		FIO1SET |= 1 << ADC;
+					read_curr();
+		//FIO1CLR |= 1 << ADC;
+		//SPI0_send_1_byte(WRITE_CONF_REG, ADC);
+		//SPI0_send_2_byte((CONF_REG_VAL | 1), ADC);
+		//FIO1SET |= 1 << ADC;
 		curr_big = 0;
 		send_results();
 		timer0_stop();
@@ -74,31 +80,35 @@ void Isr_TIM0(void)
 	}
 	VICVectAddr = 0;
 }
-void read_volt(void)
+uint16_t read_volt(void)
 {
-		volts = adc_read_voltage();
+		uint16_t v = adc_read_voltage();
 		
 		/* Need to select proper channel */
 		FIO1CLR |= 1 << ADC;
 		SPI0_send_1_byte(WRITE_CONF_REG, ADC);
 		SPI0_send_2_byte(CONF_REG_VAL, ADC);
 		FIO1SET |= 1 << ADC;
+		
+		return v;
 }
-void read_curr(void){
-			curr = adc_read_current();
+uint16_t read_curr(void){
+		
+		uint16_t c = adc_read_current();
 		
 		/* Need to select proper channel */
 		FIO1CLR |= 1 << ADC;
 		SPI0_send_1_byte(WRITE_CONF_REG, ADC);
 		SPI0_send_2_byte((CONF_REG_VAL | 1), ADC);
 		FIO1SET |= 1 << ADC;
+		
+		return c;
 }
 void timer0_set_freq(uint8_t hz){
 	T0TCR = 0;	/* Disable tim0 */
 	if (hz == 100)
 	{
 		T0PR = 250;	/* Prescaler */
-		//T0MR0 = 28800;	/* Top value (100 Hz) */
 		T0MR0 = 720;	/* Top value (100 Hz) */
 	}else{
 		//T0MR0 = 72000;	/* Top value (40 Hz) */
