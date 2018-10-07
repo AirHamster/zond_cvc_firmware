@@ -1,3 +1,5 @@
+#define CONV_NUMBER 50
+
 void timer0_init(void);
 void timer0_start(void);
 void timer0_stop(void);
@@ -9,3 +11,5 @@ void read_curr(void);
 void send_results(void);
 char * my_ftoa(float value, char *result);
 int ftoaEngine(float value, char *buffer, int presc);
+float process_array(uint16_t *array);
+float calculateSD(uint16_t *data);

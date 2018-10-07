@@ -12,10 +12,11 @@
 #include "adc_dac.h"
 uint8_t channel = 1;	//adc channel
 uint8_t native = 0;
-uint8_t conv_number = 101;
+uint8_t conv_number = CONV_NUMBER + 1;
 uint8_t getflag =0;
 uint64_t curr_big;
 uint16_t volts, curr;
+uint16_t curr_array[CONV_NUMBER];
 void gpio_init (void)
 {	
 	SCS |= 1;

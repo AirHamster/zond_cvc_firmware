@@ -63,7 +63,7 @@ void process_command(char *cmd)
 		led_clear(LED1);
 		timer0_stop();
 		FIO1CLR |= 1 << DAC;
-		SPI0_send_2_byte((0x1000 | 578), DAC);
+		SPI0_send_2_byte((0x1000 | 1378), DAC);
 		FIO1SET |= 1 << DAC;
 	}
 	/* Voltage setup  */

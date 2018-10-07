@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include "LPC2300.h"
 #include "defines.h"
+#include "timers.h"
 #include "usart_console.h"
 #include "spi.h"
 #define WAIT_ON_SPIF         while (spi_readStatus() == 0) {} 

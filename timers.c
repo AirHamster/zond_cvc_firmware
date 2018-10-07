@@ -20,6 +20,7 @@ extern uint8_t native, getflag, conv_number;
 extern uint8_t channel;
 extern uint64_t curr_big;
 extern uint16_t volts, curr;
+extern uint16_t curr_array[CONV_NUMBER];
 void Isr_TIM0(void)
 {
 	uint16_t dat;
@@ -42,11 +43,9 @@ void Isr_TIM0(void)
 		}
 	}else{
 		//UART0_send("\ngf\n", 4);
-		if (conv_number == 101) {
+		if (conv_number == CONV_NUMBER + 1) {
 			conv_number--;
 			volts = adc_read_voltage();
-		//UART0_send_byte(volts>>8);
-		//UART0_send_byte(volts & 0xFF);
 		/* Need to select proper channel */
 		FIO1CLR |= 1 << ADC;
 		SPI0_send_1_byte(WRITE_CONF_REG, ADC);
@@ -54,10 +53,12 @@ void Isr_TIM0(void)
 		FIO1SET |= 1 << ADC;
 		}else if (conv_number != 0){
 			conv_number--;
-			curr_big += adc_read_current();
+			//curr_big += adc_read_current();
+			curr_array[conv_number] = adc_read_current();
 		}else if (conv_number == 0){
-			curr = (curr_big/100);
-			conv_number = 101;
+			//curr = (curr_big/CONV_NUMBER);
+			curr = process_array(curr_array);
+			conv_number = CONV_NUMBER + 1;
 			getflag = 0;
 			
 					/* Need to select proper channel */
@@ -149,17 +150,15 @@ void send_results(void){
 			/* fvolts = (volts)/3.3; */
 			/* fcurr = (curr - 1000); */
 
-			//UART0_send("\n\nVoltage, V  : ",16 );
+
 			UART0_send("V", 1);
-			/* sprintf(volt_ascii, "%+f", fvolts); */
+
 			ftoa(fvolts, volt_ascii);
-			//my_ftoa(fvolts, volt_ascii);
+
 			UART0_send(volt_ascii, 6);
-			//UART0_send("\nCurrent, mkA: ",15 );
+
 			UART0_send("C", 1);
-			/* sprintf(curr_ascii, "+%f", fcurr); */
 			ftoa(fcurr, curr_ascii);
-			//ftoa2(fcurr, curr_ascii, 4);
 			UART0_send(curr_ascii, 6);
 			UART0_send("\n", 1);
 
@@ -189,35 +188,7 @@ void timer0_stop(void)
 	T0TCR &= ~1;
 	gpio_clear(OP_AMP_PORT, OP_AMP_PIN);
 }
-/*
-void ftoa(float num, char *str)
-{
-	int intpart = num;
-	int intdecimal;
-	int i;
-	float decimal_part;
-	char decimal[20];
 
-	memset(str, 0x0, 20);
-	itoa(num, str, 10);
-
-	strcat(str, ".");
-
-	decimal_part = num - intpart;
-	intdecimal = decimal_part * 1000000;
-
-	if(intdecimal < 0)
-	{
-		intdecimal = -intdecimal;
-	}
-	itoa(intdecimal, decimal, 10);
-	for(i =0;i < (PRECISION - strlen(decimal));i++)
-	{
-		strcat(str, "0");
-	}
-	strcat(str, decimal);
-}
-*/
 void ftoa(float num, char *str)
 {
     int intpart = num;
@@ -249,4 +220,52 @@ void ftoa(float num, char *str)
         strcat(str, "0");
     }
     strcat(str, decimal);
+}
+
+float calculateSD(uint16_t *data)
+{
+    float sum = 0.0, mean, standardDeviation = 0.0;
+
+    int i;
+
+    for(i=0; i<CONV_NUMBER; ++i)
+    {
+        sum += data[i];
+    }
+
+    mean = sum/CONV_NUMBER;
+
+    for(i=0; i<CONV_NUMBER; ++i)
+        standardDeviation += pow(data[i] - mean, 2);
+
+    return sqrt(standardDeviation/CONV_NUMBER);
+}
+
+float process_array(uint16_t *array)
+{
+    float result = 0.0, median = 0.0, median2 = 0.0, sd = 0.0;
+    int i, counter = 0;
+    
+    for (i = 0; i < CONV_NUMBER; i++)
+    {
+       median += array[i];
+    }
+    median = median / CONV_NUMBER;
+    
+    sd = calculateSD(array);
+    
+    for (i = 0; i < CONV_NUMBER; i++)
+    {
+       if (!((array[i] < (median - sd)) || (array[i] > (median + sd))))
+       {
+           median2 += array[i];
+           counter++;
+       }
+    }
+    if (counter != 0)
+    {
+      return (median2 / counter);
+    }else{
+        return 0;
+    }
 }
