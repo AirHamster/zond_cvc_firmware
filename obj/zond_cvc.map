@@ -251,7 +251,7 @@ LOAD c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-non
 LOAD c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a
 END GROUP
 
-.text           0x00000000     0x33f0
+.text           0x00000000     0x3418
  *(.VECTOR)
  .VECTOR        0x00000000       0x34 obj/asmfunc.o
                 0x000002fc                . = 0x2fc
@@ -306,7 +306,7 @@ END GROUP
                 0x00000fd0                dac_set_voltage
                 0x00001018                adc_read_voltage
                 0x00001050                adc_read_current
- .text          0x0000105c      0x52c obj/timers.o
+ .text          0x0000105c      0x554 obj/timers.o
                 0x0000105c                read_volt
                 0x0000109c                read_curr
                 0x000010dc                timer0_set_freq
@@ -318,200 +318,200 @@ END GROUP
                 0x000013a4                calculateSD
                 0x00001428                process_array
                 0x000014cc                Isr_TIM0
- .text.atoi     0x00001588       0x10 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-atoi.o)
-                0x00001588                atoi
- .text.__itoa   0x00001598       0x34 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-itoa.o)
-                0x00001598                __itoa
- .text.itoa     0x000015cc        0xc c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-itoa.o)
-                0x000015cc                itoa
- .text.memset   0x000015d8       0x9c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-memset.o)
-                0x000015d8                memset
- .text.strcat   0x00001674       0x50 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strcat.o)
-                0x00001674                strcat
- .text.strcpy   0x000016c4       0x10 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strcpy.o)
-                0x000016c4                strcpy
- .text.strlen   0x000016d4       0x68 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strlen-stub.o)
-                0x000016d4                strlen
- .text.strncmp  0x0000173c       0x94 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strncmp.o)
-                0x0000173c                strncmp
+ .text.atoi     0x000015b0       0x10 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-atoi.o)
+                0x000015b0                atoi
+ .text.__itoa   0x000015c0       0x34 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-itoa.o)
+                0x000015c0                __itoa
+ .text.itoa     0x000015f4        0xc c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-itoa.o)
+                0x000015f4                itoa
+ .text.memset   0x00001600       0x9c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-memset.o)
+                0x00001600                memset
+ .text.strcat   0x0000169c       0x50 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strcat.o)
+                0x0000169c                strcat
+ .text.strcpy   0x000016ec       0x10 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strcpy.o)
+                0x000016ec                strcpy
+ .text.strlen   0x000016fc       0x68 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strlen-stub.o)
+                0x000016fc                strlen
+ .text.strncmp  0x00001764       0x94 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strncmp.o)
+                0x00001764                strncmp
  .text._strtol_l.isra.0
-                0x000017d0      0x180 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strtol.o)
- .text.strtol   0x00001950       0x30 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strtol.o)
-                0x00001950                strtol
- .text.__utoa   0x00001980       0x90 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-utoa.o)
-                0x00001980                __utoa
+                0x000017f8      0x180 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strtol.o)
+ .text.strtol   0x00001978       0x30 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strtol.o)
+                0x00001978                strtol
+ .text.__utoa   0x000019a8       0x90 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-utoa.o)
+                0x000019a8                __utoa
  .text.__locale_ctype_ptr_l
-                0x00001a10        0x8 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-locale.o)
-                0x00001a10                __locale_ctype_ptr_l
+                0x00001a38        0x8 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-locale.o)
+                0x00001a38                __locale_ctype_ptr_l
  .text.__ascii_mbtowc
-                0x00001a18       0x2c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-mbtowc_r.o)
-                0x00001a18                __ascii_mbtowc
+                0x00001a40       0x2c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-mbtowc_r.o)
+                0x00001a40                __ascii_mbtowc
  .text.__ascii_wctomb
-                0x00001a44       0x1c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-wctomb_r.o)
-                0x00001a44                __ascii_wctomb
- .text          0x00001a60      0x11c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_udivsi3.o)
-                0x00001a60                __aeabi_uidiv
-                0x00001a60                __udivsi3
-                0x00001b5c                __aeabi_uidivmod
- .text          0x00001b7c        0x4 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_dvmd_tls.o)
-                0x00001b7c                __aeabi_idiv0
-                0x00001b7c                __aeabi_ldiv0
- .text          0x00001b80      0x41c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_addsubdf3.o)
-                0x00001b80                __aeabi_drsub
-                0x00001b88                __aeabi_dsub
-                0x00001b88                __subdf3
-                0x00001b8c                __aeabi_dadd
-                0x00001b8c                __adddf3
-                0x00001e9c                __floatunsidf
-                0x00001e9c                __aeabi_ui2d
-                0x00001ec0                __floatsidf
-                0x00001ec0                __aeabi_i2d
-                0x00001ee8                __aeabi_f2d
-                0x00001ee8                __extendsfdf2
-                0x00001f28                __floatundidf
-                0x00001f28                __aeabi_ul2d
-                0x00001f3c                __floatdidf
-                0x00001f3c                __aeabi_l2d
- .text          0x00001f9c      0x49c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_muldivdf3.o)
-                0x00001f9c                __aeabi_dmul
-                0x00001f9c                __muldf3
-                0x0000222c                __divdf3
-                0x0000222c                __aeabi_ddiv
- .text          0x00002438       0x5c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_fixdfsi.o)
-                0x00002438                __aeabi_d2iz
-                0x00002438                __fixdfsi
- .text          0x00002494       0xa0 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_truncdfsf2.o)
-                0x00002494                __truncdfsf2
-                0x00002494                __aeabi_d2f
- .text          0x00002534      0x2ac c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_addsubsf3.o)
-                0x00002534                __aeabi_frsub
-                0x0000253c                __subsf3
-                0x0000253c                __aeabi_fsub
-                0x00002540                __aeabi_fadd
-                0x00002540                __addsf3
-                0x000026fc                __aeabi_ui2f
-                0x000026fc                __floatunsisf
-                0x00002704                __aeabi_i2f
-                0x00002704                __floatsisf
-                0x00002724                __aeabi_ul2f
-                0x00002724                __floatundisf
-                0x00002734                __aeabi_l2f
-                0x00002734                __floatdisf
- .text          0x000027e0      0x2f8 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_muldivsf3.o)
-                0x000027e0                __mulsf3
-                0x000027e0                __aeabi_fmul
-                0x00002978                __aeabi_fdiv
-                0x00002978                __divsf3
- .text          0x00002ad8      0x114 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_cmpsf2.o)
-                0x00002ad8                __gesf2
-                0x00002ad8                __gtsf2
-                0x00002ae0                __lesf2
-                0x00002ae0                __ltsf2
-                0x00002ae8                __nesf2
-                0x00002ae8                __eqsf2
-                0x00002ae8                __cmpsf2
-                0x00002b4c                __aeabi_cfrcmple
-                0x00002b5c                __aeabi_cfcmpeq
-                0x00002b5c                __aeabi_cfcmple
-                0x00002b74                __aeabi_fcmpeq
-                0x00002b8c                __aeabi_fcmplt
-                0x00002ba4                __aeabi_fcmple
-                0x00002bbc                __aeabi_fcmpge
-                0x00002bd4                __aeabi_fcmpgt
- .text          0x00002bec       0x5c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_fixsfsi.o)
-                0x00002bec                __aeabi_f2iz
-                0x00002bec                __fixsfsi
- .text          0x00002c48       0x54 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_fixunssfsi.o)
-                0x00002c48                __fixunssfsi
-                0x00002c48                __aeabi_f2uiz
- .text.sqrt     0x00002c9c       0xd8 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-w_sqrt.o)
-                0x00002c9c                sqrt
+                0x00001a6c       0x1c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-wctomb_r.o)
+                0x00001a6c                __ascii_wctomb
+ .text          0x00001a88      0x11c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_udivsi3.o)
+                0x00001a88                __aeabi_uidiv
+                0x00001a88                __udivsi3
+                0x00001b84                __aeabi_uidivmod
+ .text          0x00001ba4        0x4 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_dvmd_tls.o)
+                0x00001ba4                __aeabi_idiv0
+                0x00001ba4                __aeabi_ldiv0
+ .text          0x00001ba8      0x41c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_addsubdf3.o)
+                0x00001ba8                __aeabi_drsub
+                0x00001bb0                __aeabi_dsub
+                0x00001bb0                __subdf3
+                0x00001bb4                __aeabi_dadd
+                0x00001bb4                __adddf3
+                0x00001ec4                __floatunsidf
+                0x00001ec4                __aeabi_ui2d
+                0x00001ee8                __floatsidf
+                0x00001ee8                __aeabi_i2d
+                0x00001f10                __aeabi_f2d
+                0x00001f10                __extendsfdf2
+                0x00001f50                __floatundidf
+                0x00001f50                __aeabi_ul2d
+                0x00001f64                __floatdidf
+                0x00001f64                __aeabi_l2d
+ .text          0x00001fc4      0x49c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_muldivdf3.o)
+                0x00001fc4                __aeabi_dmul
+                0x00001fc4                __muldf3
+                0x00002254                __divdf3
+                0x00002254                __aeabi_ddiv
+ .text          0x00002460       0x5c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_fixdfsi.o)
+                0x00002460                __aeabi_d2iz
+                0x00002460                __fixdfsi
+ .text          0x000024bc       0xa0 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_truncdfsf2.o)
+                0x000024bc                __truncdfsf2
+                0x000024bc                __aeabi_d2f
+ .text          0x0000255c      0x2ac c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_addsubsf3.o)
+                0x0000255c                __aeabi_frsub
+                0x00002564                __subsf3
+                0x00002564                __aeabi_fsub
+                0x00002568                __aeabi_fadd
+                0x00002568                __addsf3
+                0x00002724                __aeabi_ui2f
+                0x00002724                __floatunsisf
+                0x0000272c                __aeabi_i2f
+                0x0000272c                __floatsisf
+                0x0000274c                __aeabi_ul2f
+                0x0000274c                __floatundisf
+                0x0000275c                __aeabi_l2f
+                0x0000275c                __floatdisf
+ .text          0x00002808      0x2f8 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_muldivsf3.o)
+                0x00002808                __mulsf3
+                0x00002808                __aeabi_fmul
+                0x000029a0                __aeabi_fdiv
+                0x000029a0                __divsf3
+ .text          0x00002b00      0x114 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_cmpsf2.o)
+                0x00002b00                __gesf2
+                0x00002b00                __gtsf2
+                0x00002b08                __lesf2
+                0x00002b08                __ltsf2
+                0x00002b10                __nesf2
+                0x00002b10                __eqsf2
+                0x00002b10                __cmpsf2
+                0x00002b74                __aeabi_cfrcmple
+                0x00002b84                __aeabi_cfcmpeq
+                0x00002b84                __aeabi_cfcmple
+                0x00002b9c                __aeabi_fcmpeq
+                0x00002bb4                __aeabi_fcmplt
+                0x00002bcc                __aeabi_fcmple
+                0x00002be4                __aeabi_fcmpge
+                0x00002bfc                __aeabi_fcmpgt
+ .text          0x00002c14       0x5c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_fixsfsi.o)
+                0x00002c14                __aeabi_f2iz
+                0x00002c14                __fixsfsi
+ .text          0x00002c70       0x54 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_fixunssfsi.o)
+                0x00002c70                __fixunssfsi
+                0x00002c70                __aeabi_f2uiz
+ .text.sqrt     0x00002cc4       0xd8 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-w_sqrt.o)
+                0x00002cc4                sqrt
  .text.__ieee754_sqrt
-                0x00002d74      0x1a4 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-e_sqrt.o)
-                0x00002d74                __ieee754_sqrt
- .text.matherr  0x00002f18        0x4 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-s_matherr.o)
-                0x00002f18                matherr
- .text          0x00002f1c      0x144 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_cmpdf2.o)
-                0x00002f1c                __gtdf2
-                0x00002f1c                __gedf2
-                0x00002f24                __ltdf2
-                0x00002f24                __ledf2
-                0x00002f2c                __nedf2
-                0x00002f2c                __eqdf2
-                0x00002f2c                __cmpdf2
-                0x00002fb4                __aeabi_cdrcmple
-                0x00002fd0                __aeabi_cdcmpeq
-                0x00002fd0                __aeabi_cdcmple
-                0x00002fe8                __aeabi_dcmpeq
-                0x00003000                __aeabi_dcmplt
-                0x00003018                __aeabi_dcmple
-                0x00003030                __aeabi_dcmpge
-                0x00003048                __aeabi_dcmpgt
- .text          0x00003060       0x38 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_unorddf2.o)
-                0x00003060                __unorddf2
-                0x00003060                __aeabi_dcmpun
- .text.__errno  0x00003098        0xc c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libg.a(lib_a-errno.o)
-                0x00003098                __errno
- *fill*         0x000030a4        0x4 
+                0x00002d9c      0x1a4 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-e_sqrt.o)
+                0x00002d9c                __ieee754_sqrt
+ .text.matherr  0x00002f40        0x4 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-s_matherr.o)
+                0x00002f40                matherr
+ .text          0x00002f44      0x144 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_cmpdf2.o)
+                0x00002f44                __gtdf2
+                0x00002f44                __gedf2
+                0x00002f4c                __ltdf2
+                0x00002f4c                __ledf2
+                0x00002f54                __nedf2
+                0x00002f54                __eqdf2
+                0x00002f54                __cmpdf2
+                0x00002fdc                __aeabi_cdrcmple
+                0x00002ff8                __aeabi_cdcmpeq
+                0x00002ff8                __aeabi_cdcmple
+                0x00003010                __aeabi_dcmpeq
+                0x00003028                __aeabi_dcmplt
+                0x00003040                __aeabi_dcmple
+                0x00003058                __aeabi_dcmpge
+                0x00003070                __aeabi_dcmpgt
+ .text          0x00003088       0x38 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_unorddf2.o)
+                0x00003088                __unorddf2
+                0x00003088                __aeabi_dcmpun
+ .text.__errno  0x000030c0        0xc c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libg.a(lib_a-errno.o)
+                0x000030c0                __errno
+ *fill*         0x000030cc        0x4 
  .text.__errno.__stub
-                0x000030a8       0xb4 linker stubs
+                0x000030d0       0xb4 linker stubs
  *(.gnu.linkonce.t.*)
  *(.glue_7)
- .glue_7        0x00003160        0x0 linker stubs
+ .glue_7        0x00003188        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x00003160        0x0 linker stubs
+ .glue_7t       0x00003188        0x0 linker stubs
  *(.gcc_except_table)
  *(.rodata)
- .rodata        0x00003160       0xd1 obj/usart_console.o
-                0x00003160                help_msg
+ .rodata        0x00003188       0xd1 obj/usart_console.o
+                0x00003188                help_msg
  *(.rodata*)
  .rodata.str1.1
-                0x00003231       0x12 obj/main.o
+                0x00003259       0x12 obj/main.o
  .rodata.str1.1
-                0x00003243       0x37 obj/usart_console.o
+                0x0000326b       0x37 obj/usart_console.o
                                  0x3a (size before relaxing)
  .rodata.str1.1
-                0x0000327a       0x32 obj/timers.o
+                0x000032a2       0x32 obj/timers.o
                                  0x34 (size before relaxing)
  .rodata.__utoa.str1.4
-                0x000032ac       0x25 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-utoa.o)
- *fill*         0x000032d1        0x3 
+                0x000032d4       0x25 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-utoa.o)
+ *fill*         0x000032f9        0x3 
  .rodata._setlocale_r.str1.4
-                0x000032d4        0xa c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-locale.o)
+                0x000032fc        0xa c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-locale.o)
                                   0xd (size before relaxing)
- *fill*         0x000032de        0x2 
+ *fill*         0x00003306        0x2 
  .rodata.str1.4
-                0x000032e0        0x2 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-locale.o)
- *fill*         0x000032e2        0x2 
+                0x00003308        0x2 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-locale.o)
+ *fill*         0x0000330a        0x2 
  .rodata._ctype_
-                0x000032e4      0x101 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-ctype_.o)
-                0x000032e4                _ctype_
- *fill*         0x000033e5        0x3 
+                0x0000330c      0x101 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-ctype_.o)
+                0x0000330c                _ctype_
+ *fill*         0x0000340d        0x3 
  .rodata.sqrt.str1.4
-                0x000033e8        0x8 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-w_sqrt.o)
+                0x00003410        0x8 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-w_sqrt.o)
                                   0x5 (size before relaxing)
  *(.gnu.linkonce.r.*)
 
-.vfp11_veneer   0x000033f0        0x0
- .vfp11_veneer  0x000033f0        0x0 linker stubs
+.vfp11_veneer   0x00003418        0x0
+ .vfp11_veneer  0x00003418        0x0 linker stubs
 
-.v4_bx          0x000033f0        0x0
- .v4_bx         0x000033f0        0x0 linker stubs
+.v4_bx          0x00003418        0x0
+ .v4_bx         0x00003418        0x0 linker stubs
 
-.iplt           0x000033f0        0x0
- .iplt          0x000033f0        0x0 obj/asmfunc.o
+.iplt           0x00003418        0x0
+ .iplt          0x00003418        0x0 obj/asmfunc.o
 
-.rel.dyn        0x000033f0        0x0
- .rel.iplt      0x000033f0        0x0 obj/asmfunc.o
+.rel.dyn        0x00003418        0x0
+ .rel.iplt      0x00003418        0x0 obj/asmfunc.o
 
 .ARM.excep
  *(.ARM.exidx*)
  *(.ARM.extab*)
-                0x000033f0                . = ALIGN (0x4)
-                0x000033f0                _etext = .
-                0x000033f0                _sidata = .
+                0x00003418                . = ALIGN (0x4)
+                0x00003418                _etext = .
+                0x00003418                _sidata = .
 
-.data           0x40000000      0x5a0 load address 0x000033f0
+.data           0x40000000      0x5a0 load address 0x00003418
                 0x40000000                . = ALIGN (0x4)
                 0x40000000                _sdata = .
  *(.data)
@@ -536,10 +536,10 @@ END GROUP
  *fill*         0x4000059d        0x3 
                 0x400005a0                _edata = .
 
-.igot.plt       0x400005a0        0x0 load address 0x00003990
+.igot.plt       0x400005a0        0x0 load address 0x000039b8
  .igot.plt      0x400005a0        0x0 obj/asmfunc.o
 
-.bss            0x400005a0      0x224 load address 0x00003990
+.bss            0x400005a0      0x224 load address 0x000039b8
                 0x400005a0                . = ALIGN (0x4)
                 0x400005a0                _sbss = .
  *(.bss)
@@ -564,7 +564,7 @@ END GROUP
  *fill*         0x400007c2        0x2 
                 0x400007c4                _ebss = .
 
-.stack          0x400007c4      0xa14 load address 0x00003bb4
+.stack          0x400007c4      0xa14 load address 0x00003bdc
                 0x400007c8                . = ALIGN (0x8)
  *fill*         0x400007c4        0x4 
  *(.stack)
@@ -734,7 +734,7 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x432c
+.debug_info     0x00000000     0x4335
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000       0x66 obj/asmfunc.o
  .debug_info    0x00000066      0xc86 obj/main.o
@@ -743,9 +743,9 @@ END GROUP
  .debug_info    0x00001a35     0x10e1 obj/usart_console.o
  .debug_info    0x00002b16      0x2ee obj/spi.o
  .debug_info    0x00002e04      0x2bb obj/adc_dac.o
- .debug_info    0x000030bf     0x126d obj/timers.o
+ .debug_info    0x000030bf     0x1276 obj/timers.o
 
-.debug_abbrev   0x00000000      0xd80
+.debug_abbrev   0x00000000      0xdab
  *(.debug_abbrev)
  .debug_abbrev  0x00000000       0x12 obj/asmfunc.o
  .debug_abbrev  0x00000012      0x261 obj/main.o
@@ -754,9 +754,9 @@ END GROUP
  .debug_abbrev  0x00000551      0x2df obj/usart_console.o
  .debug_abbrev  0x00000830       0xb2 obj/spi.o
  .debug_abbrev  0x000008e2      0x131 obj/adc_dac.o
- .debug_abbrev  0x00000a13      0x36d obj/timers.o
+ .debug_abbrev  0x00000a13      0x398 obj/timers.o
 
-.debug_line     0x00000000      0xc8c
+.debug_line     0x00000000      0xc9a
  *(.debug_line)
  .debug_line    0x00000000      0x12b obj/asmfunc.o
  .debug_line    0x0000012b      0x1eb obj/main.o
@@ -765,9 +765,9 @@ END GROUP
  .debug_line    0x00000516      0x25c obj/usart_console.o
  .debug_line    0x00000772      0x15a obj/spi.o
  .debug_line    0x000008cc       0xfd obj/adc_dac.o
- .debug_line    0x000009c9      0x2c3 obj/timers.o
+ .debug_line    0x000009c9      0x2d1 obj/timers.o
 
-.debug_frame    0x00000000      0xc84
+.debug_frame    0x00000000      0xc80
  *(.debug_frame)
  .debug_frame   0x00000000       0x94 obj/main.o
  .debug_frame   0x00000094       0x80 obj/interrupt.o
@@ -775,35 +775,35 @@ END GROUP
  .debug_frame   0x00000190       0xac obj/usart_console.o
  .debug_frame   0x0000023c       0xc0 obj/spi.o
  .debug_frame   0x000002fc       0x84 obj/adc_dac.o
- .debug_frame   0x00000380      0x154 obj/timers.o
- .debug_frame   0x000004d4       0x40 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-atoi.o)
- .debug_frame   0x00000514       0x40 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-itoa.o)
- .debug_frame   0x00000554       0x30 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-memset.o)
- .debug_frame   0x00000584       0x2c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strcat.o)
- .debug_frame   0x000005b0       0x20 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strcpy.o)
- .debug_frame   0x000005d0       0x28 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strlen-stub.o)
- .debug_frame   0x000005f8       0x2c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strncmp.o)
- .debug_frame   0x00000624       0x90 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strtol.o)
- .debug_frame   0x000006b4       0x54 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-utoa.o)
- .debug_frame   0x00000708       0x74 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-locale.o)
- .debug_frame   0x0000077c       0x40 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-mbtowc_r.o)
- .debug_frame   0x000007bc       0x3c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-wctomb_r.o)
- .debug_frame   0x000007f8       0x20 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_udivsi3.o)
- .debug_frame   0x00000818       0xac c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_addsubdf3.o)
- .debug_frame   0x000008c4       0x50 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_muldivdf3.o)
- .debug_frame   0x00000914       0x24 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_fixdfsi.o)
- .debug_frame   0x00000938       0x24 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_truncdfsf2.o)
- .debug_frame   0x0000095c       0x4c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_addsubsf3.o)
- .debug_frame   0x000009a8       0x38 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_muldivsf3.o)
- .debug_frame   0x000009e0       0xc8 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_cmpsf2.o)
- .debug_frame   0x00000aa8       0x24 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_fixsfsi.o)
- .debug_frame   0x00000acc       0x24 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_fixunssfsi.o)
- .debug_frame   0x00000af0       0x38 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-w_sqrt.o)
- .debug_frame   0x00000b28       0x38 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-e_sqrt.o)
- .debug_frame   0x00000b60       0x20 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-s_matherr.o)
- .debug_frame   0x00000b80       0xc4 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_cmpdf2.o)
- .debug_frame   0x00000c44       0x20 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_unorddf2.o)
- .debug_frame   0x00000c64       0x20 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libg.a(lib_a-errno.o)
+ .debug_frame   0x00000380      0x150 obj/timers.o
+ .debug_frame   0x000004d0       0x40 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-atoi.o)
+ .debug_frame   0x00000510       0x40 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-itoa.o)
+ .debug_frame   0x00000550       0x30 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-memset.o)
+ .debug_frame   0x00000580       0x2c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strcat.o)
+ .debug_frame   0x000005ac       0x20 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strcpy.o)
+ .debug_frame   0x000005cc       0x28 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strlen-stub.o)
+ .debug_frame   0x000005f4       0x2c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strncmp.o)
+ .debug_frame   0x00000620       0x90 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-strtol.o)
+ .debug_frame   0x000006b0       0x54 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-utoa.o)
+ .debug_frame   0x00000704       0x74 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-locale.o)
+ .debug_frame   0x00000778       0x40 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-mbtowc_r.o)
+ .debug_frame   0x000007b8       0x3c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libc.a(lib_a-wctomb_r.o)
+ .debug_frame   0x000007f4       0x20 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_udivsi3.o)
+ .debug_frame   0x00000814       0xac c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_addsubdf3.o)
+ .debug_frame   0x000008c0       0x50 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_muldivdf3.o)
+ .debug_frame   0x00000910       0x24 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_fixdfsi.o)
+ .debug_frame   0x00000934       0x24 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_truncdfsf2.o)
+ .debug_frame   0x00000958       0x4c c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_addsubsf3.o)
+ .debug_frame   0x000009a4       0x38 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_muldivsf3.o)
+ .debug_frame   0x000009dc       0xc8 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_cmpsf2.o)
+ .debug_frame   0x00000aa4       0x24 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_fixsfsi.o)
+ .debug_frame   0x00000ac8       0x24 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_fixunssfsi.o)
+ .debug_frame   0x00000aec       0x38 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-w_sqrt.o)
+ .debug_frame   0x00000b24       0x38 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-e_sqrt.o)
+ .debug_frame   0x00000b5c       0x20 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libm.a(lib_a-s_matherr.o)
+ .debug_frame   0x00000b7c       0xc4 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_cmpdf2.o)
+ .debug_frame   0x00000c40       0x20 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb\libgcc.a(_arm_unorddf2.o)
+ .debug_frame   0x00000c60       0x20 c:/arm-none-eabi-gcc/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb\libg.a(lib_a-errno.o)
 
 .debug_str      0x00000000      0x971
  *(.debug_str)

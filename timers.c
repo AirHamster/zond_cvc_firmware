@@ -44,9 +44,9 @@ void Isr_TIM0(void)
 		}
 	}else{
 		//UART0_send("\ngf\n", 4);
-		if (conv_number == CONV_NUMBER + 1) {
+		if (conv_number == CONV_NUMBER*2 + 1) {
 			conv_number--;
-			volts = read_volt();
+			read_curr();
 			//read_volt();
 		/* Need to select proper channel */
 		//FIO1CLR |= 1 << ADC;
@@ -55,19 +55,27 @@ void Isr_TIM0(void)
 		//FIO1SET |= 1 << ADC;
 		}else if (conv_number != 0){
 			conv_number--;
-			//curr_big += adc_read_current();
-			curr_array[conv_number] = read_curr();
-			volt_array[conv_number] = read_volt();
+			if (conv_number > CONV_NUMBER)
+			{
+				volt_array[conv_number - CONV_NUMBER] = adc_read_voltage();
+			}else if (conv_number == CONV_NUMBER)
+			{
+				volt_array[conv_number - CONV_NUMBER] = read_volt();
+						
+			}else if ((conv_number < CONV_NUMBER) && (conv_number > 0))
+			{
+				curr_array[conv_number] = adc_read_current();
+			}
 			//volts = read_volt();
 		}else if (conv_number == 0){
-			//curr = (curr_big/CONV_NUMBER);
+			curr_array[conv_number - CONV_NUMBER] = read_curr();
 			curr = process_array(curr_array);
+			volts = process_array(volt_array);
 			//volts = process_array(volt_array);
-			conv_number = CONV_NUMBER + 1;
+			conv_number = CONV_NUMBER*2 + 1;
 			getflag = 0;
 			
 					/* Need to select proper channel */
-					read_curr();
 		//FIO1CLR |= 1 << ADC;
 		//SPI0_send_1_byte(WRITE_CONF_REG, ADC);
 		//SPI0_send_2_byte((CONF_REG_VAL | 1), ADC);
