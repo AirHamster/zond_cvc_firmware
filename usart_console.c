@@ -51,6 +51,7 @@ void process_command(char *cmd)
 		UART0_send("\nStarted\n", 9);
 		gpio_set(OP_AMP_PORT, OP_AMP_PIN);
 		led_set(LED1);
+		read_curr();
 		timer0_set_freq(1);
 		timer0_start();
 	}    
@@ -63,7 +64,7 @@ void process_command(char *cmd)
 		led_clear(LED1);
 		timer0_stop();
 		FIO1CLR |= 1 << DAC;
-		SPI0_send_2_byte((0x1000 | 1378), DAC);
+		SPI0_send_2_byte((0x1000 | 1382), DAC);
 		FIO1SET |= 1 << DAC;
 		
 		adc_init();
@@ -78,7 +79,7 @@ void process_command(char *cmd)
 		num = atoi(cmd + 4);
 		}else{
 		input = atof(cmd + 4);
-		input = input/0.01837 + 1378;	
+		input = input/0.01846 + 1382;	
 		num = (int)input;
 		}
 		UART0_send("\nOK\n", 4);
@@ -95,7 +96,7 @@ void process_command(char *cmd)
 		num = atoi(cmd + 4);
 		}else{
 		input = atof(cmd + 4);
-		input = input/0.01837 + 1378;	
+		input = input/0.01846 + 1382;	
 		num = (int)input;
 		}
 		dac_set_voltage(num);

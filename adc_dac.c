@@ -40,7 +40,7 @@ void adc_init(void)
 	FIO1SET |= 1 << DAC;
 
 //read_volt();
-read_curr();
+//read_curr();
 	/* Switch on green led to indicate successful  initialization */
 	//led_set(LED1);
 

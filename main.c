@@ -129,6 +129,9 @@ int main (void)
 	timer0_init();
 	gpio_init();
 	adc_init();
+	FIO1CLR |= 1 << DAC;
+	SPI0_send_2_byte((0x1000 | 1382), DAC);
+	FIO1SET |= 1 << DAC;
 	UART0_send("\nLPC initialized\n", 17);
 
 	while(1)
