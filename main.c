@@ -23,7 +23,7 @@ void gpio_init (void)
 	SCS |= 1;
 	FIO2MASK = 0;
 	/* Leds to output */
-	FIO2DIR |= (1 << LED1) | (1 << LED2);
+	FIO2DIR |= (1 << LED1) | (1 << LED2) | (1 << OP_AMP_PIN);
 
 	/* FIO1MASK = 0xFFFFFFFF & (0 << DAC) | (0 << ADC); */
 	FIO1MASK = 0;
